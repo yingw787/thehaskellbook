@@ -206,7 +206,7 @@ Normal form or diverge?
 
 Beta reduce
 
-1. INCORRECT
+1. INCORRECT RESULT
 
 - (λabc.cba)zz(λwv.w)
 --> (λa.λb.λc.cba)(z)z(λw.λv.w) // currying, not de-currying
@@ -215,3 +215,33 @@ Beta reduce
 --> (λw.λv.w)(z)z
 --> (λv.z)(z)
 --> z
+
+2. CORRECT RESULT, INCORRECT DEDUCTION
+
+- (λx.λy.xyy)(λa.a)b
+--> (λy.(λa.a)yy)(b)
+--> (λa.a)(b)b // apply from the outside in
+--> bb
+
+3. CORRECT RESULT, CORRECT DEDUCTION
+
+4. CORRECT RESULT, CORRECT DEDUCTION
+
+5. INCORRECT RESULT
+
+- (λx.λy.xyy)(λy.y)y
+- (λy.(λy.y)yy)(y)
+- (λy.y)(y)y // substituting argument y for input y, complete replacement
+- yy
+
+6. CORRECT RESULT, CORRECT DEDUCTION
+
+7. INCORRECT RESULT
+
+- (λxyz.xz(yz))(λx.z)(λx.a)
+--> (λx.λy.λz.xz(yz))(λx.z)(λx.a) // currying
+--> (λy.λz1.(λx.z)z1(yz1))(λx.a) // substituting λx.z for x in first lambda, z
+in first lambda renamed to z1.
+--> (λz1.(λx.z)(z1)((λx.a)z1)) // substituting λx.a for y in first lambda.
+--> (λz1.z((λx.a)(z1))) // left associativity, z1 applied to λx.z --> z
+--> (λz1.za) // left associativity, z1 applied to λx.a --> a
