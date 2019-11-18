@@ -62,7 +62,7 @@ Intermission: Equivalence exercises
 1. λxy.xz == b) λmn.mz (replacement of x with z due to alpha equivalence, w/o
    touching free variable z)
 2. λxy.xxy == c) λa.(λb.aab) (by currying).
-3. λxyz.zx == λtos.st (by alpha equivalence).
+3. λxyz.zx == b) λtos.st (by alpha equivalence).
 
 Normal form (usually means) Beta normal form:
 - Cannot beta reduce (apply lambdas to arguments) the terms any further.
@@ -92,3 +92,26 @@ Divergence: Reducible lambdas that do not converge to beta normal form.
 Terms that diverge don't produce an answer or meaningful result.
 
 Chapter Exercises:
+
+1. Combinators: Determine if each of the following functions are combinators or not.
+
+- λx.xxx (IS COMBINATOR, bound by enclosing lambda)
+- λxy.zx (IS NOT COMBINATOR, z is free)
+- λxyz.xy(zx) (IS NOT COMBINATOR, beta normal form is λyz.zxy where x is a free
+  variable).
+- λxyz.xy(zxy) -> λyz.(zxy)(y) (IS NOT COMBINATOR, beta normal form has x as a
+  free variable).
+- λxy.xy(zxy) -> λy.(zxy)(y) (IS NOT COMBINATOR, x and z are free variables).
+
+2. Normal form or diverge? Determine if each of the following expressions can be
+   reduced to a normal form or if they diverge.
+
+- λx.xxx (NORMAL FORM, lambda without arguments cannot be reduced further)
+- (λz.zz)(λy.yy) (DIVERGENT, alpha equivalence equal to divergent example
+  earlier in book)
+- (λx.xxx)(z) -> zzz (NORMAL FORM, fully applied and can be reduced to beta
+  normal form)
+
+3. Beta reduce; Evaluate (that is, beta reduce) each of the following
+   expressions to normal form. We strongly recommend writing out the steps on
+   paper with a pencil or pen.
