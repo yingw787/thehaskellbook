@@ -165,3 +165,16 @@ though
 --> (λb.ba1)(a1)(c) // substituting second lambda for b in first lambda.
 --> (a1a1c) // substituting a1 for b in first lambda, beta normal form as no
 more lambdas to apply for arguments.
+
+- (λxyz.xz(yz))(λx.z)(λx.a)
+--> (λx0y0z0.x0z0(y0z0))(λx1.z1)(λx2.a0) // renaming variables for
+deconfliction; (yz) --> (y0z0) because lack of second head means same context
+--> (λy0z0.(y0z0z0)(λx1.z1))(λx2.a0) // substituting second lambda for x0 in
+first lambda
+--> (λz0.(z0)(z0)(λx1.z1))(λx2.a0) // substituting second lambda for y0 in
+first lambda.
+--> (λx1.z1)(λx1.z1)(λx2.a0) // substituting second lambda for z0 in first
+lambda.
+--> z1(λx2.a0) // substituting second lambda for x1 in first lambda.
+--> (λx2.a0)(z1) // by commutativity.
+--> a0 // substituting z1 for x2 in first lambda, beta normal form.
