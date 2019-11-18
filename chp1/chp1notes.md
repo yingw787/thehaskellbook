@@ -82,3 +82,13 @@ Combinator: Lambda term with no free variables.
 
 - λy.x (IS NOT COMBINATOR, x is free)
 - λx.xz (IS NOT COMBINATOR, z is free)
+
+Divergence: Reducible lambdas that do not converge to beta normal form.
+
+- (λx.xx)(λx.xx)
+- ([x:=(λx.xx)]xx) // Substituting (λx.xx) for each x in enclosing lambda
+- (λx.xx)(λx.xx) // Back to where we started
+
+Terms that diverge don't produce an answer or meaningful result.
+
+Chapter Exercises:
