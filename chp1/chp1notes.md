@@ -178,3 +178,40 @@ lambda.
 --> z1(λx2.a0) // substituting second lambda for x1 in first lambda.
 --> (λx2.a0)(z1) // by commutativity.
 --> a0 // substituting z1 for x2 in first lambda, beta normal form.
+
+ANSWERS:
+
+Eqivalence exercises:
+
+1. CORRECT
+2. CORRECT
+3. CORRECT
+
+Combinators:
+
+1. CORRECT
+2. CORRECT
+3. INCORRECT (λxyz.xy(xx)) (Is a combinator, none of the arguments in the head
+   have been applied, so it's irreducible, and context of one head means alpha
+   equivalence does not apply here).
+4. INCORRECT (λxyz.xy(zxy)) (Is a combinator, none of the arguments have been
+   applied so it's irreducible).
+5. CORRECT
+
+Normal form or diverge?
+
+1. CORRECT
+2. CORRECT
+3. CORRECT
+
+Beta reduce
+
+1. INCORRECT
+
+- (λabc.cba)zz(λwv.w)
+--> (λa.λb.λc.cba)(z)z(λw.λv.w) // currying, not de-currying
+--> (λb.λc.cbz)(z)(λw.λv.w) // left associativity
+--> (λc.czz)(λw.λv.w)
+--> (λw.λv.w)(z)z
+--> (λv.z)(z)
+--> z
