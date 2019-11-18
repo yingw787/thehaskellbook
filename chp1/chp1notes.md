@@ -38,3 +38,23 @@
 - Alpha equivalence does not apply to free variables since free variables may be
   different things, but lambda expressions without modification to free
   variables are alpha equivalent.
+
+- Currying: sequence of lambda applications to multiple heads.
+
+  (λxy.xy) == λx.(λy.xy)
+
+- Currying and beta reduction may look like this:
+
+  1. (λxyz.xz(yz))(λmn.m)(λp.p)
+  2. (λx.λy.λz.xz(yz))(λm.λn.m)(λp.p) // Making the currying explicit
+  3. (λy.λz.(λm.λn.m)z(yz))(λp.p) // Binding to the outermost lambda, which
+     binds first argument to x.
+  4. λz.(λm.λn.m)(z)((λp.p)z) // Replaced y with the next argument, which is the
+     identity method. Last argument is irreductible because there are no more
+     arguments to bind to.
+  5. λz.(λn.z)((λp.p)z) // Apply lambda binding m to argument z.
+  5.1. λz.(λn.z)(λz.z)
+  6. λz.z // reducing the reducible term (λn.z) with the argument of the
+     identity method, which becomes z.
+
+Intermission: Equivalence exercises
