@@ -128,3 +128,40 @@ lambda, substituting first argument for first variable in second lambda.
 normal form.
 
 - (λx.λy.xyy)(λa.a)b
+--> (λxy.xyy)(λa.a)(b) // uncurrying first lambda, wrapping last argument in
+parentheses.
+--> (λy.(λa.a)yy)(b) // left associativity, substituting first argument for
+first variable in first lambda.
+--> (λy.yy)(b) // first lambda is irreducible, left associating second lambda in
+expression.
+--> bb // substituting argument for lambda variable, beta normal form.
+
+- (λy.y)(λx.xx)(λz.zq)
+--> (λx.xx)(λz.zq) // Identity function can be removed by left associativity.
+--> (λz.zq)(λz.zq) // Left associativity, substituting second lambda for each x
+in first lambda.
+--> (λz.zq)(q) // Left associativity, substituting second lambda for z in first
+lambda.
+--> qq // Substituting q for z in first lambda, not sure if it should be q * q_0
+though
+
+- (λz.z)(λz.zz)(λz.zy) // hint: alpha equivalence
+--> (λz0.z0)(λz1.z1z1)(λz2.z2y) // renaming variables for deconfliction
+--> (λz1.z1z1)(λz2.z2y) // removing identity lambda by left associativity
+--> (λz2.z2y)(λz2.z2y) // left associativity, substituting second lambda for z1.
+--> (λz2.z2y)(y) // left associativity, substituting second lambda for z2.
+--> yy // left associativity, substituting y for z2.
+
+- (λx.λy.xyy)(λy.y)y
+--> (λx.λy0.xy0y0)(λy1.y1)(y2) // renaming variables for deconfliction
+--> (λxy0.xy0y0)(λy1.y1)(λy2) // de-currying
+--> (λy0.(λy1.y1)(y0))(y2) // substituting identity method as x
+--> (λy0.y0)(y2) // substituting y0 for y1 in second lambda
+--> y2 // substituting y2 for y0, beta normal form.
+
+- (λa.aa)(λb.ba)c
+--> (λa0.a0a0)(λb.ba1)(c) // renaming variables for deconfliction
+--> (λb.ba1)(λb.ba1)(c) // substituting second lambda for a in first lambda.
+--> (λb.ba1)(a1)(c) // substituting second lambda for b in first lambda.
+--> (a1a1c) // substituting a1 for b in first lambda, beta normal form as no
+more lambdas to apply for arguments.
