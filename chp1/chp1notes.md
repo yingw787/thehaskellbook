@@ -115,3 +115,16 @@ Chapter Exercises:
 3. Beta reduce; Evaluate (that is, beta reduce) each of the following
    expressions to normal form. We strongly recommend writing out the steps on
    paper with a pencil or pen.
+
+- (λabc.cba)zz(λwv.w)
+--> (λabc.cba)(zz)(λwv.w) // wrapping zz in parentheses
+--> (λbc.cb(zz))(λwv.w) // left associativity, substituting first argument for
+first variable in first lambda.
+--> (λc.c(λwv.w)(zz)) // left associativity, substituting second argument for
+second variable in first lambda.
+--> (λc.c(λv.zz)) // leftmost lambda cannot be reduced, moving onto second
+lambda, substituting first argument for first variable in second lambda.
+--> λv.zz (beta normal form) // identity lambda results in argument being beta
+normal form.
+
+- (λx.λy.xyy)(λa.a)b
