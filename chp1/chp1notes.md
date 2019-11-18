@@ -58,3 +58,8 @@
      identity method, which becomes z.
 
 Intermission: Equivalence exercises
+
+1. λxy.xz == b) λmn.mz (replacement of x with z due to alpha equivalence, w/o
+   touching free variable z)
+2. λxy.xxy == c) λa.(λb.aab) (by currying).
+3. λxyz.zx == λtos.st (by alpha equivalence).
