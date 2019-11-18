@@ -63,3 +63,22 @@ Intermission: Equivalence exercises
    touching free variable z)
 2. λxy.xxy == c) λa.(λb.aab) (by currying).
 3. λxyz.zx == λtos.st (by alpha equivalence).
+
+Normal form (usually means) Beta normal form:
+- Cannot beta reduce (apply lambdas to arguments) the terms any further.
+- Corresponds to a fully evaluated expression, or a fully executed program.
+- Saying "2" is easier than saying "2000 / 1000" (a function fully applied to
+  two arguments, but not reduced).
+- Can either be a variable with no lambda, or a lambda with no variable.
+
+Combinator: Lambda term with no free variables.
+- Serve only to combine the arguments they are given.
+- Every term in the body occurs in the head.
+
+- λx.x (IS COMBINATOR, bound by enclosing lambda)
+- λxy.x (IS COMBINATOR, expression variables subset of enclosing lambda)
+- λxyz.xz(yz) (IS COMBINATOR, doesn't have to be reduced, reduced form is likely
+  λyz.yzz, arguments are present in enclosing lambda)
+
+- λy.x (IS NOT COMBINATOR, x is free)
+- λx.xz (IS NOT COMBINATOR, z is free)
