@@ -43,3 +43,49 @@ Haskell doesn't evaluate everything to canonical or normal form; it evaluates to
       ```
 
       and not `(1, 2 + 2)` as expected
+
+EXERCISES: COMPREHENSION CHECK
+
+
+1.  Given the following lines of code as they might appear in a source file:
+
+    ```haskell
+    half x = x / 2
+
+    square x = x * x
+    ```
+
+    Write the same declarations in your REPL and then use the functions half and
+    square in some experimental expressions.
+
+    __________
+
+    ```haskell
+    Prelude> half x = x / 2
+    Prelude> half 5
+    2.5
+    Prelude> half 6
+    3.0
+    Prelude> half 8.0
+    4.0
+    Prelude> half "hi"
+
+    <interactive>:5:1: error:
+        • No instance for (Fractional [Char]) arising from a use of ‘half’
+        • In the expression: half "hi"
+        In an equation for ‘it’: it = half "hi"
+    Prelude> square x = x * x
+    Prelude> square 9
+    81
+    Prelude> square 3.141592658
+    9.869604428799505
+    Prelude> square 3
+    9
+    Prelude> square "hi"
+
+    <interactive>:10:1: error:
+        • No instance for (Num [Char]) arising from a use of ‘square’
+        • In the expression: square "hi"
+        In an equation for ‘it’: it = square "hi"
+    Prelude>
+    ```
