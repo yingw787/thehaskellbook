@@ -198,3 +198,20 @@ a) and b) have different results, as division has higher precedence than
 addition.
 
 ********** END EXERCISES: PARENTHESES AND ASSOCIATION **********
+
+Order of declarations in source code doesn't matter because GHCI loads the
+entire file at once (no import-time evaluation). Values into the REPL do depend
+on ordering.
+
+```haskell
+Prelude> y = 10
+Prelude> x = 10 * 5 + y
+Prelude> myResult = x * 5
+Prelude> myResult
+300
+Prelude> x
+60
+Prelude> y
+10
+Prelude>
+```
