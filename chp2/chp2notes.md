@@ -164,4 +164,37 @@ associative. (^) is right associative (2 ^ 3 ^ 4 -> 2 ^ (3 ^ 4))
 
 ********** EXERCISES: PARENTHESES AND ASSOCIATION **********
 
+Below are some pairs of functions that are alike except for parenthesization.
+Read them carefully and decide if the parentheses change the results of the
+function. Check your work in GHCi.
+
+1.  a)  8 + 7 * 9
+    b)  (8 + 7) * 9
+__________
+
+a) and b) have different results, as multiplication has higher precedence than
+addition.
+
+```haskell
+Prelude> 8 + 7 * 9
+71
+Prelude> (8 + 7) * 9
+135
+Prelude>
+```
+
+2.  a)  perimeter x y = (x * 2) + (y * 2)
+    b)  perimeter x y = x * 2 + y * 2
+__________
+
+a) and b) have the same result, since multiplication has higher precedence than
+addition.
+
+3.  a)  f x = x / 2 + 9
+    b)  f x = x / (2 + 9)
+__________
+
+a) and b) have different results, as division has higher precedence than
+addition.
+
 ********** END EXERCISES: PARENTHESES AND ASSOCIATION **********
