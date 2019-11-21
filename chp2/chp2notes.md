@@ -120,3 +120,27 @@ EXERCISES: COMPREHENSION CHECK
     50.24
     Prelude>
     ```
+
+3.  There is a value in `Prelude` called `pi`. Rewrite your function to use `pi`
+    instead of 3.14.
+
+    ```haskell
+    Prelude> piSelf x = pi * (x * x)
+    Prelude> piSelf 5
+    78.53981633974483
+    Prelude> pi * (5 * 5)
+    78.53981633974483
+    Prelude> piSelf 10
+    314.1592653589793
+    Prelude> pi * (10 * 10)
+    314.1592653589793
+    Prelude> piSelf 2
+    12.566370614359172
+    Prelude> pi * (2 * 2)
+    12.566370614359172
+    Prelude> piSelf 4
+    50.26548245743669
+    Prelude> pi * (4 * 4)
+    50.26548245743669
+    Prelude>
+    ```
