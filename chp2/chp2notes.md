@@ -44,8 +44,7 @@ Haskell doesn't evaluate everything to canonical or normal form; it evaluates to
 
       and not `(1, 2 + 2)` as expected
 
-EXERCISES: COMPREHENSION CHECK
-
+********** EXERCISES: COMPREHENSION CHECK **********
 
 1.  Given the following lines of code as they might appear in a source file:
 
@@ -124,6 +123,8 @@ EXERCISES: COMPREHENSION CHECK
 3.  There is a value in `Prelude` called `pi`. Rewrite your function to use `pi`
     instead of 3.14.
 
+    __________
+
     ```haskell
     Prelude> piSelf x = pi * (x * x)
     Prelude> piSelf 5
@@ -144,3 +145,23 @@ EXERCISES: COMPREHENSION CHECK
     50.26548245743669
     Prelude>
     ```
+
+********** END EXERCISES: COMPREHENSION CHECK **********
+
+Operators vs. Functions: some operators are infix (applied between two
+arguments), but Haskell functions default to prefix syntax.
+-   Sometimes, you can use functions infix-style: `10 ``div`` 4` vs. `div 10 4`.
+-   Sometimes, you can use infix operators in prefix fashion: `(+) 100 100` vs.
+    `100 + 100`.
+
+Default associativity / precedence to infix operators (*), (+), (-), (/):
+[PEDMAS](https://en.wikipedia.org/wiki/PEMDAS).
+
+`infixl` in documentation means it's an infix operator that is left associative.
+(*) is left associative (2 * 3 * 4 -> (2 * 3) * 4)).
+`infixr` in documentation means it's an infix operator that is right
+associative. (^) is right associative (2 ^ 3 ^ 4 -> 2 ^ (3 ^ 4))
+
+********** EXERCISES: PARENTHESES AND ASSOCIATION **********
+
+********** END EXERCISES: PARENTHESES AND ASSOCIATION **********
