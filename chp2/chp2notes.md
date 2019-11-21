@@ -89,3 +89,34 @@ EXERCISES: COMPREHENSION CHECK
         In an equation for ‘it’: it = square "hi"
     Prelude>
     ```
+
+2.  Write one function that has one parameter and works for all the following
+    expressions. Be sure to name the function.
+
+    3.14 * (5 * 5)
+    3.14 * (10 * 10)
+    3.14 * (2 * 2)
+    3.14 * (4 * 4)
+
+    __________
+
+    ```haskell
+    Prelude> piSelf x = 3.14 * (x * x)
+    Prelude> piSelf 5
+    78.5
+    Prelude> 3.14 * (5 * 5)
+    78.5
+    Prelude> piSelf 10
+    314.0
+    Prelude> 3.14 * (10 * 10)
+    314.0
+    Prelude> piSelf 2
+    12.56
+    Prelude> 3.14 * (2 * 2)
+    12.56
+    Prelude> piSelf 4
+    50.24
+    Prelude> 3.14 * (4 * 4)
+    50.24
+    Prelude>
+    ```
