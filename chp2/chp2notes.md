@@ -215,3 +215,6 @@ Prelude> y
 10
 Prelude>
 ```
+
+Indentation matters.
+Use spaces, not tabs, to indent your source code.
