@@ -15,6 +15,7 @@ ghc(i) usage notes:
     - :info / :i for information
     - :load to load a Haskell file
     - :reload to refresh dev environment.
+    - :module / :m to return to `Prelude>` from any loaded Haskell package.
 
 Haskell = (expression | declaration)
     - expressions: values, combinations of values, functions applied to values, evaluate to a result.
@@ -27,5 +28,18 @@ Function: Haskell expression that is applied to an argument and returns a result
     arguments into a function is currying underneath.
 
 Function definitions:
-    - Argument vs. parameter: Argument referes to function's parameters when
+    - Argument vs. parameter: Argument refers to function's parameters when
     applied, and not the variables that represent the function definition.
+
+Haskell doesn't evaluate everything to canonical or normal form; it evaluates to
+[**weak head normal form
+(WHNF)**](https://wiki.haskell.org/Weak_head_normal_form).
+    - I cannot reproduce the example; I got this:
+
+      ```haskell
+        Prelude> (\f -> (1, 2 + f)) 2
+        (1,4)
+        Prelude>
+      ```
+
+      and not `(1, 2 + 2)` as expected
