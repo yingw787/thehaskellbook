@@ -303,3 +303,20 @@ Sectioning is useful if you want to apply functions to a data structure.
 
 GHCi is good at loading one file at a time, but use Stack if you want to
 maintain multi-module scope during runtime debugging.
+
+********** EXERCISES: A HEAD CODE **********
+
+Guess solution, then validate `let` expressions in the REPL.
+
+1. 5 (CORRECT)
+2. 25 (CORRECT)
+3. 30 (CORRECT)
+4. 3003 (INCORRECT, NO IDEA WHY I SAID THAT, actual answer is 6)
+
+Rewrite with `where` clauses.
+
+1. `first = x * 3 + y where x = 3; y = 1000`
+2. `second = x * 5 where y = 10; x = 10 * 5 + y`
+3. `third = z / x + y where x = 7; y = negate x; z = y * 10`
+
+********** END EXERCISES: A HEAD CODE **********
