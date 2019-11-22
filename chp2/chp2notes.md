@@ -271,4 +271,32 @@ Failed, no modules loaded.
 Prelude>
 ```
 
+Remove extra indentation on line 2.
+
 ********** END EXERCISES: HEAL THE SICK **********
+
+Three different ways of executing division: `(/)` (fractional division), `div`
+(integral division, round down), and `quot` (integral division, round towards
+zero).
+- http://augustss.blogspot.com/
+- https://stackoverflow.com/a/8111203
+
+(negate) and `-` both negate values; `(negate 1234)` and `(-1234)` are the same.
+
+The `($)` operator enables everything to the right of it to be evaluated first
+and can be used to delay function application.
+
+Expressions like `(*30)` are called sectioning:
+
+```haskell
+Prelude> 1 + 2
+3
+Prelude> (+) 1 2
+3
+Prelude> (+1) 2 -- sectioning
+3
+Prelude> (1+) 2 -- sectioning
+3
+```
+
+Sectioning is useful if you want to apply functions to a data structure.
