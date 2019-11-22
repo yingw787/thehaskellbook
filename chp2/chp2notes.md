@@ -218,3 +218,57 @@ Prelude>
 
 Indentation matters.
 Use spaces, not tabs, to indent your source code.
+
+********** EXERCISES: HEAL THE SICK **********
+
+The following code samples are broken and won't compile. The first two are as
+you might enter into the REPL; the third is from a source file. Find the
+mistakes and fix so that they will.
+
+1. Error looks like:
+
+```haskell
+Prelude> area x = 3. 14 * (x * x)
+
+<interactive>:1:1: error:
+    • Non type-variable argument in the constraint: Num (b -> c)
+      (Use FlexibleContexts to permit this)
+    • When checking the inferred type
+        area :: forall b c a.
+                (Num (b -> c), Num (a -> c), Num (a -> b)) =>
+                (a -> c) -> a -> c
+Prelude>
+```
+
+Extra space between 3. and 14.
+
+2. Error looks like:
+
+```haskell
+Prelude> double x = b * 2
+
+<interactive>:3:12: error: Variable not in scope: b
+Prelude>
+```
+
+Rename b to x.
+
+3. For file `./heal_the_sick.hs` at commit
+   `23976778f5aff0a4c48e6a88d899db7e49926a2d`, error looks like:
+
+```haskell
+Prelude> :load heal_the_sick.hs
+[1 of 1] Compiling Main             ( heal_the_sick.hs, interpreted )
+
+heal_the_sick.hs:2:4: error:
+    parse error on input ‘=’
+    Perhaps you need a 'let' in a 'do' block?
+    e.g. 'let x = 5' instead of 'x = 5'
+  |
+2 |  y = 10
+  |    ^
+Failed, no modules loaded.
+Prelude>
+```
+
+********** END EXERCISES: HEAL THE SICK **********
