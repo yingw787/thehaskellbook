@@ -300,3 +300,6 @@ Prelude> (1+) 2 -- sectioning
 ```
 
 Sectioning is useful if you want to apply functions to a data structure.
+
+GHCi is good at loading one file at a time, but use Stack if you want to
+maintain multi-module scope during runtime debugging.
