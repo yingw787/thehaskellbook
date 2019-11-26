@@ -325,3 +325,52 @@ Prelude>
 
 - Many of these methods are "unsafe", in that they throw exceptions when given
   an empty list as input. They need to be made safe in a later chapter.
+
+********** START CHAPTER EXERCISES **********
+
+Reading Syntax
+
+1. For the following lines of code, read the syntax carefully and decide if they
+   are written correctly. Test them in your REPL after you've decided to check
+   your work. Correct as many as you can.
+
+   a) `concat [[1, 2, 3], [4, 5, 6]]`
+   b) `++ [1, 2, 3] [4, 5, 6]`
+   c) `(++) "hello" " world"`
+   d) `["hello" ++ " world"]`
+   e) `4 !! "hello"`
+   f) `(!!) "hello" 4`
+   g) `take "4 lovely"`
+   h) `take 3 "awesome"`
+
+2. Next we have two sets: the first set is lines of code and the other is a set
+   of results. Read the code and figure out which results came from which lines
+   of code. Be sure to test them in the REPL.
+
+   a) `concat [[1 * 6], [2 * 6], [3 * 6]]`
+   b) `"rain" ++ drop 2 "elbow"`
+   c) `10 * head [1, 2, 3]`
+   d) `(take 3 "Julie") ++ (tail "yes")`
+   e) ```haskell
+      concat [tail [1, 2, 3],
+              tail [4, 5, 6],
+              tail [7, 8, 9]]
+      ```
+
+    Can you match each of the previous expressions to one of these results
+    presented in a scrambled order?
+
+    a) "Jules"
+    b) [2, 3, 5, 6, 8, 9]
+    c) "rainbow"
+    d) [6, 12, 18]
+    e) 10
+
+Building Functions
+
+1.  Given the list-manipulation functions mentioned in this chapter, write
+    functions that take the following inputs and return the expected outputs.
+    Do them directly in your REPL and use the `take` and `drop` functions you've
+    already seen.
+
+********** END CHAPTER EXERCISES **********
