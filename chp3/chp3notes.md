@@ -273,3 +273,43 @@ print3broken.hs:6:14: error:
 Failed, no modules loaded.
 Prelude>
 ```
+
+- `print3broken.hs` --> `print3fixed.hs`.
+
+- (:) (cons operator, builds a list.)
+
+```haskell
+Prelude> 'c' : "hris"
+"chris"
+Prelude> 'P' : ""
+"P"
+Prelude>
+```
+
+```haskell
+-- `head` returns first element.
+Prelude> head "Papuchon"
+'P'
+-- `tail` does NOT return the last element but rather everything except the
+-- head.
+Prelude> tail "Papuchon"
+"apuchon"
+-- `take` is a left-associative prefixed function that takes n characters.
+Prelude> take 1 "Papuchon"
+"P"
+-- Result is still of type [Char]!
+Prelude> take 0 "Papuchon"
+""
+Prelude> take 6 "Papuchon"
+"Papuch"
+-- No failure if taking more characters than present.
+Prelude> take 150 "Papuchon"
+"Papuchon"
+-- `drop` is a left-associative prefixed function that drops n characters.
+Prelude> drop 4 "Papuchon"
+"chon"
+-- Dropping more characters than present results in valid empty result.
+Prelude> drop 9001 "Papuchon"
+""
+Prelude>
+```
