@@ -185,3 +185,72 @@ Ok, one module loaded.
 ```
 
 ********** END EXERCISES: SCOPE **********
+
+- (++) is an infix operator
+- `concat` is a normal function
+
+```haskell
+Prelude> :t (++)
+-- a denotes an arbitrary type, this method definition enforces the same type
+-- for arguments and return value. [a] is syntactic sugar for list[a], as
+-- String = [Char].
+--
+-- Hence, a is "polymorphic"; all a needs to be for concat to work is the same.
+--
+-- Otherwise, type translation errors will result.
+(++) :: [a] -> [a] -> [a]
+Prelude> :t concat
+concat :: Foldable t => t [a] -> [a]
+Prelude>
+```
+
+********** START EXERCISES: SYNTAX ERRORS **********
+
+Read the syntax of the following functions and decide whether it will compile.
+Test them in your REPL and try to fix the syntax errors where they occur.
+
+1. ++ [1, 2, 3] [4, 5, 6]
+
+WILL CONCATENATE
+
+(INCORRECT, infix operator must be wrapped in parentheses in order for it to be
+used as a normal function).
+
+```haskell
+Prelude> ++ [1, 2, 3] [4, 5, 6]
+
+<interactive>:3:1: error: parse error on input ‘++’
+Prelude> (++) [1, 2, 3] [4, 5, 6]
+[1,2,3,4,5,6]
+Prelude>
+```
+
+2. '<3' ++ ' Haskell'
+
+WILL CONCATENATE
+
+(INCORRECT, strings or char sequences must be denoted with double quotes, not
+single quotes.)
+
+```haskell
+Prelude> '<3' ++ ' Haskell'
+
+<interactive>:5:2: error: parse error on input ‘<’
+Prelude> "<3" ++ " Haskell"
+"<3 Haskell"
+Prelude>
+```
+
+3. concat ["<3", " Haskell"]
+
+WILL CONCATENATE
+
+(CORRECT)
+
+```haskell
+Prelude> concat ["<3", " Haskell"]
+"<3 Haskell"
+Prelude>
+```
+
+********** END EXERCISES: SYNTAX ERRORS **********
