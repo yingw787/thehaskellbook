@@ -14,6 +14,6 @@ main :: IO ()
 
 main = do
     putStrLn myGreeting
-    printStrLn secondGreeting
+    putStrLn secondGreeting
     where secondGreeting =
-        concat [hello, " ", world]
+            concat [hello, " ", world]
