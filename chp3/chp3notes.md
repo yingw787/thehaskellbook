@@ -311,5 +311,17 @@ Prelude> drop 4 "Papuchon"
 -- Dropping more characters than present results in valid empty result.
 Prelude> drop 9001 "Papuchon"
 ""
+-- (!!) is an infix operator that returns the character at a particular index.
+--
+-- Kind of like a bitmask and reduction.
+--
+-- Haskell is 0-indexed.
+Prelude> "Papuchon" !! 0
+'P'
+Prelude> "Papuchon" !! 4
+'c'
 Prelude>
 ```
+
+- Many of these methods are "unsafe", in that they throw exceptions when given
+  an empty list as input. They need to be made safe in a later chapter.
