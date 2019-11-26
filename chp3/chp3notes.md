@@ -373,4 +373,75 @@ Building Functions
     Do them directly in your REPL and use the `take` and `drop` functions you've
     already seen.
 
+    Example
+
+    ```haskell
+    -- If you apply your function
+    -- to this value:
+    "Hello World"
+    -- Your function should return:
+    "ello World"
+    ```
+
+    The following would be a fine solution:
+
+    ```haskell
+    Prelude> drop 1 "Hello World"
+    "ello World"
+    ```
+
+    Now write expressions to perform the following transformations, just with
+    the functions you've seen in this chapter. You do not need to do anything
+    clever here.
+
+    ```haskell
+    -- (a)
+    -- Given
+    "Curry is awesome"
+    -- Return
+    "Curry is awesome!"
+
+    -- (b)
+    -- Given
+    "Curry is awesome!"
+    -- Return
+    "y"
+
+    -- (c)
+    -- Given
+    "Curry is awesome!"
+    -- Return
+    "awesome!"
+    ```
+
+2.  Now take each of the above and rewrite it in a source file as a general
+    function that could take different string inputs as arguments but retain
+    the same behavior. Use a variable as the argument to your (named) functions.
+    If you're unsure how to do this, refresh your memory by looking at the
+    `waxOff` exercise from the previous chapter and the `TopOrLocal` module
+    from this chapter.
+
+3.  Write a function of type `String -> Char` which returns the third character
+    in a `String`. Remember to give the function a name and apply it to a
+    variable, not a specific `String`, so that it could be reused for different
+    `String` inputs, as demonstrated (feel free to name the function something
+    else. Be sure to fill in the type signature and fill in the function
+    definition after the equals sign):
+
+    ```haskell
+    thirdletter ::
+    thirdLetter x =
+
+    -- If you apply your function
+    -- to this value:
+    "Curry is awesome"
+    -- Your function should return
+    'r'
+    ```
+
+    Note that programming languages conventionally start indexing things by
+    zero, so getting the zeroth index of a string will get you the first
+    letter. Accordingly, indexing with 3 will get you the fourth. Keep this in
+    mind as you write this function.
+
 ********** END CHAPTER EXERCISES **********
