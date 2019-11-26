@@ -320,3 +320,109 @@ Rewrite with `where` clauses.
 3. `third = z / x + y where x = 7; y = negate x; z = y * 10`
 
 ********** END EXERCISES: A HEAD CODE **********
+
+********** CHAPTER EXERCISES **********
+
+Given what we know about the precedence of `(*)`, `(+)`, and `(^)`, how can we
+parenthesize the following expressions more explicitly without changing their
+results? Put together an answer you think is correct, then test in the GHCi
+REPL.
+
+1. `2 + 2 * 3 - 1`
+2. `(^) 10 $ 1 + 1`
+3. `2 ^ 2 * 4 ^ 5 + 1`
+
+__________
+
+1. `2 + (2 * 3) - 1` (CORRECT)
+
+```haskell
+Prelude> 2 + 2 * 3 - 1
+7
+Prelude> 2 + (2 * 3) - 1
+7
+Prelude>
+```
+
+2. `(^) 10 $ (1 + 1)` (CORRECT)
+
+```haskell
+Prelude> (^) 10 $ 1 + 1
+100
+Prelude> (^) 10 $ (1 + 1)
+100
+```
+
+3. `2 ^ (2 * (2 ^ 5)) + 1` (INCORRECT)
+
+```haskell
+Prelude> 2 ^ 2 * 4 ^ 5 + 1
+4097
+Prelude> 2 ^ (2 * (4 ^ 5)) + 1
+32317006071311007300714876688669951960444102669715484032130345427524655138867890893197201411522913463688717960921898019494119559150490921095088152386448283120630877367300996091750197750389652106796057638384067568276792218642619756161838094338476170470581645852036305042887575891541065808607552399123930385521914333389668342420684974786564569494856176035326322058077805659331026192708460314150258592864177116725943603718461857357598351152301645904403697613233287231227125684710820209725157101726931323469678542580656697935045997268352998638215525166389437335543602135433229604645318478604952148193555853611059596230657
+Prelude> (2 ^ 2) * (4 ^ 5) + 1 -- Correct answer
+4097
+Prelude>
+```
+
+Which of the following pairs of expressions will return the same result when
+evaluated? Try to reason them out by reading the code and then enter them into
+the REPL to check your work:
+
+1. (1 + 1) (2)
+2. (10 ^ 2) (10 + 9 * 10)
+3. (400 - 37) ((-) 37 400)
+4. (100 `div` 3) (100 / 3)
+5. (2 * 5 + 10) (2 * (5 + 10))
+
+__________
+
+1.
+2.
+3.
+4.
+5.
+
+
+Look at this code and rewrite it such that it could be evaluated in the REPL. Be
+sure to enter your code into the REPL to make sure it evaluates correctly.
+
+z = 7
+x = y ^ 2
+waxOn = x * 5
+y = z + 8
+
+__________
+
+```haskell
+```
+
+1.  Now you have a value called `waxOn` in your REPL. What do you think will
+    happen if you enter:
+
+    ```haskell
+    10 + waxOn
+    -- or
+    (+10) waxOn
+    -- or
+    (-) 15 waxOn
+    -- or
+    (-) waxOn 15
+    ```
+
+2.  Earlier we looked at a function called `triple`. While your REPL has `waxOn`
+    in session, re-enter the triple function at the prompt:
+
+    ```haskell
+    tripl x = x * 3
+    ```
+
+3.  Now, what will happen if we enter this at our GHCi prompt? What do you think
+    will happen first, considering what role `waxOn` is playing in this function
+    call? Then enter it, see what does happen, and check your understanding:
+
+    ```haskell
+    triple waxOn
+    ```
+
+********** END CHAPTER EXERCISES **********
