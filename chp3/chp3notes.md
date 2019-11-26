@@ -19,6 +19,8 @@ Prelude> :type "Hello!"
 Prelude>
 ```
 
+Print in REPL:
+
 ```haskell
 Prelude> print "hello world!" -- literal print (incl. quotes) and newline
 "hello world!"
@@ -27,3 +29,23 @@ hello world!
 Prelude> putStr "hello world!" -- print without newline
 hello world!Prelude>
 ```
+
+Print from file:
+
+```haskell
+Prelude> :l print1.hs
+[1 of 1] Compiling Print1           ( print1.hs, interpreted )
+Ok, one module loaded.
+*Print1> main
+hello world!
+*Print1>
+```
+
+Change default GHCi prompt:
+
+```haskell
+Prelude> :set prompt "λ> "
+λ>
+```
+
+GHCi by default implements `main :: IO ()` to print to the prompt.
