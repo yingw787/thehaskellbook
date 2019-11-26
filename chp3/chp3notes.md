@@ -254,3 +254,22 @@ Prelude>
 ```
 
 ********** END EXERCISES: SYNTAX ERRORS **********
+
+- (++) is a right-associative operator, therefore 'print3flipped.hs' has two
+  different definitions of `secondGreeting` based on whether (++) is infixed or
+  prefixed.
+
+- Scoping can cause breakage, especially when wrapping variables.
+
+```haskell
+Prelude> :l print3broken.hs
+[1 of 1] Compiling Print3Broken     ( print3broken.hs, interpreted )
+
+print3broken.hs:6:14: error:
+    Variable not in scope: greeting :: String
+  |
+6 |     putStrLn greeting
+  |              ^^^^^^^^
+Failed, no modules loaded.
+Prelude>
+```
