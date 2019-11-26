@@ -395,6 +395,29 @@ y = z + 8
 __________
 
 ```haskell
+-- Ordering is important in the REPL vs. source file
+z = 7
+y = z + 8
+x = y ^ 2
+waxOn = x * 5
+```
+
+(CORRECT)
+
+```haskell
+Prelude> z = 7
+Prelude> y = z + 8
+Prelude> x = y ^ 2
+Prelude> waxOn = x * 5
+Prelude> z
+7
+Prelude> y
+15
+Prelude> x
+225
+Prelude> waxOn
+1125
+Prelude>
 ```
 
 1.  Now you have a value called `waxOn` in your REPL. What do you think will
@@ -410,11 +433,14 @@ __________
     (-) waxOn 15
     ```
 
+    ```haskell
+    ```
+
 2.  Earlier we looked at a function called `triple`. While your REPL has `waxOn`
     in session, re-enter the triple function at the prompt:
 
     ```haskell
-    tripl x = x * 3
+    triple x = x * 3
     ```
 
 3.  Now, what will happen if we enter this at our GHCi prompt? What do you think
