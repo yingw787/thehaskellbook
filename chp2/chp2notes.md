@@ -434,6 +434,24 @@ Prelude>
     ```
 
     ```haskell
+    1135 -- 10 + waxOn
+    1135 -- (+10) waxOn
+    -1120 -- (-) 15 waxOn
+    1120 -- (-) waxOn 15
+    ```
+
+    (INCORRECT, but because I cannot subtract in my head)
+
+    ```haskell
+    Prelude> 10 + waxOn
+    1135
+    Prelude> (+10) waxOn
+    1135
+    Prelude> (-) 15 waxOn
+    -1110
+    Prelude> (-) waxOn 15
+    1110
+    Prelude>
     ```
 
 2.  Earlier we looked at a function called `triple`. While your REPL has `waxOn`
@@ -443,12 +461,27 @@ Prelude>
     triple x = x * 3
     ```
 
+    (DONE)
+
 3.  Now, what will happen if we enter this at our GHCi prompt? What do you think
     will happen first, considering what role `waxOn` is playing in this function
     call? Then enter it, see what does happen, and check your understanding:
 
     ```haskell
     triple waxOn
+    ```
+
+    Multiply the beta normal form of `waxOn` by 3 and reduce the expression, so
+    `1125 * 3`.
+
+    (CORRECT)
+
+    ```haskell
+    Prelude> triple waxOn
+    3375
+    Prelude> 1125 * 3
+    3375
+    Prelude>
     ```
 
 ********** END CHAPTER EXERCISES **********
