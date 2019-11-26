@@ -90,3 +90,98 @@ Ok, one module loaded.
 <interactive>:4:1: error: Variable not in scope: woot
 *TopOrLocal>
 ```
+
+********** START EXERCISES: SCOPE **********
+
+1. These lines of code are from a REPL session. Is y in scope for z?
+
+```haskell
+Prelude> x = 5
+Prelude> y = 7
+Prelude> z = x * y
+```
+
+(YES, y has been defined before z expression result is instantiated.)
+
+(CORRECT):
+
+```haskell
+Prelude> x = 5
+Prelude> y = 7
+Prelude> z = x * y
+Prelude> x
+5
+Prelude> y
+7
+Prelude> z
+35
+Prelude>
+```
+
+2. These lines of code are from a REPL session. Is h in scope for g? Go with
+   your gut here.
+
+```haskell
+Prelude> f = 3
+Prelude> g = 6 * f + h
+```
+
+(NO, if h has not been previously defined, then it will not be in the REPL
+context.)
+
+(CORRECT):
+
+```haskell
+Prelude> f = 3
+Prelude> g = 6 * f + h
+
+<interactive>:8:13: error: Variable not in scope: h
+Prelude>
+```
+
+3.  This code sample is from a source file. Is everything we need to execute
+    area in scope?
+
+```haskell
+area d = pi * (r * r)
+r = d / 2
+```
+
+(YES, d / 2 can be substituted for r in area expression, and ordering does not
+matter within a source file.)
+
+(INCORRECT):
+
+```haskell
+Prelude> :l test.hs
+[1 of 1] Compiling Main             ( test.hs, interpreted )
+
+test.hs:4:5: error: Variable not in scope: d
+  |
+4 | r = d / 2
+  |     ^
+Failed, no modules loaded.
+Prelude>
+```
+
+4. This code is also from a source file. Now are r and d in scope for area?
+
+```haskell
+area d = pi * (r * r)
+    where r = d / 2
+```
+
+(YES, because r is a local variable using the where clause.)
+
+(CORRECT):
+
+```haskell
+Prelude> :l test.hs
+[1 of 1] Compiling Main             ( test.hs, interpreted )
+Ok, one module loaded.
+*Main> area 5
+19.634954084936208
+*Main>
+```
+
+********** END EXERCISES: SCOPE **********
