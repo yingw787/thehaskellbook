@@ -49,3 +49,15 @@ Prelude> :set prompt "λ> "
 ```
 
 GHCi by default implements `main :: IO ()` to print to the prompt.
+
+Execute sequence of operations using the `do` operator.
+
+```haskell
+Prelude> :l print2.hs
+[1 of 1] Compiling Print2           ( print2.hs, interpreted )
+Ok, one module loaded.
+*Print2> main
+Count to four for me:
+one, two, three, and four!
+*Print2>
+```
