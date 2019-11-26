@@ -61,3 +61,5 @@ Count to four for me:
 one, two, three, and four!
 *Print2>
 ```
+
+String concatenation
