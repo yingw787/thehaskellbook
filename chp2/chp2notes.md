@@ -377,11 +377,11 @@ the REPL to check your work:
 
 __________
 
-1.
-2.
-3.
-4.
-5.
+1. EQUIVALENT (CORRECT)
+2. EQUIVALENT (CORRECT)
+3. NOT EQUIVALENT (Left associativity implies 37 - 400) (CORRECT)
+4. NOT EQUIVALENT (Latter expression is float division, `div` is integral division) (CORRECT)
+5. NOT EQUIVALENT (Parentheses alter order of operations) (CORRECT)
 
 
 Look at this code and rewrite it such that it could be evaluated in the REPL. Be
