@@ -63,3 +63,30 @@ one, two, three, and four!
 ```
 
 String concatenation
+
+```haskell
+Prelude> :l print3.hs
+[1 of 1] Compiling Print3           ( print3.hs, interpreted )
+Ok, one module loaded.
+*Print3> main
+hello world!
+hello world!
+*Print3>
+```
+
+top-level definition = module-scoped
+local definition = expression-scoped
+
+```haskell
+Prelude> :l TopOrLocal.hs
+[1 of 1] Compiling TopOrLocal       ( TopOrLocal.hs, interpreted )
+Ok, one module loaded.
+*TopOrLocal> topLevelFunction 5
+20
+*TopOrLocal> topLevelValue
+5
+*TopOrLocal> woot
+
+<interactive>:4:1: error: Variable not in scope: woot
+*TopOrLocal>
+```
