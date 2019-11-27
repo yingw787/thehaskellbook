@@ -429,3 +429,17 @@ Prelude> if x * 100 then dog else cat
       In an equation for ‘it’: it = if x * 100 then dog else cat
 Prelude>
 ```
+
+```haskell
+-- You can pretty much have if/else statements in Haskell, but they MUST be
+-- fully defined (otherwise ternary statement is invalid and will result in
+-- compile-time errors).
+Prelude> :l greetIfCool1.hs
+[1 of 1] Compiling GreetIfCool1     ( greetIfCool1.hs, interpreted )
+Ok, one module loaded.
+*GreetIfCool1> greetIfCool "downright frosty yo"
+eyyyyy. What's shakin'?
+*GreetIfCool1> greetIfCool "please love me"
+pshhh.
+*GreetIfCool1>
+```
