@@ -636,7 +636,7 @@ Building Functions
 
 5.  Using the `take` and `drop` functions we looked at above, see if you can
     write a function called `rvrs` (an abbreviation of `reverse` used because
-    there is a function called `reverse` already n Prelude, so if you call your
+    there is a function called `reverse` already in Prelude, so if you call your
     function the same name, you'll get an error message). `rvrs` should take the
     string "Curry is awesome" and return the result "awesome is Curry". This may
     not be the most lovely Haskell code you will ever write, but it is quite
@@ -644,6 +644,22 @@ Building Functions
     function in a source file. This doesn't need to, and shouldn't, work for
     reversing the words of any sentence. You're expected only to slice and dice
     this particular string with `take` and `drop`.
+
+    ```haskell
+    Prelude> drop 9 "Curry is awesome"
+    "awesome"
+    Prelude> take 2 (drop 6 "Curry is awesome")
+    "is"
+    Prelude> take 5 "Curry is awesome"
+    "Curry"
+    Prelude> :{
+    Prelude| rvrs :: String -> String
+    Prelude| rvrs x = (drop 9 x) ++ " " ++ (take 2 (drop 6 x)) ++ " " ++ (take 5 x)
+    Prelude| :}
+    Prelude> rvrs "Curry is awesome"
+    "awesome is Curry"
+    Prelude>
+    ```
 
 6.  Let's see if we can expand that function into a module. Why would we want
     to? By expanding it into a module, we can add more functions later that
