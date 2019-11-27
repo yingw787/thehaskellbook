@@ -402,3 +402,30 @@ Prelude>
 ```
 
 ********** END EXERCISES: FIND THE MISTAKES **********
+
+- Haskell does not have if/else statements, but it does have ternary statements.
+
+```haskell
+Prelude> t = "Truthin'"
+Prelude> f = "Falsin'"
+Prelude> if True then t else f
+"Truthin'"
+Prelude>
+```
+
+```haskell
+-- Condition passed to if-expression must resolve to type `Bool`. In this case,
+-- `Num a => a` was passed, and `Bool` doesn't implement `Num`. Haskell doesn't
+-- cast between types underneath the hood.
+Prelude> dog = "adopt a dog"
+Prelude> cat = "or a cat"
+Prelude> x = 0
+Prelude> if x * 100 then dog else cat
+
+<interactive>:7:4: error:
+    • No instance for (Num Bool) arising from a use of ‘*’
+    • In the expression: x * 100
+      In the expression: if x * 100 then dog else cat
+      In an equation for ‘it’: it = if x * 100 then dog else cat
+Prelude>
+```
