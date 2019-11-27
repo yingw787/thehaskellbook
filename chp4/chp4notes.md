@@ -454,3 +454,41 @@ eyyyyy. What's shakin'?
 pshhh.
 *GreetIfCool2>
 ```
+
+- Tuples
+    - Distinctive, built-in syntax used at both type and term levels
+    - Fixed number of constituents
+    - Defined by number of values in each tuple (two-tuple / pair has two
+      elements, three-tuple / triple has three elements, etc.) (also called
+      *arity*)
+    - Values within a tuple do not have to be of the same type.
+
+```haskell
+Prelude> :i (,)
+-- a and b are both type variables that need to be applied to concrete types. a
+-- and b can be different, but they are not required to be different.
+--
+-- Tuples are a product type, not a sum type. Product types represent a logical
+-- conjunction; you must supply both arguments to construct a value.
+data (,) a b = (,) a b 	-- Defined in ‘GHC.Tuple’
+-- ...other definitions
+--
+-- happy path
+Prelude> (,) 8 10
+(8,10)
+-- unhappy path
+Prelude> (,) 9
+
+<interactive>:3:1: error:
+    • No instance for (Show (b0 -> (Integer, b0)))
+        arising from a use of ‘print’
+        (maybe you haven't applied a function to enough arguments?)
+    • In a stmt of an interactive GHCi command: print it
+-- `fst` grabs the first element out of a two-tuple only
+Prelude> :i fst
+fst :: (a, b) -> a 	-- Defined in ‘Data.Tuple’
+-- `snd` grabs the second element out of a two-tuple only
+Prelude> :i snd
+snd :: (a, b) -> b 	-- Defined in ‘Data.Tuple’
+Prelude>
+```
