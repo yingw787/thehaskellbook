@@ -806,18 +806,63 @@ many items are in the list.
     isPalindrome :: (Eq a) => [a] -> Bool
     isPalindrome x = undefined
 
+    __________
+
+    ```haskell
+    Prelude> :{
+    Prelude| isPalindrome :: (Eq a) => [a] -> Bool
+    Prelude| isPalindrome x = x == reverse x
+    Prelude| :}
+    Prelude> isPalindrome "abcba"
+    True
+    Prelude> isPalindrome "hi"
+    False
+    Prelude>
+    ```
+
 9.  Write a function to return the absolute value of a number using if-then-else
 
     ```haskell
     myAbs :: Integer -> Integer
-    myAbs = undefined
+    -- Errata from book v1.0-rc4, added x to method definition
+    myAbs x = undefined
+    ```
+
+    __________
+
+    ```haskell
+    Prelude> :{
+    Prelude| myAbs :: Integer -> Integer
+    Prelude| myAbs x = if x < 0 then (-) 0 x  else x
+    Prelude| :}
+    -- NOTE: The input negating a positive number must be wrapped in parentheses
+    -- to evaluate it first, it is syntactic sugar for the operation and not
+    -- actually a negative sign.
+    Prelude> myAbs (-5)
+    5
+    Prelude> myAbs 5
+    5
+    Prelude>
     ```
 
 10. Fill in the definition of the following function, using `fst` and `snd`:
 
     ```haskell
     f :: (a, b) -> (c, d) -> ((b, d), (a, c))
-    f = undefined
+    -- Errata from book v1.0-rc4, added x to method definition
+    f x y = ((snd x, snd y), (fst x, fst y))
+    ```
+
+    __________
+
+    ```haskell
+    Prelude> :{
+    Prelude| f :: (a, b) -> (c, d) -> ((b, d), (a, c))
+    Prelude| f x y = ((snd x, snd y), (fst x, fst y))
+    Prelude| :}
+    Prelude> f (1, 2) (3, 4)
+    ((2,4),(1,3))
+    Prelude>
     ```
 
 CORRECTING SYNTAX
