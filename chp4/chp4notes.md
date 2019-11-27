@@ -531,6 +531,21 @@ also = ["Quake", "The Simons"]
 allAwesome = [awesome, also]
 ```
 
+__________
+
+```haskell
+Prelude> awesome = ["Papuchon", "curry", ":)"]
+Prelude> also = ["Quake", "The Simons"]
+Prelude> allAwesome = [awesome, also]
+Prelude> awesome
+["Papuchon","curry",":)"]
+Prelude> also
+["Quake","The Simons"]
+Prelude> allAwesome
+[["Papuchon","curry",":)"],["Quake","The Simons"]]
+Prelude>
+```
+
 `length` is a function that takes a list and returns a result that tells how
 many items are in the list.
 
@@ -538,12 +553,52 @@ many items are in the list.
     How many arguments, of what type does it take? What is the type of the
     result it evaluates to?
 
+    Method `length` should have the following signature:
+
+    `length :: [a] -> Integer`
+
+    It should have one argument of type list with arbitrary type, and resolve to
+    type `Integer`.
+
+    (MAYBE I WAS RIGHT...?)
+
+    ```haskell
+    Prelude> :i length
+    class Foldable (t :: * -> *) where
+    ...
+    length :: t a -> Int
+    ...
+        -- Defined in ‘Data.Foldable’
+    Prelude>
+    ```
+
 2.  What are the results of the following expressions?
 
     a) `length [1, 2, 3, 4, 5]`
     b) `length [(1, 2), (2, 3), (3, 4)]`
     c) `length allAwesome`
     d) `length (concat allAwesome)`
+
+    __________
+
+    a) 5
+    b) 3
+    c) 2
+    d) 5
+
+    (CORRECT)
+
+    ```haskell
+    Prelude> length [1, 2, 3, 4, 5]
+    5
+    Prelude> length [(1, 2), (2, 3), (3, 4)]
+    3
+    Prelude> length allAwesome
+    2
+    Prelude> length (concat allAwesome)
+    5
+    Prelude>
+    ```
 
 3.  Given what we know about numeric types and the type signature of `length`,
     look at these two expressions. One works and one returns an error. Determine
@@ -557,6 +612,73 @@ many items are in the list.
     Prelude> 6 / 3
     -- and
     Prelude 6 / length [1, 2, 3]
+    ```
+
+    __________
+
+    The first expression returns `2.0` correctly. The second expression raises
+    an error, because without parentheses and a left-associative infix operator,
+    the float division operator takes in as the second argument the function
+    `length`, which is beta normal form and not of a numeric type. Wrap `length`
+    and arguments with parentheses to fix the error.
+
+    ()
+
+    ```haskell
+    Prelude> 6 / 3
+    2.0
+    Prelude> 6 / length [1, 2, 3]
+
+    <interactive>:13:1: error:
+        • No instance for (Fractional Int) arising from a use of ‘/’
+        • In the expression: 6 / length [1, 2, 3]
+        In an equation for ‘it’: it = 6 / length [1, 2, 3]
+
+    -- FAILED, THESE ARE THE THINGS I TRIED
+    Prelude> 6 / (length [1, 2, 3])
+
+    <interactive>:14:1: error:
+        • No instance for (Fractional Int) arising from a use of ‘/’
+        • In the expression: 6 / (length [1, 2, 3])
+        In an equation for ‘it’: it = 6 / (length [1, 2, 3])
+    Prelude> 6 / $ length [1, 2, 3]
+
+    <interactive>:15:5: error:
+        parse error on input ‘$’
+        Perhaps you intended to use TemplateHaskell
+    Prelude> 6 / (length [1, 2, 3] :: Int)
+
+    <interactive>:16:1: error:
+        • No instance for (Fractional Int) arising from a use of ‘/’
+        • In the expression: 6 / (length [1, 2, 3] :: Int)
+        In an equation for ‘it’: it = 6 / (length [1, 2, 3] :: Int)
+    Prelude> length [1, 2, 3]
+    3
+    Prelude> 6 / ($ length [1, 2, 3])
+
+    <interactive>:18:1: error:
+        • Non type-variable argument
+            in the constraint: Fractional ((Int -> b) -> b)
+        (Use FlexibleContexts to permit this)
+        • When checking the inferred type
+            it :: forall b. Fractional ((Int -> b) -> b) => (Int -> b) -> b
+    Prelude> 6 / (length [1, 2, 3] :: Fractional Int)
+
+    <interactive>:19:26: error:
+        • Expected a type, but ‘Fractional Int’ has kind ‘Constraint’
+        • In an expression type signature: Fractional Int
+        In the second argument of ‘(/)’, namely
+            ‘(length [1, 2, 3] :: Fractional Int)’
+        In the expression: 6 / (length [1, 2, 3] :: Fractional Int)
+
+    -- RIGHT ANSWER: Cast `length [1, 2, 3]` to `Num` using `fromIntegral`,
+    -- which will downcast to `Fractional` by applying (/)
+    --
+    -- Had to look at the answer key for this:
+    -- https://github.com/OCExercise/haskellbook-solutions/tree/master/chapters/chapter04/exercises
+    Prelude> 6 / fromIntegral (length [1, 2, 3])
+    2.0
+    Prelude>
     ```
 
 4.  How can you fix the broken code from the preceding exercise using a
