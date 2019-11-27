@@ -678,6 +678,16 @@ Building Functions
     main = print ()
     ```
 
+    ```haskell
+    Prelude> :l rvrs.hs
+    [1 of 1] Compiling Reverse          ( rvrs.hs, interpreted )
+    Ok, one module loaded.
+    *Reverse> main
+    "awesome is Curry"
+    "awesome is Curry"
+    *Reverse>
+    ```
+
     Into the parentheses after `print` you'll need to fill in your function name
     `rvrs` plus the argument you're applying `rvrs` to, in this case "Curry is
     awesome." That `rvrs` function plus its argument are now the argument to
