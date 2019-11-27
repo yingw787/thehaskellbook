@@ -467,6 +467,26 @@ Reading Syntax
     d) [6, 12, 18]
     e) 10
 
+    a) --> d)
+    b) --> c)
+    c) --> e)
+    d) --> a)
+    e) --> b)
+
+    ```haskell
+    Prelude> concat [[1 * 6], [2 * 6], [3 * 6]]
+    [6,12,18]
+    Prelude> "rain" ++ drop 2 "elbow"
+    "rainbow"
+    Prelude> 10 * head [1, 2, 3]
+    10
+    Prelude> (take 3 "Julie") ++ (tail "yes")
+    "Jules"
+    Prelude> concat [tail [1, 2, 3], tail [4, 5, 6], tail [7, 8, 9]]
+    [2,3,5,6,8,9]
+    Prelude>
+    ```
+
 Building Functions
 
 1.  Given the list-manipulation functions mentioned in this chapter, write
