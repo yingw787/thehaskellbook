@@ -557,6 +557,37 @@ Building Functions
     `waxOff` exercise from the previous chapter and the `TopOrLocal` module
     from this chapter.
 
+    ```haskell
+    -- functions2.hs
+    module Functions2 where
+
+    partA :: String -> String
+    partA x = x ++ "!"
+
+    partB :: String -> String
+    partB x = [x !! 4]
+
+    partC :: String -> String
+    partC x = drop 9 x
+
+    main :: IO ()
+    main = do
+        putStrLn (partA "Curry is awesome")
+        putStrLn (partB "Curry is awesome!")
+        putStrLn (partC "Curry is awesome!")
+    ```
+
+    ```haskell
+    Prelude> :load functions2.hs
+    [1 of 1] Compiling Functions2       ( functions2.hs, interpreted )
+    Ok, one module loaded.
+    *Functions2> main
+    Curry is awesome!
+    y
+    awesome!
+    *Functions2>
+    ```
+
 3.  Write a function of type `String -> Char` which returns the third character
     in a `String`. Remember to give the function a name and apply it to a
     variable, not a specific `String`, so that it could be reused for different
