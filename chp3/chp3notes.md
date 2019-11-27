@@ -343,6 +343,107 @@ Reading Syntax
    g) `take "4 lovely"`
    h) `take 3 "awesome"`
 
+   a) WRITTEN INCORRECT, method `concat` takes two arguments.
+
+   (INCORRECT. `concat` can take a single list.)
+
+   ```haskell
+   Prelude> concat [[1, 2, 3], [4, 5, 6]]
+   [1,2,3,4,5,6]
+   Prelude>
+   ```
+
+   b) WRITTEN INCORRECT, infix operator must be wrapped in parentheses in order
+      to apply as prefix operator.
+
+   (CORRECT)
+
+   ```haskell
+   Prelude> ++ [1, 2, 3] [4, 5, 6]
+
+   <interactive>:2:1: error: parse error on input ‘++’
+   Prelude> (++) [1, 2, 3] [4, 5, 6]
+   [1,2,3,4,5,6]
+   Prelude>
+   ```
+
+   c) WRITTEN CORRECTLY.
+
+   (CORRECT)
+
+   ```haskell
+   Prelude> (++) "hello " "world"
+   "hello world"
+   Prelude>
+   ```
+
+   d) WRITTEN CORRECTLY.
+
+   (CORRECT)
+
+   ```haskell
+   Prelude> ["hello" ++ " world"]
+   ["hello world"]
+   Prelude>
+   ```
+
+   e) WRITTEN INCORRECTLY, no way for indexing operator to take in a string as
+      an index.
+
+   (CORRECT)
+
+   ```haskell
+   Prelude> 4 !! "hello"
+
+   <interactive>:6:6: error:
+       • Couldn't match expected type ‘Int’ with actual type ‘[Char]’
+       • In the second argument of ‘(!!)’, namely ‘"hello"’
+         In the expression: 4 !! "hello"
+         In an equation for ‘it’: it = 4 !! "hello"
+   Prelude>
+
+   Prelude> "hello" !! 4
+   'o'
+   Prelude>
+   ```
+
+   f) WRITTEN CORRECTLY
+
+   (CORRECT)
+
+   ```haskell
+   Prelude> (!!) "hello" 4
+   'o'
+   Prelude>
+   ```
+
+   g) WRITTEN INCORRECTLY, method `take` takes 2 arguments.
+
+   (CORRECT)
+
+   ```haskell
+   Prelude> take "4 lovely"
+
+   <interactive>:9:6: error:
+       • Couldn't match expected type ‘Int’ with actual type ‘[Char]’
+       • In the first argument of ‘take’, namely ‘"4 lovely"’
+         In the expression: take "4 lovely"
+         In an equation for ‘it’: it = take "4 lovely"
+   Prelude> take 4 "lovely"
+   "love"
+   Prelude>
+   ```
+
+   h) WRITTEN CORRECTLY
+
+   (CORRECT)
+
+   ```haskell
+   Prelude> take 3 "awesome"
+   "awe"
+   Prelude>
+   ```
+
 2. Next we have two sets: the first set is lines of code and the other is a set
    of results. Read the code and figure out which results came from which lines
    of code. Be sure to test them in the REPL.
