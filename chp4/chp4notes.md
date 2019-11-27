@@ -684,8 +684,36 @@ many items are in the list.
 4.  How can you fix the broken code from the preceding exercise using a
     different division function / operator?
 
+    __________
+
+    Use the `div` operator to apply integral division.
+
+    (CORRECT)
+
+    ```haskell
+    Prelude> 6 `div` (length [1, 2, 3])
+    2
+    Prelude>
+    ```
+
 5.  What is the type of the expression `2 + 3 == 5`? What would we expect as a
     result?
+
+    __________
+
+    Assuming that `(==)` is left-associative and does not impede order of
+    operations, the expected type should be `Bool`. If `(==)` precedes `(+)`
+    then an exception should occur. If it succeeds, we should expect 5 as the
+    answer.
+
+    (CORRECT)
+
+    ```haskell
+    -- (==) does not precede (+) in order of operations.
+    Prelude> 2 + 3 == 5
+    True
+    Prelude>
+    ```
 
 6.  What is the type and expected result value of the following:
 
@@ -694,15 +722,75 @@ many items are in the list.
     Prelude> x + 3 == 5
     ```
 
+    __________
+
+    The result value should have type `Bool` and expected value of `False`.
+
+    (CORRECT)
+
+    ```haskell
+    Prelude> x = 5
+    Prelude> x + 3 == 5
+    False
+    Prelude>
+    ```
+
 7.  Below are some bits of code. Which will work? Why or why not? If they will
     work, what value would these reduce to?
 
     ```haskell
+    -- (a)
     Prelude> length allAwesome == 2
+    -- (b)
     Prelude> length [1, 'a', 3, 'b']
-    Prelude> length Allawesome + length awesome
+    -- (c)
+    Prelude> length allAwesome + length awesome
+    -- (d)
     Prelude> (8 == 8) && ('b' < 'a')
+    -- (e)
     Prelude> (8 == 8) && 9
+    ```
+
+    __________
+
+    a) Should work, `length allAwesome` should resolve first to an integer, then
+    be compared with another integer to a boolean.
+    b) Should work, resolves to 4.
+    c) Would fail, `length allAwesome` resolves to 2, but without parentheses,
+    `2 + length` would result in a failure.
+    d) Should work, resolves to `False` as 'b' should have a higher ordinal than
+    'a'.
+    e) Would fail, taking conjunction between two different types (Bool and
+    Integer).
+
+    ```haskell
+    -- (a) CORRECT
+    Prelude> length allAwesome == 2
+    True
+    -- (b) INCORRECT, `length` apparently involves folding the list, so it must
+    -- be of the same type.
+    Prelude> length [1, 'a', 3, 'b']
+
+    <interactive>:30:9: error:
+        • No instance for (Num Char) arising from the literal ‘1’
+        • In the expression: 1
+        In the first argument of ‘length’, namely ‘[1, 'a', 3, 'b']’
+        In the expression: length [1, 'a', 3, 'b']
+    -- INCORRECT, evaluation succeeds.
+    Prelude> length allAwesome + length awesome
+    5
+    -- CORRECT
+    Prelude> (8 == 8) && ('b' < 'a')
+    False
+    -- CORRECT
+    Prelude> (8 == 8) && 9
+
+    <interactive>:33:13: error:
+        • No instance for (Num Bool) arising from the literal ‘9’
+        • In the second argument of ‘(&&)’, namely ‘9’
+        In the expression: (8 == 8) && 9
+        In an equation for ‘it’: it = (8 == 8) && 9
+    Prelude>
     ```
 
 8.  Write a function that tells you whether or not a given String (or list) is a
