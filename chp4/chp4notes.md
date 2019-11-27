@@ -492,3 +492,24 @@ Prelude> :i snd
 snd :: (a, b) -> b 	-- Defined in ‘Data.Tuple’
 Prelude>
 ```
+
+- One nice aspect about Haskell is the ability to apply sort-of generics, but
+  also maintain consistency in typing.
+
+```haskell
+Prelude> :{
+-- Care about type variables a and b being distinct, but otherwise don't care.
+-- Disambiguation is at the uniqueness constraint level.
+Prelude| fst' :: (a, b) -> a
+-- Can re-use type variables from method signature as term variables (?) in
+-- method definition.
+Prelude| fst' (a, b) = a
+Prelude| snd' :: (a, b) -> b
+Prelude| snd' (a, b) = b
+Prelude| :}
+Prelude> fst' (9, "hi")
+9
+Prelude> snd' (9, "hi")
+"hi"
+Prelude>
+```
