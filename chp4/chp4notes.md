@@ -240,3 +240,49 @@ Prelude GHC.Int> (127 + 1) :: Int8
 -128
 Prelude GHC.Int>
 ```
+
+```haskell
+-- Find the minimum and maximum values for different intN types.
+Prelude> import GHC.Int
+Prelude GHC.Int> :t minBound
+minBound :: Bounded a => a
+Prelude GHC.Int> :t maxBound
+maxBound :: Bounded a => a
+Prelude GHC.Int> minBound :: Int8
+-128
+Prelude GHC.Int> minBound :: Int16
+-32768
+Prelude GHC.Int> minBound :: Int32
+-2147483648
+Prelude GHC.Int> minBound :: Int64
+-9223372036854775808
+Prelude GHC.Int> maxBound :: Int8
+127
+Prelude GHC.Int> maxBound :: Int16
+32767
+Prelude GHC.Int> maxBound :: Int32
+2147483647
+Prelude GHC.Int> maxBound :: Int64
+9223372036854775807
+Prelude GHC.Int>
+
+-- Can also find out whether the datatype is bounded using :info
+Prelude GHC.Int> :i Int
+data Int = I# GHC.Prim.Int# 	-- Defined in ‘GHC.Types’
+instance Eq Int -- Defined in ‘GHC.Classes’
+instance Ord Int -- Defined in ‘GHC.Classes’
+instance Show Int -- Defined in ‘GHC.Show’
+instance Read Int -- Defined in ‘GHC.Read’
+instance Enum Int -- Defined in ‘GHC.Enum’
+instance Num Int -- Defined in ‘GHC.Num’
+instance Real Int -- Defined in ‘GHC.Real’
+
+instance Bounded Int -- Defined in ‘GHC.Enum’
+
+instance Integral Int -- Defined in ‘GHC.Real’
+```
+
+- As datatype `Word` does not become negative, the bounds are different.
+
+- You almost never want a `Float` unless you're doing graphics programming such
+  as with OpenGL.
