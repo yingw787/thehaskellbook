@@ -208,3 +208,35 @@ instance Num Scientific -- Defined in ‘Data.Scientific’
 instance Real Scientific -- Defined in ‘Data.Scientific’
 instance RealFrac Scientific -- Defined in ‘Data.Scientific’
 ```
+
+- All these types inherit from `Num`, which implements standard numeric
+  operations like additon, subtraction, etc.
+- Think of Integers as a resolved [generator
+  expression](https://docs.python.org/3/reference/expressions.html#generator-expressions)
+  that can count towards negative Infinity, zero, and positive Infinity.
+
+- **Most programs should use `Integer` instead of `Int`, `Int8`, or `Int16` as
+  the latter may run into exceptions for arbitrarily large values.
+
+```haskell
+Prelude> import GHC.Int
+-- Casting as Int8 (8-bit integer)
+--
+-- Numbers are polymorphic under the surface, compiler doesn't assign them a
+-- concrete type until it is forced to. Lazy evaluation means that the largest
+-- result can be defined before assigning to a concrete type. This is why the
+-- number must be explicitly cast to Int8 to reproduce this error.
+Prelude GHC.Int> 127 :: Int8
+127
+-- Gives a warning about impending overflow.
+Prelude GHC.Int> 128 :: Int8
+
+<interactive>:3:1: warning: [-Woverflowed-literals]
+    Literal 128 is out of the Int8 range -128..127
+    If you are trying to write a large negative literal, use NegativeLiterals
+-128
+-- Overflows without warning.
+Prelude GHC.Int> (127 + 1) :: Int8
+-128
+Prelude GHC.Int>
+```
