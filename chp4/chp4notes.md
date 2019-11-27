@@ -880,16 +880,62 @@ in and try to correct it in your text editor, validating it with GHC or GHCi.
         where w = length xs
     ```
 
+    __________
+
+    No method signature available, and `'x'` denotes a character literal instead
+    of the operation. Prefix the operator instead.
+
+    (INCORRECT SOLUTION, LOOKED AT ANSWER KEY)
+
+    ```haskell
+    Prelude> x = (+)
+    Prelude> F xs = w `x` 1 where w = length xs
+
+    <interactive>:91:1: error: Not in scope: data constructor ‘F’
+    -- Method should start with lowercase in order to avoid being construed as a
+    -- data constructor: https://stackoverflow.com/a/28381111
+    Prelude> f xs = w `x` 1 where w = length xs
+    Prelude> f "hi"
+    3
+    Prelude>
+    ```
+
 2.  This is supposed to be the identity function, `id`.
 
     ```haskell
     \X = x
     ```
 
+    __________
+
+    (HAVE NO IDEA WHAT THE BOOK MEANS, LOOKED AT ANSWER KEY)
+
+    ```haskell
+    Prelude> _id = (\x -> x)
+    Prelude> _id 5
+    5
+    Prelude>
+    ```
+
 3.  When fixed, this function will return 1 from the value (1, 2).
 
     ```haskell
     f (a b) = A
+    ```
+
+    __________
+
+    Cast to lowercase.
+
+    (CORRECT)
+
+    ```haskell
+    Prelude> f = (\(a, b) -> a)
+    Prelude> f (6, 7)
+    6
+    Prelude> f (8, 9)
+    8
+    Prelude>
     ```
 
 MATCH THE FUNCTION NAMES TO THEIR TYPES
@@ -900,6 +946,18 @@ MATCH THE FUNCTION NAMES TO THEIR TYPES
     b) `Show a -> a -> String`
     c) `Show a => a -> String`
 
+    __________
+
+    a)
+
+    (INCORRECT)
+
+    ```haskell
+    Prelude> :t show
+    show :: Show a => a -> String
+    Prelude>
+    ```
+
 2.  Which of the following types is the type of (==)?
 
     a) `a -> a -> Bool`
@@ -907,11 +965,35 @@ MATCH THE FUNCTION NAMES TO THEIR TYPES
     c) `Eq a -> a -> a -> Bool`
     d) `Eq a => A -> Bool`
 
+    __________
+
+    b)
+
+    (CORRECT)
+
+    ```haskell
+    Prelude> :t (==)
+    (==) :: Eq a => a -> a -> Bool
+    Prelude>
+    ```
+
 3.  Which of the following types is the type of `fst`?
 
     a) `(a, b) -> a`
     b) `b -> a`
     c) `(a, b) -> b`
+
+    __________
+
+    a)
+
+    (CORRECT)
+
+    ```haskell
+    Prelude> :t fst
+    fst :: (a, b) -> a
+    Prelude>
+    ```
 
 4.  Which of the following types is the type of `(+)`?
 
@@ -920,5 +1002,17 @@ MATCH THE FUNCTION NAMES TO THEIR TYPES
     c) `(+) :: num a => a -> a -> a`
     d) `(+) :: Num a => a -> a -> a`
     e) `(+) :: a -> a -> a`
+
+    __________
+
+    d)
+
+    (CORRECT)
+
+    ```haskell
+    Prelude> :t (+)
+    (+) :: Num a => a -> a -> a
+    Prelude>
+    ```
 
 ********** END CHAPTER EXERCISES **********
