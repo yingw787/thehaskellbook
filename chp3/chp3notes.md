@@ -623,9 +623,20 @@ Building Functions
     can use "Curry is awesome!" as your string input or a different string if
     you prefer).
 
+    ```haskell
+    -- :{ :} syntax from Stack Overflow link:
+    -- https://stackoverflow.com/a/18469239
+    Prelude| thirdLetter :: Int -> Char
+    Prelude| thirdLetter x = "Curry is awesome" !! x
+    Prelude| :}
+    Prelude> thirdLetter 3
+    'r'
+    Prelude>
+    ```
+
 5.  Using the `take` and `drop` functions we looked at above, see if you can
-    write a function called `rvrs` (an abbrevation of `reverse` used because
-    there is a function called `reverse` alrady n Prelude, so if you call your
+    write a function called `rvrs` (an abbreviation of `reverse` used because
+    there is a function called `reverse` already n Prelude, so if you call your
     function the same name, you'll get an error message). `rvrs` should take the
     string "Curry is awesome" and return the result "awesome is Curry". This may
     not be the most lovely Haskell code you will ever write, but it is quite
