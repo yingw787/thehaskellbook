@@ -535,6 +535,21 @@ Building Functions
     "awesome!"
     ```
 
+    __________
+
+    ```haskell
+    -- (a)
+    Prelude> "Curry is awesome" ++ "!"
+    "Curry is awesome!"
+    -- (b)
+    Prelude> ["Curry is awesome!" !! 4]
+    "y"
+    -- (c)
+    Prelude> drop 9 "Curry is awesome!"
+    "awesome!"
+    Prelude>
+    ```
+
 2.  Now take each of the above and rewrite it in a source file as a general
     function that could take different string inputs as arguments but retain
     the same behavior. Use a variable as the argument to your (named) functions.
