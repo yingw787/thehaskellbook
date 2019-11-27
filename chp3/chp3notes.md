@@ -606,6 +606,13 @@ Building Functions
     'r'
     ```
 
+    ```haskell
+    Prelude> thirdLetter :: String -> Char; thirdLetter x = x !! 2
+    Prelude> thirdLetter "Curry is awesome"
+    'r'
+    Prelude>
+    ```
+
     Note that programming languages conventionally start indexing things by
     zero, so getting the zeroth index of a string will get you the first
     letter. Accordingly, indexing with 3 will get you the fourth. Keep this in
