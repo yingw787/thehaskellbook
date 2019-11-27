@@ -302,3 +302,103 @@ Prelude>
 - Use `:t` and `:i` in order to get type and information for infix operations.
   Generally types will implement `Eq` (for equality comparisons) or `Ord` (for
   ordering comparisons).
+
+********** START EXERCISES: FIND THE MISTAKES **********
+
+The following lines of code may have mistakes - some of them won't compile! You
+know what you need to do.
+
+1. `not True && true`
+2. `not (x = 6)`
+3. `(1 * 2) > 5`
+4. `[Merry] > [Happy]`
+5. `[1, 2, 3] ++ "look at me!"`
+
+1. Will not compile; must capitalize `true` to `True`.
+
+(CORRECT)
+
+```haskell
+Prelude> not True && true
+
+<interactive>:1:13: error:
+    • Variable not in scope: true :: Bool
+    • Perhaps you meant data constructor ‘True’ (imported from Prelude)
+Prelude> not True && True
+False
+Prelude>
+```
+
+2. Will not compile; `x` is not defined. Define `x` before executing a
+   comparison, and assuming it is now in scope, change boolean calculation to
+   comparison instead of assignment.
+
+(NOT SURE WHAT I AM SUPPOSED TO DO, ISOLATED CONTEXT)
+
+```haskell
+Prelude> x = 6
+Prelude> not (x == 6)
+False
+Prelude>
+```
+
+3. No error here, will return `False`.
+
+(CORRECT)
+
+```haskell
+Prelude> (1 * 2) > 5
+False
+Prelude>
+```
+
+4. Will not compile because variables `Merry` and `Happy` are undefined and of
+   unknown types. Cast as strings using double quotes to effectively compare it.
+   Result should then be `False`, as ord|string compares by alphabetical order.
+
+(CORRECT IN COMPILE ERROR, INCORRECT IN EVENTUAL RESULT)
+
+```haskell
+Prelude> [Merry] > [Happy]
+
+<interactive>:3:2: error:
+    Data constructor not in scope: Merry :: ()
+
+<interactive>:3:12: error:
+    Data constructor not in scope: Happy :: ()
+Prelude> ["Merry"] > ["Happy"]
+-- Likely true because "M" has a higher ordinal than "H".
+True
+Prelude>
+```
+
+5. Not sure whether Haskell has lists of arbitrary types, but if a list data
+   structure can only accept a single type, then this will result in a compile
+   error in concatenating integer and string types in the same list. In that
+   case, cast the integers to string types to result in a list of 4 elements.
+
+(INCORRECT, also need to cast second argument as a list.)
+
+```haskell
+Prelude> [1, 2, 3] ++ "look at me!"
+
+<interactive>:5:2: error:
+    • No instance for (Num Char) arising from the literal ‘1’
+    • In the expression: 1
+      In the first argument of ‘(++)’, namely ‘[1, 2, 3]’
+      In the expression: [1, 2, 3] ++ "look at me!"
+Prelude> ["1", "2", "3"] ++ "look at me!"
+
+<interactive>:6:20: error:
+    • Couldn't match type ‘Char’ with ‘[Char]’
+      Expected type: [[Char]]
+        Actual type: [Char]
+    • In the second argument of ‘(++)’, namely ‘"look at me!"’
+      In the expression: ["1", "2", "3"] ++ "look at me!"
+      In an equation for ‘it’: it = ["1", "2", "3"] ++ "look at me!"
+Prelude> ["1", "2", "3"] ++ ["look at me!"]
+["1","2","3","look at me!"]
+Prelude>
+```
+
+********** END EXERCISES: FIND THE MISTAKES **********
