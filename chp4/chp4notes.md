@@ -443,3 +443,14 @@ eyyyyy. What's shakin'?
 pshhh.
 *GreetIfCool1>
 ```
+
+```haskell
+Prelude> :l greetIfCool2.hs
+[1 of 1] Compiling GreetIfCool2     ( greetIfCool2.hs, interpreted )
+Ok, one module loaded.
+*GreetIfCool2> greetIfCool "downright frosty yo"
+eyyyyy. What's shakin'?
+*GreetIfCool2> greetIfCool "please love me"
+pshhh.
+*GreetIfCool2>
+```
