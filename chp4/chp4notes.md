@@ -286,3 +286,19 @@ instance Integral Int -- Defined in ‘GHC.Real’
 
 - You almost never want a `Float` unless you're doing graphics programming such
   as with OpenGL.
+
+```haskell
+-- `Fractional a =>` denotes a **type class constraint,** where type 'a' can be
+-- whatever you want given that it implements the `Fractional` type class.
+Prelude> :t (/)
+(/) :: Fractional a => a -> a -> a
+-- Even though (/) takes in integers here, it returns a float. Default return
+-- value type is `Double`.
+Prelude> 4 / 2
+2.0
+Prelude>
+```
+
+- Use `:t` and `:i` in order to get type and information for infix operations.
+  Generally types will implement `Eq` (for equality comparisons) or `Ord` (for
+  ordering comparisons).
