@@ -969,4 +969,67 @@ __________
     Prelude>
     ```
 
+2.  Fractional division trims down possible values to typeclass `Fractional`.
+
+    The inferred type would be `myMult :: Fractional x => x -> x
+
+    (CORRECT, x == a type variables only matter in type signature, and are alpha
+    equivalent.)
+
+    ```haskell
+    Prelude> :type (*)
+    (*) :: Num a => a -> a -> a
+    Prelude> myMult x = (x / 3) * 5
+    Prelude> :type myMult
+    myMult :: Fractional a => a -> a
+    Prelude>
+    ```
+
+3.  Return value does not change, but now can take on `[Char]` instead of
+    polymorphic type variable.
+
+    The inferred type would be `myTake :: Int -> [Char]`.
+
+    (CORRECT)
+
+    ```haskell
+    Prelude> :type take
+    take :: Int -> [a] -> [a]
+    Prelude> myTake x = take x "hey you"
+    Prelude> :type myTake
+    myTake :: Int -> [Char]
+    Prelude>
+    ```
+
+4.  Method `length` explicitly returns `Integer` concrete type (not even `Num`),
+    so input argument must be concrete type `Integer`.
+
+    The inferred type would be `myCom :: Int -> Bool`.
+
+    (CORRECT)
+
+    ```haskell
+    Prelude> :type (>)
+    (>) :: Ord a => a -> a -> Bool
+    Prelude> myCom x = x > (length [1..10])
+    Prelude> :type myCom
+    myCom :: Int -> Bool
+    Prelude>
+    ```
+
+5.  Method `myAlph` uses explicit concrete type `Char`.
+
+    The inferred type would be `myAlph :: Char -> Bool`.
+
+    (CORRECT)
+
+    ```haskell
+    Prelude> :type (<)
+    (<) :: Ord a => a -> a -> Bool
+    Prelude> myAlph x = x < 'z'
+    Prelude> :type myAlph
+    myAlph :: Char -> Bool
+    Prelude>
+    ```
+
 ********** END EXERCISES: APPLY YOURSELF **********
