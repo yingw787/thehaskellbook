@@ -1168,4 +1168,53 @@ f :: f -> g -> C
 -- 2: Concrete
 ```
 
+__________
+
+Write a type signature
+
+1. `functionH :: (a, b) -> a`
+
+(INCORRECT)
+
+```haskell
+Prelude> functionH (x:_) = x
+Prelude> :type functionH
+functionH :: [a] -> a
+Prelude>
+```
+
+2. `functionC :: (Ord a => a, Eq b => b) -> (a, b) -> Bool`
+
+(INCORRECT)
+
+```haskell
+Prelude> functionC x y = if (x > y) then True else False
+Prelude> :type functionC
+functionC :: Ord a => a -> a -> Bool
+Prelude>
+```
+
+3. `functionS :: (a, b) -> b`
+
+(CORRECT)
+
+```haskell
+Prelude> functionS (x, y) = y
+Prelude> :t functionS
+functionS :: (a, b) -> b
+Prelude>
+```
+
+__________
+
+Given a type, write the function
+
+__________
+
+Fix it
+
+__________
+
+Type-Kwon-Do
+
 ********** END EXERCISES: CHAPTER EXERCISES **********
