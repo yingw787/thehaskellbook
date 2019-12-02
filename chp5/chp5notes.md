@@ -184,3 +184,63 @@ Prelude>
 ```
 
 ********** END EXERCISES: TYPE MATCHING **********
+
+- Lambda calculus does not have support for methods taking multiple arguments.
+  Instead, functions with multiple arguments are syntactic sugar for curried
+  methods.
+- Currying is nesting of multiple functions to allow the illusion of
+  multiple-parameter functions.
+
+```haskell
+-- `(+)` is a curried method, because it looks like it accepts two arguments,
+-- when in reality it applies to one argument, which returns another function
+-- that accepts the next argument, which actually creates the return value.
+Prelude> :type (+)
+(+) :: Num a => a -> a -> a
+Prelude>
+```
+
+- The type constructor for functions makes currying *default* in Haskell, as it
+  is an infix operator and right-associative.
+
+```haskell
+Prelude> :type (+)
+(+) :: Num a => a -> a -> a
+-- associates to: `(+) :: Num a => a -> (a -> a)`
+-- Parentheses here group parameters into argument / result, as every arrow
+-- must have one argument and one result.
+Prelude>
+```
+
+- Partial application: apply only some of a function's arguments. This enables
+  function reuse and composition.
+
+```haskell
+-- Define a method `addStuff` that takes two arguments and returns the sum of
+-- both arguments and 5.
+Prelude> :{
+Prelude| addStuff :: Integer -> Integer -> Integer
+Prelude| addStuff a b = a + b + 5
+Prelude| :}
+-- Takes one argument, returns a function that takes one argument, which
+-- returns one result.
+Prelude> :type addStuff
+addStuff :: Integer -> Integer -> Integer
+-- The above is equivalent to `addStuff :: Integer -> (Integer -> Integer)`.
+-- Resolving the latter leads to addTen given input is 5.
+Prelude> addTen = addStuff 5
+Prelude> :type addTen
+addTen :: Integer -> Integer
+Prelude> fifteen = addTen 5
+Prelude> :type fifteen
+fifteen :: Integer
+-- `fifteen` is equal to `addStuff 5 5`, because `addTen` is equal to
+-- `addStuff 5`.
+Prelude> fifteen
+15
+Prelude> addTen 5
+15
+Prelude> addStuff 5 5
+15
+Prelude>
+```
