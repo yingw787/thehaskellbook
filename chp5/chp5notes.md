@@ -1033,3 +1033,47 @@ __________
     ```
 
 ********** END EXERCISES: APPLY YOURSELF **********
+
+- Asserting types for declarations: cast a polymorphic value (e.g. numeric
+  value) to concrete type using `::`.
+
+********** BEGIN EXERCISES: CHAPTER EXERCISES **********
+
+Multiple choice
+
+1. A value of type `[a]` is:
+
+    a) a list of alphabetic characters
+    b) a list of lists
+    c) a list whose elements are all of some type `a`
+    d) a list whose elements are all of different types
+
+2. A function of type `[[a]] -> [a]` could
+
+    a) take a list of strings as an argument
+    b) transform a character into a string
+    c) transform a string into a list of strings
+    d) take two arguments
+
+3. A function of type `[a] -> Int -> a`
+
+    a) takes one argument
+    b) returns one element of type `a` from a list
+    c) must return an `Int` value
+    d) is completely fictional
+
+4. A function of type `(a, b) -> a`
+
+    a) takes a list argument and returns a `Char` value
+    b) has zero arguments
+    c) takes a tuple argument and returns the first value
+    d) requires that `a` and `b` be of different types
+
+__________
+
+1. c) (CORRECT)
+2. a) (CORRECT)
+3. d) (INCORRECT, multiple arguments, tossed away the second)
+4. c) (CORRECT)
+
+********** END EXERCISES: CHAPTER EXERCISES **********
