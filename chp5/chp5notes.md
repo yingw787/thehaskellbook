@@ -725,13 +725,100 @@ some other expression. Prove that to yourself with these small demonstrations.
    function that terminates successfully that does something other than
    returning the same value. This is impossible, but you should try it anyway.
 
+    __________
+
+    ```haskell
+    Prelude> :{
+    Prelude| f :: a -> a
+    Prelude| f x = x + x
+    Prelude| :}
+
+    -- Can't use any operators because they assume types.
+    <interactive>:156:7: error:
+        • No instance for (Num a) arising from a use of ‘+’
+        Possible fix:
+            add (Num a) to the context of
+            the type signature for:
+                f :: forall a. a -> a
+        • In the expression: x + x
+        In an equation for ‘f’: f x = x + x
+    Prelude> :{
+    Prelude| f :: a -> a
+    Prelude| f x = x `x` x
+    Prelude| :}
+
+    -- Can't use the object itself because it does not have any operators
+    -- defined.
+    <interactive>:160:7: error:
+        • Occurs check: cannot construct the infinite type: a ~ a -> a -> a
+        • The operator ‘x’ takes two arguments,
+        but its type ‘a’ has none
+        In the expression: x `x` x
+        In an equation for ‘f’: f x = x `x` x
+        • Relevant bindings include
+            x :: a (bound at <interactive>:160:3)
+            f :: a -> a (bound at <interactive>:160:1)
+    Prelude>
+    ```
+
 2. We can get a more comfortable appreciation of parametricity by looking at `a
    -> a -> a`. This hypothetical function `a -> a -> a` has two -- and only two
    -- implementations. Write both possible versions of a -> a -> a. After doing
    so, try to violate the constraints of parametrically polymorphic values we
    outlined above.
 
+    __________
+
+    (DID NOT GET THE ANSWER AT ALL, LOOKED AT SOLUTION HERE:
+    https://github.com/johnchandlerburnham/hpfp)
+
+    ```haskell
+    Prelude> :{
+    Prelude| f :: a -> a -> a
+    Prelude| f x y = y
+    Prelude| :}
+    Prelude> :{
+    Prelude| g :: a -> a -> a
+    Prelude| g x y = x
+    Prelude| :}
+    ```
+
 3. Implement `a -> b -> b`. How many implementations can it have? Does the
    behavior change when the types of `a` and `b` change?
+
+    __________
+
+    It only has one implementation, because `b -> b` is the identity constraint, other variables do not appear to matter.
+
+    ```haskell
+    Prelude> :{
+    Prelude| f :: a -> b -> b
+    Prelude| f x y = y
+    Prelude| :}
+    Prelude> :{
+    Prelude| g :: a -> b -> b
+    Prelude| g x y = x
+    Prelude| :}
+
+    <interactive>:196:9: error:
+        • Couldn't match expected type ‘b’ with actual type ‘a’
+        ‘a’ is a rigid type variable bound by
+            the type signature for:
+            g :: forall a b. a -> b -> b
+            at <interactive>:195:1-16
+        ‘b’ is a rigid type variable bound by
+            the type signature for:
+            g :: forall a b. a -> b -> b
+            at <interactive>:195:1-16
+        • In the expression: x
+        In an equation for ‘g’: g x y = x
+        • Relevant bindings include
+            y :: b (bound at <interactive>:196:5)
+            x :: a (bound at <interactive>:196:3)
+            g :: a -> b -> b (bound at <interactive>:196:1)
+    Prelude>
+    ```
+
+    (SEEMS CORRECT)
 
 ********** END EXERCISES: PARAMETRICITY **********
