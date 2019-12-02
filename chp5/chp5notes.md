@@ -393,6 +393,21 @@ give GHCi *undefined* to bind the signature to.
     c) `a -> a -> a`
     d) `a -> a -> a -> Char`
 
+    __________
+
+    a), because consistent `a` means that the same type must be applied
+    throughout, and three infix function applications implies multiple
+    arguments, and therefore passing one argument resolves one variable.
+
+    (CORRECT)
+
+    ```haskell
+    Prelude> f :: a -> a -> a -> a; f = undefined
+    Prelude> x :: Char; x = undefined
+    Prelude> :type f x
+    f x :: Char -> Char -> Char
+    ```
+
 2. If the type of `g` is `a -> b -> c -> b`, then the type of `g 0 'c' "woot"`
    is:
 
@@ -400,6 +415,25 @@ give GHCi *undefined* to bind the signature to.
     b) `Char -> String`
     c) `Int`
     d) `Char`
+
+    __________
+
+    d), because the method is fully applied with three arguments to get a beta
+    normal result, and because `(->)` is right-associative, the second argument
+    `'c'` will be `'b'` and that will be the type of the return value.
+
+    (CORRECT)
+
+    ```haskell
+    Prelude> g :: a -> b -> c -> b; g = undefined
+    -- x y z must be concrete types! Cannot cast as Num.
+    Prelude> x :: Int; x = undefined
+    Prelude> y :: Char; y = undefined
+    Prelude> z :: String; z = undefined
+    Prelude> :type g x y z
+    g x y z :: Char
+    Prelude>
+    ```
 
 3. If the type of `h` is `(Num a, Num b) => a -> b -> b`, then the type of `h
    1.0 2` is:
@@ -412,6 +446,22 @@ give GHCi *undefined* to bind the signature to.
     Note that because the type variables `a` and `b` are different, the compiler
     *must* assume that the types could be different.
 
+    __________
+
+    a), because `h` can be parenthesized as `(Num a, Num b) => a -> (b -> b)`,
+    and first argument applied to the method will define the return type.
+
+    (INCORRECT) (PERSONAL NOTE: Maybe parentheses make a difference during
+    method definition.)
+
+    ```haskell
+    Prelude> h :: (Num a, Num b) => a -> b -> b; h = undefined
+    Prelude> x :: Double; x = undefined
+    Prelude> y :: Int; y = undefined
+    Prelude> :type h x y
+    h x y :: Int
+    ```
+
 4. If the type of `h` is `(Num a, Num b) => a -> b -> b`, then the type of `h 1
    (5.5 :: Double)` is:
 
@@ -419,6 +469,24 @@ give GHCi *undefined* to bind the signature to.
     b) `Fractional b => b`
     c) `Double`
     d) `Num b => b`
+
+    __________
+
+    c), because latter argument is explicitly cast to concrete type `Double`,
+    and from question 3), the latter argument is applied as 'b'. Although
+    because this doesn't have parentheses, the ordering of the application may
+    be determined by the `(->)` infix operator.
+
+    (CORRECT) (Parentheses are part of method definition, will not change based
+    on arguments.)
+
+    ```haskell
+    Prelude> h :: (Num a, Num b) => a -> b -> b; h = undefined
+    Prelude> p :: Int; p = undefined
+    Prelude> q :: Double; q = undefined
+    Prelude> :type h p q
+    h p q :: Double
+    ```
 
 5. If the type of `jackal` is `(Ord a, Eq b) => a -> b -> a`, then the type of
    `jackal "keyboard" "has the word jackal in it" is:
@@ -429,6 +497,21 @@ give GHCi *undefined* to bind the signature to.
     d) `b`
     e) `Eq b => b -> [Char]`
 
+    __________
+
+    a), because the method `jackal` is fully applied with two arguments, and
+    argument `'a'` defines the type of the return value.
+
+    (CORRECT)
+
+    ```haskell
+    Prelude> jackal :: (Ord a, Eq b) => a -> b -> a; jackal = undefined
+    Prelude> x :: [Char]; x = undefined
+    Prelude> y :: [Char]; y = undefined
+    Prelude> :type jackal x y
+    jackal x y :: [Char]
+    ```
+
 6. If the type of `jackal` is `(Ord a, Eq b) => a -> b -> a`, then the type of
    `jackal "keyboard"` is:
 
@@ -437,6 +520,21 @@ give GHCi *undefined* to bind the signature to.
     c) `[Char]`
     d) `b -> [Char]`
     e) `Eq b => b -> [Char]`
+
+    __________
+
+    e), because after applying the first argument, a partially applied function
+    is returned that still needs to apply a second argument of type `Eq`.
+
+    (CORRECT)
+
+    ```haskell
+    Prelude> jackal :: (Ord a, Eq b) => a -> b -> a; jackal = undefined
+    Prelude> x :: [Char]; x = undefined
+    Prelude> y :: [Char]; y = undefined
+    Prelude> :type jackal x
+    jackal x :: Eq b => b -> [Char]
+    ```
 
 7. If the type of `kessel` is `(Ord a, Num b) => a -> b -> a`, then the type of
    `kessel 1 2` is:
@@ -448,6 +546,21 @@ give GHCi *undefined* to bind the signature to.
     e) `Ord a => a`
     f) `Num a => a`
 
+    __________
+
+    e), because of constrained polymorphism, the type only needs to be the same
+    as `'a'`, which is defined in type signature as only constrained as `Ord a`.
+
+    (CORRECT)
+
+    ```haskell
+    Prelude> kessel :: (Ord a, Num b) => a -> b -> a; kessel = undefined
+    Prelude> x :: Ord a => a; x = undefined
+    Prelude> y :: Num b => b; y = undefined
+    Prelude> :type kessel x y
+    kessel x y :: Ord a => a
+    ```
+
 8. If the type of `kessel` is `(Ord a, Num b) => a -> b -> a`, then the type of
    `kessel 1 (2 :: Integer)` is:
 
@@ -458,6 +571,22 @@ give GHCi *undefined* to bind the signature to.
     e) `Ord a => a`
     f) `Integer`
 
+    __________
+
+    e), because the return value is constrained by the first argument applied,
+    and because there is no explicit type casting as part of the method
+    signature.
+
+    (CORRECT)
+
+    ```haskell
+    Prelude> kessel :: (Ord a, Num b) => a -> b -> a; kessel = undefined
+    Prelude> x :: Ord a => a; x = undefined
+    Prelude> z :: Integer; z = undefined
+    Prelude> :type kessel x z
+    kessel x z :: Ord a => a
+    ```
+
 9. If the type of `kessel` is `(Ord a, Num b) => a -> b -> a`, then the type of
    `kessel (1 :: Integer) 2` is:
 
@@ -466,5 +595,21 @@ give GHCi *undefined* to bind the signature to.
     c) `Integer`
     d) `(Num a, Ord a) => a`
     e) `a`
+
+    __________
+
+    c), because the input argument type is more constrained than either input
+    argument in the method definition, and therefore the return value will have
+    the constrained type applied.
+
+    (CORRECT)
+
+    ```haskell
+    Prelude> kessel :: (Ord a, Num b) => a -> b -> a; kessel = undefined
+    Prelude> x :: Ord a => a; x = undefined
+    Prelude> z :: Integer; z = undefined
+    Prelude> :type kessel z x
+    kessel x z :: Integer
+    ```
 
 ********** END EXERCISES: TYPE ARGUMENTS **********
