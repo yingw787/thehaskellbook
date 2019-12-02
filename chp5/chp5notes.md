@@ -1123,4 +1123,49 @@ Does it compile?
     Prelude>
     ```
 
+__________
+
+Type variable or specific type constructor?
+
+1. Below:
+
+```haskell
+f :: Num a => a -> b -> Int -> Int
+--            0    1    2      3
+-- 0: Constrained polymorphic
+-- 1: Fully polymorphic
+-- 2: Concrete
+-- 3: Concrete
+```
+
+2. Below:
+
+```haskell
+f :: zed -> Zed -> Blah
+--   0      1      2
+-- 0: Fully polymorphic (CORRECT)
+-- 1: Concrete (starts with capital letter) (CORRECT)
+-- 2: Concrete (starts with capital letter) (CORRECT)
+```
+
+3. Below: (CORRECT)
+
+```haskell
+f :: Enum b => a -> b -> C
+--             0    1    2
+-- 0: Fully polymorphic
+-- 1: Constrained polymorphic
+-- 2: Concrete
+```
+
+4. Below: (CORRECT)
+
+```haskell
+f :: f -> g -> C
+--   0    1    2
+-- 0: Fully polymorphic
+-- 1: Fully polymorphic
+-- 2: Concrete
+```
+
 ********** END EXERCISES: CHAPTER EXERCISES **********
