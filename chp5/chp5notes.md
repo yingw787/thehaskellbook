@@ -244,3 +244,89 @@ Prelude> addStuff 5 5
 15
 Prelude>
 ```
+
+- Examining partial application with a function that is not commutative:
+
+```haskell
+Prelude> :{
+Prelude| subtractStuff :: Integer -> Integer -> Integer
+Prelude| subtractStuff x y = x - y - 10
+Prelude| :}
+Prelude> subtractOne = subtractStuff 1
+Prelude> :type subtractOne
+subtractOne :: Integer -> Integer
+-- result is equivalent to `subtractStuff 1 11`.
+Prelude> result = subtractOne 11
+Prelude> result
+-20
+Prelude>
+```
+
+- Un-currying is possible by replacing two functions with a two-tuple.
+- Method signature would change from `Num a => a -> a -> a` to `Num => (a, a) ->
+  a`. Representing single argument as the overarching tuple that carries
+  multiple arguments.
+    - PERSONAL QUESTION: Since a tuple can only have one type, how does
+      uncurrying with multiple arguments of multiple types work out?
+
+```haskell
+Prelude> :{
+Prelude| nonsense :: Bool -> Integer
+Prelude| nonsense True = 805
+Prelude| nonsense False = 31337
+Prelude| :}
+Prelude> :{
+Prelude| curriedFunction :: Integer -> Bool -> Integer
+Prelude| curriedFunction i b = i + (nonsense b)
+Prelude| :}
+Prelude> :{
+Prelude| uncurriedFunction :: (Integer, Bool) -> Integer
+Prelude| uncurriedFunction (i, b) = i + (nonsense b)
+Prelude| :}
+Prelude> :{
+Prelude| anonymous :: Integer -> Bool -> Integer
+Prelude| anonymous = \i b -> i + (nonsense b)
+Prelude| :}
+Prelude> :{
+Prelude| anonNested :: Integer -> Bool -> Integer
+-- `anonNested` does not leverage automatic currying, all manual currying.
+Prelude| anonNested = \i -> \b -> i + (nonsense b)
+Prelude| :}
+-- `curriedFunction`, `anonymous`, and `anonNested` are all the same function
+-- giving the same result.
+Prelude> curriedFunction 10 False
+31347
+Prelude> uncurriedFunction (10, False)
+31347
+Prelude> anonymous 10 False
+31347
+Prelude> anonNested 10 False
+31347
+Prelude>
+```
+
+- You can curry methods using `curry`, and uncurry methods using `uncurry`:s
+
+```haskell
+Prelude> curry f a b = f (a, b)
+Prelude> :t curry
+curry :: ((a, b) -> t) -> a -> b -> t
+Prelude> :t fst
+fst :: (a, b) -> a
+Prelude> :t curry fst
+curry fst :: t -> b -> t
+Prelude> fst (1, 2)
+1
+Prelude> curry fst 1 2
+1
+Prelude> uncurry f (a, b) = f a b
+Prelude> :t uncurry
+uncurry :: (t1 -> t2 -> t3) -> (t1, t2) -> t3
+Prelude> :t (+)
+(+) :: Num a => a -> a -> a
+Prelude> (+) 1 2
+3
+Prelude> uncurry (+) (1, 2)
+3
+Prelude>
+```
