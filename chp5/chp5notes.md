@@ -822,3 +822,92 @@ some other expression. Prove that to yourself with these small demonstrations.
     (SEEMS CORRECT)
 
 ********** END EXERCISES: PARAMETRICITY **********
+
+- Polymorphic constants
+
+```haskell
+Prelude> (-10) + 6.3
+-3.7
+-- Numeric literals are polymorphic until given a more specific type.
+Prelude> :type (-10) + 6.3
+(-10) + 6.3 :: Fractional a => a
+-- Sectioning (`(-10)`) does not apply a concrete type; the value retains
+-- maximum polymorphism.
+Prelude> :type (-10)
+(-10) :: Num a => a
+Prelude>
+```
+
+- Working around constraints
+    - For `Int` values that need `Num` supertype, cast to `Num` using method
+      `fromIntegral`.
+
+```haskell
+Prelude> 6 / length [1, 2, 3]
+
+<interactive>:201:1: error:
+    • No instance for (Fractional Int) arising from a use of ‘/’
+    • In the expression: 6 / length [1, 2, 3]
+      In an equation for ‘it’: it = 6 / length [1, 2, 3]
+-- Parentheses don't matter, because return value of method `length` is `Int`.
+Prelude> 6 / (length [1, 2, 3])
+
+<interactive>:202:1: error:
+    • No instance for (Fractional Int) arising from a use of ‘/’
+    • In the expression: 6 / (length [1, 2, 3])
+      In an equation for ‘it’: it = 6 / (length [1, 2, 3])
+-- Correct way to do things
+Prelude> 6 / fromIntegral (length [1, 2, 3])
+2.0
+Prelude>
+```
+
+- Type inference: algorithm for determining types of expressions
+    - Haskell's type inference <-- extension of Damas-Hindley-Milner type
+      system.
+    - Compiler starts from values whose types it knows, then works out types for
+      other values.
+    - When you are working with code you know the input types of, better to
+      redeclare those types explicitly.
+
+```haskell
+Prelude> myGreet x = x ++ " Julie"
+Prelude> :type myGreet
+-- Concrete type and infix concat operator allow compiler to infer type for input
+-- argument `x`.
+myGreet :: [Char] -> [Char]
+Prelude> myGreet x y = x ++ y
+Prelude> :type myGreet
+-- Polymorphic types, because there is no concrete type to work with.
+myGreet :: [a] -> [a] -> [a]
+Prelude>
+```
+
+```haskell
+-- typeInference1.hs, typed in-line into GHCi.
+Prelude> :{
+Prelude| f :: Num a => a -> a -> a
+Prelude| f x y = x + y + 3
+Prelude| :}
+Prelude> f 1 2
+6
+Prelude> :t f
+f :: Num a => a -> a -> a
+Prelude> :t f 1
+f 1 :: Num a => a -> a
+Prelude>
+```
+
+```haskell
+-- typeInference2.hs, typed in-line into GHCi.
+Prelude> :{
+Prelude| f x y = x + y + 3
+Prelude| :}
+-- No type signature for f, but still compiles.
+-- Identical to typeInference1.hs.
+Prelude> :t f
+f :: Num a => a -> a -> a
+Prelude> f 1 2
+6
+Prelude>
+```
