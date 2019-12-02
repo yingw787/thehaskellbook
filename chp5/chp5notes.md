@@ -1041,39 +1041,86 @@ __________
 
 Multiple choice
 
-1. A value of type `[a]` is:
-
-    a) a list of alphabetic characters
-    b) a list of lists
-    c) a list whose elements are all of some type `a`
-    d) a list whose elements are all of different types
-
-2. A function of type `[[a]] -> [a]` could
-
-    a) take a list of strings as an argument
-    b) transform a character into a string
-    c) transform a string into a list of strings
-    d) take two arguments
-
-3. A function of type `[a] -> Int -> a`
-
-    a) takes one argument
-    b) returns one element of type `a` from a list
-    c) must return an `Int` value
-    d) is completely fictional
-
-4. A function of type `(a, b) -> a`
-
-    a) takes a list argument and returns a `Char` value
-    b) has zero arguments
-    c) takes a tuple argument and returns the first value
-    d) requires that `a` and `b` be of different types
-
-__________
-
 1. c) (CORRECT)
 2. a) (CORRECT)
 3. d) (INCORRECT, multiple arguments, tossed away the second)
 4. c) (CORRECT)
+
+__________
+
+Determine the type
+
+Refer to `DetermineTheType.hs`.
+
+__________
+
+Does it compile?
+
+1.  I don't think it should compile. There are no operators applied as part of
+    variable `wahoo`.
+
+    (CORRECT)
+
+    ```haskell
+    Prelude> bigNum = (^) 5 $ 10
+    Prelude> wahoo = bigNum $ 10
+
+    <interactive>:31:1: error:
+        • Non type-variable argument in the constraint: Num (t1 -> t2)
+        (Use FlexibleContexts to permit this)
+        • When checking the inferred type
+            wahoo :: forall t1 t2. (Num t1, Num (t1 -> t2)) => t2
+    -- This is one way to patch `wahoo`.
+    Prelude> wahoo = (^) bigNum $ 10
+    Prelude> wahoo
+    7888609052210118054117285652827862296732064351090230047702789306640625
+    Prelude>
+    ```
+
+2.  I think it should compile. Input arguments look valid for methods,
+    assignment w/o evaluation is safe, etc.
+
+    (CORRECT)
+
+    ```haskell
+    -- Do not call variable `x` after assignment.
+    Prelude> x = print
+    Prelude> y = print "woohoo!"
+    Prelude> z = x "hello world"
+    Prelude>
+    ```
+
+3.  Does not compile. `c` is invalid, and hence `d` is invalid. Apply `a` to
+    avoid errors.
+
+    (CORRECT)
+
+    ```haskell
+    Prelude> a = (+)
+    Prelude> b = 5
+    Prelude> c = b 10
+
+    <interactive>:45:1: error:
+        • Non type-variable argument in the constraint: Num (t1 -> t2)
+        (Use FlexibleContexts to permit this)
+        • When checking the inferred type
+            c :: forall t1 t2. (Num t1, Num (t1 -> t2)) => t2
+    Prelude> c = a b 10
+    Prelude> d = a c 200
+    Prelude>
+    ```
+
+4.  Does not compile. Out of order declarations should be fine in a compiled
+    file, but method definitions must take in an input argument, or have a
+    predefined constant available.
+
+    (CORRECT)
+
+    ```haskell
+    Prelude> b = 10000 * c
+
+    <interactive>:1:13: error: Variable not in scope: c
+    Prelude>
+    ```
 
 ********** END EXERCISES: CHAPTER EXERCISES **********
