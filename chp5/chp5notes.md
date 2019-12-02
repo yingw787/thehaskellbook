@@ -613,3 +613,89 @@ give GHCi *undefined* to bind the signature to.
     ```
 
 ********** END EXERCISES: TYPE ARGUMENTS **********
+
+- Polymorphic type variables enable expressions that can accept arguments and
+  return results of different types w/o having to write variations on the same
+  expression for different types.
+
+- Difference between polymorphism and generics:
+  https://stackoverflow.com/a/2423355 (also pasted below)
+
+> Polymorphism is a property of classes, in that they implement a common
+> interface, or are derived from a base class, implementing virtual methods in a
+> different way to reflect the different behavior of derived classes.
+
+> Generics is a property of an algorithm, or a class implementing an algorithm
+> (sort) or a common operation (lists), requiring the classes they deal with to
+> have certain methods, properties, or interfaces.
+
+(Honestly, Haskell polymorphism sounds a lot like object-oriented generics, was
+confused as to this point and went to #haskell on IRC)
+
+```irc
+13:34 < yingw787> I have a question about polymorphism vs. generics
+13:35 < yingw787> the author discusses polymorphic type variables allowing expressions to be written once and applied to multiple types
+13:35 < yingw787> this is akin to object-oriented generics right, and less so object-oriented polymorphism?
+13:35 < yingw787> https://stackoverflow.com/a/2423355
+13:35 < ChaiTRex> yingw787: No, this is like an interface in Java.
+13:36 < ChaiTRex> yingw787: You have a set of functions that can apply to any of several types. The types each implement the set of
+                  functions.
+13:37 < yingw787> ChaiTRex: So what you're saying is that the method definition you write is resolved to concrete types by all types that
+                  exist under those polymorphic constraints?
+13:38 < yingw787> And that the method you're writing is not actually being run, it's a different method evaluated at compile-time?
+13:38 < ChaiTRex> Well, it's resolved to concrete functions.
+13:39 < yingw787> I am using GHCi to run everything at the moment, which is why my understanding of compile-time / run-time stuff may be
+                  a bit wonky
+13:39 < ChaiTRex> Nothing is evaluated at compiletime.
+13:39 < dsal> Ghci muddies a few concepts, yeah
+13:39 < ChaiTRex> You have a set of functions you want to be able to use with a set of types.
+13:40 < ChaiTRex> That's a typeclass. It has functions you can apply to any type that implements the typeclass.
+13:40 < ChaiTRex> The types themselves each have concrete versions of those functions.
+13:41 < dmwit> yingw787: Both forms of polymorphism -- generics, and object-oriented-like -- are available, via different mechanisms.
+13:41 < dmwit> yingw787: Typeclasses are a bit like Java interfaces, and is what ChaiTRex is telling you about. But I suspect what your
+               book is talking about at the moment is parametric polymorphism, where no typeclass constraints appear.
+13:42 < dmwit> For example,
+13:42 < dmwit> :t length
+13:42 < lambdabot> Foldable t => t a -> Int
+13:42 < dmwit> well
+13:42 < dmwit> It used to be that `length :: [a] -> Int` and then it was a better example for what I'm talking about. =P
+13:42 < dmwit> Let's suppose `length :: [a] -> Int` for now.
+13:43 < yingw787> dmwit: Okay cool, yes this foldable stuff is a bit confusing, but please continue :)
+13:43 < dmwit> Since `a` as a type variable is completely unconstrained, this is a lot like generics: `length` works on any list, no
+               matter what type of elements are inside.
+13:43 < dmwit> Compare, say, (+)
+13:43 < dmwit> :t (+)
+13:43 < lambdabot> Num a => a -> a -> a
+... (DID NOT REALIZE THAT `irssi` WOULD PREVENT SCROLLBACK (O.O') )
+```
+
+Dictionary passing implementation of typeclasses:
+https://stackoverflow.com/q/38130985
+
+```irc
+13:55 < dmwit> Sort of a trivial example of the kind of error you can expect.
+13:55 < dmwit> or, for your first question...
+13:56 < dmwit> > ('a' :: Char) + ('b' :: Char)
+13:56 < lambdabot>  error:
+13:56 < lambdabot>      • No instance for (Num Char) arising from a use of ‘+’
+13:56 < lambdabot>      • In the expression: ('a' :: Char) + ('b' :: Char)
+13:56 < EvanR> yingw787: have you heard of 'dictionary passing' implementation of type classes
+13:57 < EvanR> or dictionary passing intuition
+13:57 < yingw787> EvanR: I haven't heard about 'dictionary passing', please enlighten me :D
+13:58 < EvanR> a constraint on a function can be viewed as a normal argument where the thing passed in at runtime is a dictionary with
+               the method implementations in it
+13:58 < EvanR> since the programmer doesn't explicitly pass this around, it's the job of the compiler to arrange for where to get this
+               dictionary from
+13:58 < EvanR> it can come from many places, but if it can't find any place it's a compile time error
+13:59 < EvanR> or if it is clearly ambiguous where to get it
+13:59 < EvanR> that would be a compile time error
+14:00 < boxscape> yingw787 `data Eq a = Eq {(==) :: a -> a -> Bool}`, then instead of having a function like `f :: Eq a => a -> a -> Int`
+                  it would be `f :: Eq a -> a -> a -> Int`
+14:01 < EvanR> i think this picture goes a good way toward explaining some of the type class related error messages
+```
+
+(So, Haskell polymorphism is more like Java interfaces. At run-time, the Haskell
+runtime will schedule which concrete method should accept the incoming data. But
+the polymorphic method definition is not run directly. If there isn't a matching
+method for base types, there will generally be a compile-time error. Constraints
+are not types.)
