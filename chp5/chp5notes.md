@@ -698,4 +698,40 @@ https://stackoverflow.com/q/38130985
 runtime will schedule which concrete method should accept the incoming data. But
 the polymorphic method definition is not run directly. If there isn't a matching
 method for base types, there will generally be a compile-time error. Constraints
-are not types.)
+are not types, they are typeclasses.)
+
+- Haskell has *parametric polymorphism* and *constrained (ad-hoc) polymorphism*.
+    - Object-oriented polymorphism is akin to ad-hoc polymorphism, and
+      implemented in typeclasses.
+    - Parametric polymorphism refers to type variables (parameters) that are
+      fully polymorphic.
+    - Lowercase variables are type variables, uppercase variables are types.
+
+- A type can inherit operation from its superclass via typeclass inheritance
+  (e.g. `Int` can inherit operations from `Num`).
+- **If a variable can be anything, then there's little that can be don to it
+  because it has no methods.**
+
+- **Parametricity**: The behavior of a function w.r.t. the types of its
+  parametrically polymorphic arguments is uniform. The behavior cannot change
+  because it was applied to an argument of a different type.
+
+********** START EXERCISES: PARAMETRICITY **********
+
+All you can do with a parametrically polymorphic value is pass or not pass it to
+some other expression. Prove that to yourself with these small demonstrations.
+
+1. Given the type `a -> a`, which is the type for `id`, attempt to make a
+   function that terminates successfully that does something other than
+   returning the same value. This is impossible, but you should try it anyway.
+
+2. We can get a more comfortable appreciation of parametricity by looking at `a
+   -> a -> a`. This hypothetical function `a -> a -> a` has two -- and only two
+   -- implementations. Write both possible versions of a -> a -> a. After doing
+   so, try to violate the constraints of parametrically polymorphic values we
+   outlined above.
+
+3. Implement `a -> b -> b`. How many implementations can it have? Does the
+   behavior change when the types of `a` and `b` change?
+
+********** END EXERCISES: PARAMETRICITY **********
