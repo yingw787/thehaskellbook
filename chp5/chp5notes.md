@@ -308,6 +308,7 @@ Prelude>
 - You can curry methods using `curry`, and uncurry methods using `uncurry`:s
 
 ```haskell
+-- Below is eqivalent to (curry f) a b = f (a, b)
 Prelude> curry f a b = f (a, b)
 Prelude> :t curry
 curry :: ((a, b) -> t) -> a -> b -> t
@@ -319,6 +320,7 @@ Prelude> fst (1, 2)
 1
 Prelude> curry fst 1 2
 1
+-- Below is equivalent to (uncurry f) (a, b) = f a b
 Prelude> uncurry f (a, b) = f a b
 Prelude> :t uncurry
 uncurry :: (t1 -> t2 -> t3) -> (t1, t2) -> t3
@@ -328,5 +330,43 @@ Prelude> (+) 1 2
 3
 Prelude> uncurry (+) (1, 2)
 3
+Prelude>
+```
+
+- Sectioning: partial application of infix operators, which has a special syntax
+  and can result in different associativity behaviors during function
+  application:
+
+```haskell
+Prelude> x = 5
+Prelude> y = (2^)
+Prelude> z = (^2)
+-- (2^) 5 -> 2 ^ 5
+Prelude> y x
+32
+-- (^2) 5 -> 5 ^ 2
+Prelude> z x
+25
+-- Doesn't just work for numeric types. Associativity applies here too.
+Prelude> celebrate = (++ " woot!")
+Prelude> celebrate "naptime"
+"naptime woot!"
+Prelude> _celebrate = ("its " ++)
+Prelude> _celebrate "naptime!"
+"its naptime!"
+Prelude>
+-- You can apply sectioning to a prefix method by turning the prefix method
+-- into an infix method using backticks.
+Prelude> [1..10]
+[1,2,3,4,5,6,7,8,9,10]
+Prelude> elem 9 [1..10]
+True
+Prelude> 9 `elem` [1..10]
+True
+Prelude> c = (`elem` [1..10])
+Prelude> c 9
+True
+Prelude> c 25
+False
 Prelude>
 ```
