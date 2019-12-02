@@ -17,3 +17,24 @@ _1d = if False then True else False
 _1e = length [1, 2, 3, 4, 5]
 -- 1f) (Expected: Bool, False) (CORRECT)
 _1f = (length [1, 2, 3, 4]) > (length "TACOCAT")
+
+-- 2 (Num a => a) (CORRECT)
+_2x = 5
+_2y = _2x + 5
+_2w = _2y * 10
+
+-- 3 (Num a => a -> a) (CORRECT)
+_3x = 5
+_3y = _3x + 5
+_3z _3y = _3y * 10
+
+-- 4 (Fractional a => a) (CORRECT)
+_4x = 5
+_4y = _4x + 5
+_4f = 4 / _4y
+
+-- 5 ([Char]) (CORRECT)
+_5x = "Julie"
+_5y = " <3 "
+_5z = "Haskell"
+_5f = _5x ++ _5y ++ _5z
