@@ -176,3 +176,127 @@ __________
 See `eq_instances.hs`.
 
 ********** END EXERCISES: EQ INSTANCES **********
+
+- Num: type class implemented by most numeric types.
+
+```haskell
+Prelude> :info Num
+class Num a where
+-- Predefined functions
+  (+) :: a -> a -> a
+  (-) :: a -> a -> a
+  (*) :: a -> a -> a
+  negate :: a -> a
+  abs :: a -> a
+  signum :: a -> a
+  fromInteger :: Integer -> a
+  {-# MINIMAL (+), (*), abs, signum, fromInteger, (negate | (-)) #-} -- Defined in ‘GHC.Num’
+-- List of instances
+instance Num Word -- Defined in ‘GHC.Num’
+instance Num Integer -- Defined in ‘GHC.Num’
+instance Num Int -- Defined in ‘GHC.Num’
+instance Num Float -- Defined in ‘GHC.Float’
+instance Num Double -- Defined in ‘GHC.Float’
+Prelude>
+```
+
+```haskell
+Prelude> :info Integral
+-- Type class constraints for Integral on Real and Enum.
+-- Type class inheritance (Real <- Num) is only additive, multiple
+-- inheritance problem "diamond of death" is avoided.
+class (Real a, Enum a) => Integral a where
+  quot :: a -> a -> a
+  rem :: a -> a -> a
+  div :: a -> a -> a
+  mod :: a -> a -> a
+  quotRem :: a -> a -> (a, a)
+  divMod :: a -> a -> (a, a)
+  toInteger :: a -> Integer
+  {-# MINIMAL quotRem, toInteger #-}
+  	-- Defined in ‘GHC.Real’
+instance Integral Word -- Defined in ‘GHC.Real’
+instance Integral Integer -- Defined in ‘GHC.Real’
+instance Integral Int -- Defined in ‘GHC.Real’
+Prelude>
+```
+
+********** START EXERCISES: TUPLE EXPERIMENT **********
+
+Look at the types given for `quotRem` and `divMod`. What do you think those
+functions do? Test your hypotheses by playing with them in the REPL. We've given
+you a sample to start with below:
+
+`Prelude> ones x = snd (divMod x 10)`
+
+```haskell
+Prelude> :t quotRem
+quotRem :: Integral a => a -> a -> (a, a)
+Prelude> :t divMod
+divMod :: Integral a => a -> a -> (a, a)
+```
+
+I think `divMod` divides two input arguments of type `Integral`, and generates a
+tuple result of two result values of type `Integral`, the former being the
+quotient and the latter being the modulus.
+
+I think `quotRem` might do the same thing.
+
+(CORRECT, as far as I know: https://stackoverflow.com/a/342379)
+
+********** END EXERCISES: TUPLE EXPERIMENT **********
+
+- Fractional
+    - Type constraint of `Num` in type class.
+
+```haskell
+-- No type signature, works fine due to type inference.
+Prelude> divideThenAdd x y = (x / y) + 1
+Prelude> :{
+-- Providing an illegal type signature results in an compile-time error.
+Prelude| divideThenAdd :: Num a => a -> a -> a
+Prelude| divideThenAdd x y = (x / y) + 1
+Prelude| :}
+
+<interactive>:60:22: error:
+    • Could not deduce (Fractional a) arising from a use of ‘/’
+      from the context: Num a
+        bound by the type signature for:
+                   divideThenAdd :: forall a. Num a => a -> a -> a
+        at <interactive>:59:1-37
+      Possible fix:
+        add (Fractional a) to the context of
+          the type signature for:
+            divideThenAdd :: forall a. Num a => a -> a -> a
+    • In the first argument of ‘(+)’, namely ‘(x / y)’
+      In the expression: (x / y) + 1
+      In an equation for ‘divideThenAdd’: divideThenAdd x y = (x / y) + 1
+Prelude> :{
+-- Provide the correct type signature in order to ensure correctness.
+Prelude| divideThenAdd :: Fractional a => a -> a -> a
+Prelude| divideThenAdd x y = (x / y) + 1
+Prelude| :}
+Prelude>
+```
+
+********** BEGIN EXERCISES: PUT ON YOUR THINKING CAP **********
+
+Why didn't we need to make the type of the function we wrote require both type
+classes?? Why didn't we have to do this:
+
+```haskell
+f :: (Num a, Fractional a) => a -> a -> a
+```
+
+Consider what it means for something to be a *subset* of a larger set of
+objects.
+
+__________
+
+Since `Fractional` is a subset of `Num`, assuming that input argument is
+`Fractional`, its data type already understands all operations handled by `Num`.
+Furthermore, since type class inheritance is additive only, there is no
+ambiguity between different type classes reimplementing the same method.
+Therefore, there are no compile-time errors.
+
+********** END EXERCISES: PUT ON YOUR THINKING CAP **********
