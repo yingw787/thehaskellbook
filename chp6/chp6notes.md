@@ -458,3 +458,62 @@ to test them in your REPL once you have decided on your answer):
     ```
 
 ********** END EXERCISES: WILL THEY WORK? **********
+
+- Enum
+
+```haskell
+Prelude> :info Enum
+class Enum a where
+  succ :: a -> a
+  pred :: a -> a
+  toEnum :: Int -> a
+  fromEnum :: a -> Int
+  enumFrom :: a -> [a]
+  enumFromThen :: a -> a -> [a]
+  enumFromTo :: a -> a -> [a]
+  enumFromThenTo :: a -> a -> a -> [a]
+  {-# MINIMAL toEnum, fromEnum #-}
+  	-- Defined in ‘GHC.Enum’
+instance Enum Word -- Defined in ‘GHC.Enum’
+instance Enum Ordering -- Defined in ‘GHC.Enum’
+instance Enum Integer -- Defined in ‘GHC.Enum’
+instance Enum Int -- Defined in ‘GHC.Enum’
+instance Enum Char -- Defined in ‘GHC.Enum’
+instance Enum Bool -- Defined in ‘GHC.Enum’
+instance Enum () -- Defined in ‘GHC.Enum’
+instance Enum Float -- Defined in ‘GHC.Float’
+instance Enum Double -- Defined in ‘GHC.Float’
+Prelude>
+```
+
+```haskell
+-- Predecessor.
+Prelude> pred 'd'
+'c'
+-- Successor.
+Prelude> succ 4
+5
+-- Note that the successor of a float is still the integer step, not the step
+-- by the smallest granularity.
+Prelude> succ 4.5
+5.5
+Prelude> enumFromTo 3 8
+[3,4,5,6,7,8]
+Prelude> enumFromTo 'a' 'f'
+"abcdef"
+-- Starts at 1, goes to 10 **inclusive**, then steps until 100, with step
+-- size controlled by the initial **all-inclusive** range (unlike Python,
+-- which is [inclusive ... exclusive)).
+Prelude> enumFromThenTo 1 10 100
+[1,10,19,28,37,46,55,64,73,82,91,100]
+Prelude> enumFromThenTo 0 10 100
+[0,10,20,30,40,50,60,70,80,90,100]
+-- Can do the same thing with type `Char`.
+Prelude> enumFromThenTo 'a' 'c' 'z'
+"acegikmoqsuwy"
+-- Null step size still results in inclusive start rendered as type
+-- `[Char]`.
+Prelude> enumFromThenTo 'a' 'z' 'c'
+"a"
+Prelude>
+```
