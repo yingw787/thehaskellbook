@@ -354,3 +354,25 @@ Prelude> compare True True
 EQ
 Prelude>
 ```
+
+```haskell
+-- `max` operation available to data types implementing `Ord` typeclass.
+--
+-- Error message is not intuitive, but `max` is not a method that can be
+-- curried.
+--
+-- Typeclass that couldn't be found was `Show`, that allows values to be
+-- printed to the terminal. We called `print` because we are using GHCi.
+Prelude> max "Julie"
+
+<interactive>:76:1: error:
+    • No instance for (Show ([Char] -> [Char]))
+        arising from a use of ‘print’
+        (maybe you haven't applied a function to enough arguments?)
+    • In a stmt of an interactive GHCi command: print it
+Prelude>
+```
+
+```haskell
+
+```
