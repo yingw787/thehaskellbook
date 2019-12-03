@@ -1,3 +1,12 @@
+-- Sing.hs
+
+-- Original problems
+-- Module name is not capitalized
+-- method `sndString` has incorrect return value type, should be `[Char]` and
+-- not `Char`.
+-- Comparison should be between lengths, and not direct string comparison.
+-- `where` clause should invoke both x and y.
+
 module sing where
 
 fstString :: [Char] ++ [Char]
