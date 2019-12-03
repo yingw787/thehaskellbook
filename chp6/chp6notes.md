@@ -300,3 +300,57 @@ ambiguity between different type classes reimplementing the same method.
 Therefore, there are no compile-time errors.
 
 ********** END EXERCISES: PUT ON YOUR THINKING CAP **********
+
+- Type defaults
+    - Polymorphic types must resolve to concrete types.
+    - Most times, concrete type would come from type signature specified, or
+      from type inference.
+    - Sometimes though, there may not be a concrete type, esp. when working in
+      GHCi REPL.
+    - [The Haskell Report](https://www.haskell.org/onlinereport/haskell2010/)
+      specifies default concrete types for numeric type classes.
+
+- Ord
+
+```haskell
+Prelude> :info Ord
+-- Type class constraint of Eq.
+class Eq a => Ord a where
+-- List of operations.
+  compare :: a -> a -> Ordering
+  (<) :: a -> a -> Bool
+  (<=) :: a -> a -> Bool
+  (>) :: a -> a -> Bool
+  (>=) :: a -> a -> Bool
+  max :: a -> a -> a
+  min :: a -> a -> a
+  {-# MINIMAL compare | (<=) #-}
+    -- Defined in ‘GHC.Classes’
+-- List of instances for type classes.
+instance Ord a => Ord [a] -- Defined in ‘GHC.Classes’
+instance Ord Word -- Defined in ‘GHC.Classes’
+instance Ord Ordering -- Defined in ‘GHC.Classes’
+instance Ord Int -- Defined in ‘GHC.Classes’
+instance Ord Float -- Defined in ‘GHC.Classes’
+instance Ord Double -- Defined in ‘GHC.Classes’
+instance Ord Char -- Defined in ‘GHC.Classes’
+instance Ord Bool -- Defined in ‘GHC.Classes’
+-- Truncated instances.
+Prelude>
+```
+
+```haskell
+Prelude> compare 7 8
+LT
+Prelude> compare 4 (-4)
+GT
+Prelude> compare "Julie" "Chris"
+GT
+Prelude> compare True False
+GT
+Prelude> compare False True
+LT
+Prelude> compare True True
+EQ
+Prelude>
+```
