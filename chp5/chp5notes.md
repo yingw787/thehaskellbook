@@ -1228,8 +1228,19 @@ __________
 
 Fix it
 
+1. See `sing.hs`.
+2. See `sing2.hs`.
+3. See `arith3broken.hs`.
 __________
 
 Type-Kwon-Do
+
+1. `h x = f g x` (CORRECT, `h x = g $ f x`)
+2. `e x = q w x` (CORRECT, `e x = w $ q x`)
+3. `xform (x, y) = (xz x, yz y)` (CORRECT)
+4. No idea... (INCORRECT, `munge f g x = fst $ g $ f x`, from
+   https://github.com/johnchandlerburnham/hpfp) (First, `f x` is evaluated to
+   `y`, then `g y` is evaluated to `(w, z)`, then `fst` is applied to take the
+   first element of the two-tuple).
 
 ********** END EXERCISES: CHAPTER EXERCISES **********
