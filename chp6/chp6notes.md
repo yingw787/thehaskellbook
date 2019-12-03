@@ -149,3 +149,30 @@ Prelude> :r
       In an equation for ‘it’: it = inoe == inoe
 *Identity>
 ```
+
+********** BEGIN EXERCISES: EQ INSTANCES **********
+
+Write the `Eq` instance for the datatype provided.
+
+```haskell
+-- (1)
+data TisAnInteger = TisAn Integer
+-- (2)
+data TwoIntegers = Two Integer Integer
+-- (3)
+data StringOrInt = TisAnInt Int | TisAString String
+-- (4)
+data Pair a = Pair a a
+-- (5)
+data Tuple a b = Tuple a b
+-- (6)
+data Which a = ThisOne a | ThatOne a
+-- (7)
+data EitherOr a = Hello a | Goodbye b
+```
+
+__________
+
+See `eq_instances.hs`.
+
+********** END EXERCISES: EQ INSTANCES **********
