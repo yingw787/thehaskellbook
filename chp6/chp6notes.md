@@ -88,3 +88,44 @@ Prelude> Trivial' == Trivial'
 True
 Prelude>
 ```
+
+- Implement data type `dayOfWeek` and `Date`. See `dates.hs`.
+
+```haskell
+*Dates> Date Thu 10 == Date Thu 10
+True
+*Dates> Date Thu 10 == Date Thu 11
+False
+*Dates> Date Thu 10 == Date Weds 10
+False
+*Dates>
+```
+
+- Partial function: One that doesn't handle all the possible cases.
+    - Different from partial application of functions.
+    - (PERSONAL NOTE: So these do exist in Haskell)
+    - Must avoid partial functions where possible. In GHCi, type `:set -Wall` to
+      turn on all warnings. This may be annoying if you are writing a method to
+      do type casting:
+
+        ```haskell
+        *Dates> :set -Wall
+        *Dates> :{
+        *Dates| f :: Int -> Bool
+        *Dates| f 2 = True
+        *Dates| :}
+
+        <interactive>:64:1: warning: [-Wincomplete-patterns]
+            Pattern match(es) are non-exhaustive
+            In an equation for ‘f’:
+                -- GHCi is mad because you are not handling cases where latter
+                -- argument is not in set {2}. Assuming you have `:set -Wall`.
+                Patterns not matched: p where p is not one of {2}
+        *Dates>
+        ```
+    - Answer here is to have an catch-all case that matches everything, or use a
+      data type that isn't huge like `Int`.
+    - Use Enum or bounded data types in order to fully specify everything and
+      have everything else be compile-time errors.
+
+- You can specify typeclasses when implementing other typeclasses.
