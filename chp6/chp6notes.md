@@ -128,4 +128,24 @@ False
     - Use Enum or bounded data types in order to fully specify everything and
       have everything else be compile-time errors.
 
-- You can specify typeclasses when implementing other typeclasses.
+- You can specify typeclasses when implementing other typeclasses. See
+  `identity.hs`.
+
+```haskell
+Prelude> :r
+[1 of 1] Compiling Identity         ( identity.hs, interpreted )
+-- Ok, one module loaded. (commenting out due to syntax highlighting
+-- issues in markdown)
+*Identity> data NoEq = NoEqInst deriving Show
+*Identity> inoe = Identity NoEqInst
+-- When trying to execute (==), because data constructor NoEq derives Show,
+-- and because inoe is also an instance of Identity, (==) is undefined for the
+-- specified types.
+*Identity> inoe == inoe
+
+<interactive>:71:1: error:
+    • No instance for (Eq NoEq) arising from a use of ‘==’
+    • In the expression: inoe == inoe
+      In an equation for ‘it’: it = inoe == inoe
+*Identity>
+```
