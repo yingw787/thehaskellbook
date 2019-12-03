@@ -1207,7 +1207,22 @@ Prelude>
 
 __________
 
-Given a type, write the function
+Given a type, write the function.
+
+1. `i x = x` (CORRECT)
+2. `c x y = x` (CORRECT)
+3. `c'' x y = x` (CORRECT)
+4. `c' x y = y` (CORRECT)
+5. `r = tail` (CORRECT)
+6. `co = (bToc b)` (INCORRECT, `co x y z = x $ y z`, from
+   https://github.com/johnchandlerburnham/hpfp) (PERSONAL QUESTION: I don't get
+   how they arrived at this answer)
+7. `a x y = y` (??) (INCORRECT, `a x y = fst(y, x y)`, from
+   https://github.com/johnchandlerburnham/hpfp) (PERSONAL QUESTION: I don't get
+   how they arrived at this answer)
+8. `a' x y = fst(x, x y)` (INCORRECT, `a' x y = x y`, from
+   https://github.com/johnchandlerburnham/hpfp) (PERSONAL QUESTION: I don't get
+   how they arrived at this answer)
 
 __________
 
