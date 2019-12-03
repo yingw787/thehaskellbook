@@ -64,8 +64,20 @@ Prelude> Trivial == Trivial
 Prelude> :{
 Prelude| data Trivial = Trivial'
 Prelude| instance Eq Trivial where
+--       0        1  2       3
 Prelude| Trivial' == Trivial' = True
+--       4        5  6          7
 Prelude| :}
+-- 0. `instance` declares a typeclass instance.
+-- 1. Typeclass the `instance` is providing.
+-- 2. Data type instance is provided for. Here, it is implementing the
+-- `Eq` typeclass for the `Trivial` data type.
+-- 3. `where` terminates initial declaration and begins declaration.
+-- 4. `Trivial'` is the data constructor as first argument to the
+-- (==) operation.
+-- 5. Operator in declaration.
+-- 6. Second argument of operator.
+-- 7. Result of this operation.
 
 <interactive>:20:10: warning: [-Wmissing-methods]
     • No explicit implementation for
