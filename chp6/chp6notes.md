@@ -10,3 +10,69 @@
   recompilation and retain static type safety (e.g. no type casting)
 
 - Type classes are like interfaces to data
+    - `Eq` implements equality / comparison checks and provides a way for data
+      types to use equality operators
+    - `Num` implements numeric operators
+
+```haskell
+Prelude> :info Bool
+data Bool = False | True 	-- Defined in ‘GHC.Types’
+-- Can be tested for equality
+instance Eq Bool -- Defined in ‘GHC.Classes’
+-- Can be put into a sequential order (strictly ordered)
+instance Ord Bool -- Defined in ‘GHC.Classes’
+-- Renders things into strings
+instance Show Bool -- Defined in ‘GHC.Show’
+-- Parses strings into things. Don't use it (PERSONAL NOTE: probably
+-- something like `eval`, which results is severe security issues)
+instance Read Bool -- Defined in ‘GHC.Read’
+-- Can be enumerated
+instance Enum Bool -- Defined in ‘GHC.Enum’
+-- Has an upper / lower bound
+instance Bounded Bool -- Defined in ‘GHC.Enum’
+```
+
+- Typeclasses have a heirarchy
+    - All `Fractional` implements `Num`, but not all `Num` implements
+      `Fractional`.
+    - All `Ord` implements `Eq`
+    - All `Enum` implements `Ord`.
+    - To be able to put something into an enumerated list, they must be ordered;
+      to order something, they must be able to be compared.
+
+- Some datatypes cannot implement some typeclasses (e.g. functions cannot
+  implement equality `:info (->)`)
+
+- Typeclasses allow for compile-time checking of operations to see whether it is
+  valid for a given data type.
+
+- Haskell does not provide universal stringification (`Show`) or equality
+  (`Eq`).
+
+```haskell
+-- Define a new data type called `Trivial`.
+Prelude> data Trivial = Trivial
+-- Since (==) is not implemented, and because data type does not derive from
+-- `Eq` typeclass, this results in an exception.
+Prelude> Trivial == Trivial
+
+<interactive>:11:1: error:
+    • No instance for (Eq Trivial) arising from a use of ‘==’
+    • In the expression: Trivial == Trivial
+      In an equation for ‘it’: it = Trivial == Trivial
+-- We can implement a method that checks this data type for equality.
+Prelude> :{
+Prelude| data Trivial = Trivial'
+Prelude| instance Eq Trivial where
+Prelude| Trivial' == Trivial' = True
+Prelude| :}
+
+<interactive>:20:10: warning: [-Wmissing-methods]
+    • No explicit implementation for
+        either ‘Prelude.==’ or ‘/=’
+    • In the instance declaration for ‘Eq Trivial’
+-- One expression that can be constructed from definition.
+Prelude> Trivial' == Trivial'
+True
+Prelude>
+```
