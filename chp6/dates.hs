@@ -18,6 +18,7 @@ instance Eq DayOfWeek where
     (==) Fri Fri = True
     (==) Sat Sat = True
     (==) Sun Sun = True
+    -- Unconditional case, for checking mismatched cases.
     (==) _ _ = False
 
 -- Implement equality for data type 'Date'.
