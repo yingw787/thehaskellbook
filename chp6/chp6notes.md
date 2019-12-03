@@ -373,6 +373,88 @@ Prelude> max "Julie"
 Prelude>
 ```
 
-```haskell
+- Ord implies Eq
 
+```haskell
+Prelude> :{
+-- No type constraint results in a compile-time error.
+Prelude| check' :: a -> a -> Bool
+Prelude| check' a a' = (==) a a'
+Prelude| :}
+
+<interactive>:12:15: error:
+    • No instance for (Eq a) arising from a use of ‘==’
+      Possible fix:
+        add (Eq a) to the context of
+          the type signature for:
+            check' :: forall a. a -> a -> Bool
+    • In the expression: (==) a a'
+      In an equation for ‘check'’: check' a a' = (==) a a'
+Prelude> :{
+-- However, specifying a subset of `Eq` is fine, since `Ord` inherits
+-- operations needed by `Eq`.
+Prelude| check' :: Ord a => a -> a -> Bool
+Prelude| check' a a' = (==) a a'
+Prelude| :}
+Prelude>
 ```
+
+********** START EXERCISES: WILL THEY WORK? **********
+
+Take a look at the following code examples and try to decide if they will work,
+what result they will return if they do, and why or why not (be sure, as always,
+to test them in your REPL once you have decided on your answer):
+
+1.  Shouldn't work. `length` operands are both working on input arguments of type
+    `Foldable`, which should return a result of type `Integral`, which should be
+    constrained by `Ord` since it is a numeric type. However, since no
+    parentheses are around both `length` arguments, and the expression is
+    left-associative, `max` will only be operating on one input argument, which
+    will result in an exception.
+
+    (INCORRECT, parentheses are executed first.)
+
+    ```haskell
+    Prelude> max (length [1, 2, 3]) (length [8, 9, 10, 11, 12])
+    5
+    Prelude>
+    ```
+
+2.  Should work. Multiplication operations should result in abstract class `Num`
+    return values. `compare` will be operating on two `Num` values, which should
+    resolve to `Bool` successfully.
+
+    (PARTIALLY CORRECT, resolves to `Ordering` data type.)
+
+    ```haskell
+    Prelude> compare (3 * 4) (3 * 5)
+    LT
+    Prelude>
+    ```
+
+3.  Shouldn't work. `compare` only works on values of the same data type, or
+    that can be resolved to the same data type.
+
+    ```haskell
+    Prelude> compare "Julie" True
+
+    <interactive>:32:17: error:
+        • Couldn't match expected type ‘[Char]’ with actual type ‘Bool’
+        • In the second argument of ‘compare’, namely ‘True’
+        In the expression: compare "Julie" True
+        In an equation for ‘it’: it = compare "Julie" True
+    Prelude>
+    ```
+
+4.  Should work. Parentheses are resolved first, which results in two `Num`
+    return values, which can be executed with `>` as `Num` inherits from `Ord`.
+
+    (CORRECT)
+
+    ```haskell
+    Prelude> (5 + 3) > (3 + 6)
+    False
+    Prelude>
+    ```
+
+********** END EXERCISES: WILL THEY WORK? **********
