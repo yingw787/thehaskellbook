@@ -22,3 +22,24 @@ module MatchTheTypes where
 --
 -- f :: Fractional a => a
 -- f = 1.0
+
+-- (4)
+-- f :: Float
+-- f = 1.0
+--
+-- f :: RealFrac a => a
+-- f = 1.0
+
+-- (5)
+-- freud :: a -> a
+-- freud x = x
+--
+-- freud :: Ord a => a -> a
+-- freud x = x
+
+-- (6)
+-- freud' :: a -> a
+-- freud' x = x
+--
+-- freud' :: Int -> Int
+-- freud' x = x
