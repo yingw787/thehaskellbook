@@ -593,20 +593,81 @@ Prelude>
 
 Multiple choice
 
-1.
-2.
-3.
-4.
-5.
+1. c) (CORRECT, ANSWER KEY https://github.com/johnchandlerburnham/hpfp)
+2. b) (CORRECT, ANSWER KEY https://github.com/johnchandlerburnham/hpfp)
+3. a) (CORRECT, ANSWER KEY https://github.com/johnchandlerburnham/hpfp)
+4. c) (CORRECT, ANSWER KEY https://github.com/johnchandlerburnham/hpfp)
+5. a) (CORRECT, ANSWER KEY https://github.com/johnchandlerburnham/hpfp)
 
 __________
 
 Does it typecheck?
 
-1.
-2.
-3.
-4.
+1. No, it does not typecheck, no typeclass constraint `Show`.
+
+(CORRECT)
+
+```haskell
+Prelude> :{
+Prelude| data Person = Person Bool
+Prelude| printPerson :: Person -> IO ()
+Prelude| printPerson person = putStrLn (show person)
+Prelude| :}
+
+<interactive>:8:32: error:
+    • No instance for (Show Person) arising from a use of ‘show’
+    • In the first argument of ‘putStrLn’, namely ‘(show person)’
+      In the expression: putStrLn (show person)
+      In an equation for ‘printPerson’:
+          printPerson person = putStrLn (show person)
+Prelude>
+```
+
+2. It should typecheck, as method `settleDown` does not have a type signature,
+   enabling type inference.
+
+(INCORRECT, `(==)` implies typeclass constraint `Eq`.)
+
+```haskell
+Prelude> :{
+Prelude| data Mood = Blah | Woot deriving Show
+Prelude| settleDown x = if x == Woot then Blah else x
+Prelude| :}
+
+<interactive>:12:19: error:
+    • No instance for (Eq Mood) arising from a use of ‘==’
+    • In the expression: x == Woot
+      In the expression: if x == Woot then Blah else x
+      In an equation for ‘settleDown’:
+          settleDown x = if x == Woot then Blah else x
+Prelude>
+```
+
+3. Below:
+    a) Data of data type `Mood`. (CORRECT, ANSWER KEY
+    https://github.com/johnchandlerburnham/hpfp)
+    b) Type translation error, since `Int` cannot compare to `Mood`. (CORRECT,
+    ANSWER KEY https://github.com/johnchandlerburnham/hpfp)
+    c) Compile-time error, as neither `Blah` nor `Woot` derive from `Ord`.
+    (PARTIALLY CORRECT, `Mood` does not derive from `Ord`, ANSWER KEY
+    https://github.com/johnchandlerburnham/hpfp)
+
+4. Compile-time error implementing `s1` (two arguments instead of three, not
+   sure how nulls are handled)
+
+(INCORRECT, no compile-time error.)
+
+```haskell
+Prelude> :{
+Prelude| type Subject = String
+Prelude| type Verb = String
+Prelude| type Object = String
+Prelude| data Sentence = Sentence Subject Verb Object deriving (Eq, Show)
+Prelude| s1 = Sentence "dogs" "drool"
+Prelude| s2 = Sentence "Julie" "loves" "dogs"
+Prelude| :}
+Prelude>
+```
 
 __________
 
