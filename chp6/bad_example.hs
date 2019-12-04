@@ -25,7 +25,8 @@ instance Numberish Year where
     toNumber (Year n) = n
 
 -- After the first parameter is provided to method `sumNumberish`, concrete
--- types are resolved by the input arguments to `sumNumberish` only.
+-- types are resolved by the input arguments to `sumNumberish` only, as both
+-- `Age` and `Year` implement the same methods.
 sumNumberish :: Numberish a => a -> a -> a
 sumNumberish a a' = fromNumber summed
     where integerOfA = toNumber a
