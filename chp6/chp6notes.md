@@ -698,9 +698,47 @@ __________
 
 Match the types:
 
-1.
-2.
-3.
+See `MatchTheTypes.hs`; typing into file to avoid unnecessary `deriving Show`
+which may result in GHCi errors.
+
+1. Can match the type, no operations are executed.
+
+(INCORRECT, apparently literals need to be cast to `Num` types.)
+
+```haskell
+MatchTheTypes.hs:11:5: error:
+    • No instance for (Num a) arising from the literal ‘1’
+      Possible fix:
+        add (Num a) to the context of
+          the type signature for:
+            i :: forall a. a
+    • In the expression: 1
+      In an equation for ‘i’: i = 1
+```
+
+2. Can match the type, `Float` should derive from `Num`.
+
+(INCORRECT, `Float` may need some operations not available in `Num`.)
+
+```haskell
+MatchTheTypes.hs:17:5: error:
+    • Could not deduce (Fractional a) arising from the literal ‘1.0’
+      from the context: Num a
+        bound by the type signature for:
+                   f :: forall a. Num a => a
+        at MatchTheTypes.hs:16:1-15
+      Possible fix:
+        add (Fractional a) to the context of
+          the type signature for:
+            f :: forall a. Num a => a
+    • In the expression: 1.0
+      In an equation for ‘f’: f = 1.0
+```
+
+3. Can match the type; `Fractional` and `Float` should not be too different (?)
+
+(CORRECT)
+
 4.
 5.
 6.
