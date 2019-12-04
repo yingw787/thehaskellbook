@@ -752,11 +752,76 @@ MatchTheTypes.hs:17:5: error:
 
 (CORRECT)
 
-7.
-8.
-9.
-10.
-11.
+7. Can match the type, abstract type signature for method gets cast to concrete
+   base type with input arguments.
+
+(INCORRECT)
+
+```haskell
+MatchTheTypes.hs:54:13: error:
+    • Couldn't match expected type ‘a’ with actual type ‘Int’
+      ‘a’ is a rigid type variable bound by
+        the type signature for:
+          sigmund :: forall a. a -> a
+        at MatchTheTypes.hs:53:1-17
+    • In the expression: myX
+      In an equation for ‘sigmund’: sigmund x = myX
+    • Relevant bindings include
+        x :: a (bound at MatchTheTypes.hs:54:9)
+        sigmund :: a -> a (bound at MatchTheTypes.hs:54:1)
+```
+
+8. Can match the type, with typeclass constraint `Num`, should be able to process
+   type `Int`.
+
+(INCORRECT, likely because with concrete casting, type signature comes into
+conflict with method definition as method hardcodes `Int`.)
+
+```haskell
+MatchTheTypes.hs:63:14: error:
+    • Couldn't match expected type ‘a’ with actual type ‘Int’
+      ‘a’ is a rigid type variable bound by
+        the type signature for:
+          sigmund' :: forall a. Num a => a -> a
+        at MatchTheTypes.hs:62:1-27
+    • In the expression: myX
+      In an equation for ‘sigmund'’: sigmund' x = myX
+    • Relevant bindings include
+        x :: a (bound at MatchTheTypes.hs:63:10)
+        sigmund' :: a -> a (bound at MatchTheTypes.hs:63:1)
+```
+
+9. Can match the type, concrete base type is a valid method definition for
+   inputs of type `Int`.
+
+(CORRECT)
+
+10. Can match the type, abstract type that has typeclass constraint `Ord` should
+    be able to use `sort`.
+
+(CORRECT)
+
+11. Cannot match types, because method `mySort` forces method `signifier` to use
+    concrete types.
+
+(CORRECT)
+
+```haskell
+MatchTheTypes.hs:90:29: error:
+    • Couldn't match type ‘a’ with ‘Char’
+      ‘a’ is a rigid type variable bound by
+        the type signature for:
+          signifier :: forall a. Ord a => [a] -> a
+        at MatchTheTypes.hs:89:1-30
+      Expected type: [Char]
+        Actual type: [a]
+    • In the first argument of ‘mySort’, namely ‘xs’
+      In the first argument of ‘head’, namely ‘(mySort xs)’
+      In the expression: head (mySort xs)
+    • Relevant bindings include
+        xs :: [a] (bound at MatchTheTypes.hs:90:11)
+        signifier :: [a] -> a (bound at MatchTheTypes.hs:90:1)
+```
 
 __________
 
