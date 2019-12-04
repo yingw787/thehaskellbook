@@ -673,10 +673,26 @@ __________
 
 Given a datatype declaration, what can we do?
 
-1.
-2.
-3.
-4.
+1. Should typecheck, since data type `Rocks` is a subset of data type `String`
+   and data type `Yeah` is a subset of data type `Bool`, passing in data of type
+   `String` and of type `Bool` into `Yeah` instantiation should still match type
+   signature.
+
+(INCORRECT)
+
+2. Should typecheck, type declarations are present in data declaration.
+
+(CORRECT)
+
+3. Should not typecheck, no equality instance comparator method.
+
+(INCORRECT, does compile.)
+
+4. Should not typecheck, `Papu` does not derive from `Ord`.
+
+(CORRECT)
+
+See `datatypes.hs`.
 
 __________
 
