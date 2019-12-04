@@ -517,3 +517,49 @@ Prelude> enumFromThenTo 'a' 'z' 'c'
 "a"
 Prelude>
 ```
+
+- Show
+    - Not a serialization format, solely for human readability.
+    - Side effect: potentially observable result apart from the value the
+      expression evaluates to.
+    - Haskell separates effectful computations from pure computations.
+
+```haskell
+-- Value
+Prelude> myVal :: String; myVal = undefined
+-- Method of obtaining a value
+Prelude> ioString :: IO String; ioString = undefined
+Prelude>
+```
+
+- Working with `Show`
+
+```haskell
+Prelude> data Mood = Blah
+Prelude> Blah
+
+<interactive>:48:1: error:
+    • No instance for (Show Mood) arising from a use of ‘print’
+    • In a stmt of an interactive GHCi command: print it
+-- GHCi supports deriving `Show` typeclasses by default. Still need to
+-- derive it.
+Prelude> data Mood = Blah deriving Show
+Prelude> Blah
+Blah
+Prelude>
+```
+
+- Read
+    - Don't use it.
+    - Problem is in the `String` data type. A `String` is a list, which could be
+      empty, or stretch to infinity.
+    - No guarantee that `String` will be a valid representation of an `Integer`
+      value (e.g. division by 0).
+    - `read` is a partial function: function that doesn't return a proper value
+      as a result *for all possible* inputs.
+    - Avoid using such methods in Haskell.
+
+- Instances are dispatched by type
+    - Type classes: defined by set of operations and values all instances will
+      provide.
+    - Type class instances: unique pairings of the type class and a type.
