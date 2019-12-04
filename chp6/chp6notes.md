@@ -569,3 +569,19 @@ Prelude>
 - Don't define type classes like in `bad_example.hs`.
 
 - Don't use type classes to define default values.
+    - Otherwise, GHC has no idea what type `defaultNumber` is other than that
+      it's provided by `Numberish`s instances.
+    - Even then, we can cast the value to explicitly tell Haskell what we want.
+
+- Gimme more operations
+    - No constraints on polymorphic typeclasses means not many operations
+      available
+    - No real way around this problem except to implement typcelass constraints
+      (casting operations using `(+)` with `Num` typeclass constraint)
+
+- Concrete types imply all the type classes they provide
+    - If you implemented method `add` with a type signature of all concrete
+      types (e.g. `Int`), you can extend method `add` with all operations
+      supported by that/those concrete types (e.g. `(<)`, because `Int` supports
+      `Ord` typeclass constraint).
+    - Adding typeclass constraint to a concrete type would be meaningless.
