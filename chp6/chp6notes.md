@@ -562,4 +562,10 @@ Prelude>
 - Instances are dispatched by type
     - Type classes: defined by set of operations and values all instances will
       provide.
-    - Type class instances: unique pairings of the type class and a type.
+    - Types: Instances of a type class.
+    - Type class instances: unique pairings of the type class and a type. The
+      ways a type uses the functions of the type class.
+
+- Don't define type classes like in `bad_example.hs`.
+
+- Don't use type classes to define default values.
