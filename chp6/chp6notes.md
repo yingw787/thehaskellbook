@@ -827,7 +827,6 @@ __________
 
 Type-Kwon-Do Two: Electric Typealoo
 
-1.
-2.
+See `TypeKwonDo.hs`.
 
 ********** END CHAPTER EXERCISES **********
