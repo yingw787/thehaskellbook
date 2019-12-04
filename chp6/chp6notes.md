@@ -585,3 +585,59 @@ Prelude>
       supported by that/those concrete types (e.g. `(<)`, because `Int` supports
       `Ord` typeclass constraint).
     - Adding typeclass constraint to a concrete type would be meaningless.
+    - Using typeclasses is better for describing what you want to do with your
+      data, as opposed to concrete types which may allow the function to do
+      something unintended with an operation supported by a hidden typeclass.
+
+********** BEGIN CHAPTER EXERCISES **********
+
+Multiple choice
+
+1.
+2.
+3.
+4.
+5.
+
+__________
+
+Does it typecheck?
+
+1.
+2.
+3.
+4.
+
+__________
+
+Given a datatype declaration, what can we do?
+
+1.
+2.
+3.
+4.
+
+__________
+
+Match the types:
+
+1.
+2.
+3.
+4.
+5.
+6.
+7.
+8.
+9.
+10.
+11.
+
+__________
+
+Type-Kwon-Do Two: Electric Typealoo
+
+1.
+2.
+
+********** END CHAPTER EXERCISES **********
