@@ -739,9 +739,19 @@ MatchTheTypes.hs:17:5: error:
 
 (CORRECT)
 
-4.
-5.
-6.
+4. Can match the type. `RealFrac` partially derives from `Fractional`. (Did not
+   know we were allowed use of GHCi and `:info`)
+
+(CORRECT)
+
+5. Can match the type, typeclass constraint is redundant.
+
+(CORRECT)
+
+6. Can match the type, concrete type w/o no operations should still compile.
+
+(CORRECT)
+
 7.
 8.
 9.
