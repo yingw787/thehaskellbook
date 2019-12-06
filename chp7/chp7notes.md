@@ -233,3 +233,35 @@ mflip f x y = f y x
 (CORRECT)
 
 ********** END EXERCISES: GRAB BAG **********
+
+- Most of the type lambdas are used in higher-order functions, and only when
+  function is unique and does not need to be referenced later.
+
+- Pattern matching
+    - Match values against patterns, bind variables to successful matches.
+    - Patterns: undefined variables, numeric literals, list syntax
+    - Forms basis for effective multipledispatch
+
+```haskell
+Prelude> :{
+-- Order of pattern matching matters! Always put the broader match after
+-- narrower matches.
+Prelude| isItTwo :: Integer -> Bool
+Prelude| isItTwo 2 = True
+-- Pattern match on anything else
+--
+-- GHC(i) should be raising a warning (or should be configured to raise a
+-- warning using `:set -Wall`) if catch-all pattern behavior is undefined.
+-- By default, Haskell will return "bottom", which will throw an exception.
+Prelude| isItTwo _ = False
+Prelude| :}
+Prelude> isItTwo 2
+True
+Prelude> isItTwo 1
+False
+Prelude> isItTwo 100
+False
+Prelude>
+```
+
+- Pattern matching against data constructors
