@@ -366,3 +366,60 @@ Prelude>
 ```
 
 ********** END EXERCISES: VARIETY PACK **********
+
+- Case expressions
+    - Return a different result based on different inputs.
+
+- Each time a case match or pattern match on a sum type (like `Bool`), we should
+  define how we handle each case in the sum type. Otherwise, a runtime error
+  could occur.
+
+```haskell
+-- Ternary syntax.
+Prelude> funcX1 x = if x + 1 == 1 then "AWESOME" else "wut"
+Prelude> funcX1 0
+"AWESOME"
+Prelude> funcX1 1
+"wut"
+-- Switch/case syntax.
+Prelude> :{
+Prelude| funcX2 x =
+Prelude|   case x + 1 == 1 of
+Prelude|     True -> "AWESOME"
+Prelude|     False -> "wut"
+Prelude| :}
+Prelude> funcX2 0
+"AWESOME"
+Prelude> funcX2 1
+"wut"
+Prelude>
+```
+
+```haskell
+-- Check palindrome, as switch/case syntax.
+Prelude> :{
+Prelude| pal xs =
+Prelude|   case xs == reverse xs of
+Prelude|     True -> "yes"
+Prelude|     False -> "no"
+Prelude| :}
+Prelude> pal "abcba"
+"yes"
+Prelude> pal "abcd"
+"no"
+-- Check palindrome, using "where" clause.
+Prelude> :{
+Prelude| pal' xs =
+Prelude|   case y of
+Prelude|     True -> "yes"
+Prelude|     False -> "no"
+Prelude|   where y = xs == reverse xs
+Prelude| :}
+Prelude> pal' "abcba"
+"yes"
+Prelude> pal' "abcd"
+"no"
+Prelude>
+```
+
+See `greetIfCool3.hs`.
