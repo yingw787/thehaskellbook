@@ -308,3 +308,61 @@ See `wherePenguinsLive.hs`.
 
 - Use GHCi's `:browse` method in order to see method type signatures for an
   entire module.
+
+********** BEGIN EXERCISES: VARIETY PACK **********
+
+1. Below:
+
+a) The type of `k` should be `k :: (a, b) -> a`.
+
+b) `k2` should be a concrete base type, because the value of `k2` can be fully
+evaluated as `k` is applied to an input argument. The concrete base type is
+`[Char]`. It will not be the same type as `k1` or `k3`, since those are `Num a
+=> a`.
+
+c) `k3`.
+
+(ALL CORRECT)
+
+```haskell
+Prelude> k (x, y) = x
+Prelude> :t k
+k :: (a, b) -> a
+Prelude> k1 = k ((4 - 1), 10)
+Prelude> k2 = k ("three", (1 + 2))
+Prelude> k3 = k (3, True)
+Prelude> k1
+3
+Prelude> k2
+"three"
+Prelude> k3
+3
+Prelude> :t k1
+k1 :: Num a => a
+Prelude> :t k2
+k2 :: [Char]
+Prelude> :t k3
+k3 :: Num a => a
+Prelude>
+```
+
+2. Below:
+
+```haskell
+f :: (a, b, c) -> (d, e, f) -> ((a, d), (c, f))
+f (a, b, c) (d, e, f) = ((a, d), (c, f))
+```
+
+(CORRECT)
+
+```haskell
+Prelude> :{
+Prelude| f :: (a, b, c) -> (d, e, f) -> ((a, d), (c, f))
+Prelude| f (a, b, c) (d, e, f) = ((a, d), (c, f))
+Prelude| :}
+Prelude> f (1, 2, 3) (4, 5, 6)
+((1,4),(3,6))
+Prelude>
+```
+
+********** END EXERCISES: VARIETY PACK **********
