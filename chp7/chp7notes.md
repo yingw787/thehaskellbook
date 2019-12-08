@@ -297,3 +297,14 @@ Prelude> printUser rUser
 callen 10456
 Prelude>
 ```
+
+See `wherePenguinsLive.hs`.
+
+- Pattern matching tuples
+    - You can use variables to match within tuples in the method definition just
+      as in the type signature.
+
+- See `matchingTuples1.hs`.
+
+- Use GHCi's `:browse` method in order to see method type signatures for an
+  entire module.
