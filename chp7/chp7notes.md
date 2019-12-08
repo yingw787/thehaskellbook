@@ -531,3 +531,67 @@ Prelude>
 ```
 
 ********** END EXERCISES: CASE PRACTICE **********
+
+- Higher-order functions: functions that accept functions as arguments
+
+```haskell
+-- `flip` first argument is a function, two arguments afterwards are
+-- arguments to method.
+Prelude> :t flip
+-- A function argument in a function type can be expressed using parentheses
+-- to define type signature of inner method.
+flip :: (a -> b -> c) -> b -> a -> c
+Prelude> (-) 10 1
+9
+Prelude> fSub = flip (-)
+Prelude> fSub 10 1
+-9
+Prelude>
+```
+
+- Review of how parentheses associate in type signatures:
+
+```haskell
+Prelude> :{
+-- Returns last argument, no parentheses
+Prelude| returnLast :: a -> b -> c -> d -> d
+Prelude| returnLast _ _ _ d = d
+Prelude| :}
+Prelude> returnLast 0 1 2 3
+3
+-- Parenthesized, but with no change in behavior
+Prelude> :{
+Prelude| returnLast' :: a -> (b -> (c -> (d -> d)))
+Prelude| returnLast' _ _ _ d = d
+Prelude| :}
+Prelude> returnLast' 0 1 2 3
+3
+-- Broken, type signature implies a single function that is the sole
+-- argument to `returnBroke`.
+Prelude> :{
+Prelude| returnBroke :: (((a -> b) -> c) -> d) -> d
+Prelude| returnBroke _ _ _ d = d
+Prelude| :}
+
+<interactive>:88:1: error:
+    • Couldn't match expected type ‘d’
+                  with actual type ‘p0 -> p1 -> p2 -> p2’
+      ‘d’ is a rigid type variable bound by
+        the type signature for:
+          returnBroke :: forall a b c d. (((a -> b) -> c) -> d) -> d
+        at <interactive>:87:1-42
+    • The equation(s) for ‘returnBroke’ have four arguments,
+      but its type ‘(((a -> b) -> c) -> d) -> d’ has only one
+    • Relevant bindings include
+        returnBroke :: (((a -> b) -> c) -> d) -> d
+          (bound at <interactive>:88:1)
+Prelude> :{
+Prelude| returnAfterApply :: (a -> b) -> a -> c -> b
+Prelude| returnAfterApply f a c = f a
+Prelude| :}
+Prelude>
+```
+
+- We parenthesize to the left so that we can refer to a separate function.
+
+- See `employeeRank.hs`.
