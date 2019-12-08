@@ -31,4 +31,6 @@ employeeRank e e' =
     case compare e e' of
         GT -> reportBoss e e'
         EQ -> putStrLn "Neither employee is the boss"
+        -- Flip order of reporting by passing method `reportBoss` to method
+        -- `flip`.
         LT -> (flip reportBoss) e e'
