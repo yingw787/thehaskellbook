@@ -423,3 +423,111 @@ Prelude>
 ```
 
 See `greetIfCool3.hs`.
+
+********** BEGIN EXERCISES: CASE PRACTICE **********
+
+1. Below:
+
+```haskell
+functionC x y =
+  case x > y of
+    True -> x
+    False -> y
+```
+
+(CORRECT)
+
+```haskell
+-- Original solution
+Prelude> :{
+Prelude| functionC x y = if (x > y) then x else y
+Prelude| :}
+Prelude> functionC 0 5
+5
+Prelude> functionC 5 5
+5
+Prelude> functionC 6 5
+6
+Prelude> :{
+Prelude| functionC x y =
+Prelude|   case x > y of
+Prelude|     True -> x
+Prelude|     False -> y
+Prelude| :}
+Prelude> functionC 0 5
+5
+Prelude> functionC 5 5
+5
+Prelude> functionC 6 5
+6
+Prelude>
+```
+
+2. Below:
+
+```haskell
+ifEvenAdd2_2 n =
+  case even n of
+    True -> n + 2
+    False -> n
+```
+
+(CORRECT)
+
+```haskell
+Prelude> ifEvenAdd2 n = if even n then (n+2) else n
+Prelude> ifEvenAdd2 1
+1
+Prelude> ifEvenAdd2 2
+4
+Prelude> ifEvenAdd2 3
+3
+Prelude> ifEvenAdd2 4
+6
+Prelude> :{
+Prelude| ifEvenAdd2_2 n =
+Prelude|   case even n of
+Prelude|     True -> n + 2
+Prelude|     False -> n
+Prelude| :}
+Prelude> ifEvenAdd2_2 1
+1
+Prelude> ifEvenAdd2_2 2
+4
+Prelude> ifEvenAdd2_2 3
+3
+Prelude> ifEvenAdd2_2 4
+6
+Prelude>
+```
+
+3. Below:
+
+```haskell
+nums x =
+    case compare x 0 of
+        LT -> -1
+        GT -> 1
+        EQ -> 0
+```
+
+(CORRECT)
+
+```haskell
+Prelude> :{
+Prelude| nums x =
+Prelude|     case compare x 0 of
+Prelude|         LT -> -1
+Prelude|         GT -> 1
+Prelude|         EQ -> 0
+Prelude| :}
+Prelude> nums 0
+0
+Prelude> nums 2
+1
+Prelude> nums (-2)
+-1
+Prelude>
+```
+
+********** END EXERCISES: CASE PRACTICE **********
