@@ -26,11 +26,41 @@ reportBoss e e' =
         " is the boss of " ++
         show e'
 
-employeeRank :: Employee -> Employee -> IO ()
-employeeRank e e' =
-    case compare e e' of
+-- First-order approximation of method `employeeRank`.
+--
+-- ```haskell
+-- *EmployeeRank> employeeRank Veep CEO
+-- CEO is the boss of Veep
+-- *EmployeeRank> employeeRank CEO Veep
+-- CEO is the boss of Veep
+-- ```
+--
+-- employeeRank :: Employee -> Employee -> IO ()
+-- employeeRank e e' =
+--     case compare e e' of
+--         GT -> reportBoss e e'
+--         EQ -> putStrLn "Neither employee is the boss"
+--         -- Flip order of reporting by passing method `reportBoss` to method
+--         -- `flip`.
+--         LT -> (flip reportBoss) e e'
+
+-- Second implementation of method `employeeRank`.
+--
+-- Now, method `employeeRank` leverages an *ordering function* that generates a
+-- custom ordering. `employeeRank` becomes a higher-order function.
+--
+-- ```haskell
+-- *EmployeeRank> employeeRank compare Veep CEO
+-- CEO is the boss of Veep
+-- *EmployeeRank> employeeRank compare CEO Veep
+-- CEO is the boss of Veep
+-- ```
+employeeRank :: (
+    Employee ->
+        Employee ->
+            Ordering) -> Employee -> Employee -> IO ()
+employeeRank f e e' =
+    case f e e' of
         GT -> reportBoss e e'
         EQ -> putStrLn "Neither employee is the boss"
-        -- Flip order of reporting by passing method `reportBoss` to method
-        -- `flip`.
         LT -> (flip reportBoss) e e'
