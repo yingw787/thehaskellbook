@@ -625,3 +625,103 @@ oneIsTwo = (flip dodgy) 2
 11. 21 (INCORRECT, 23)
 
 ********** END EXERCISES: ARTFUL DODGY **********
+
+- Guards: decide what to do based on boolean expression evaluation; not
+  `if-then-else`.
+    - Guards are like pass filters (like a sequentially constructed band-pass
+      filter)
+
+```haskell
+-- if/else syntax
+Prelude> :{
+Prelude| myAbs1 :: Integer -> Integer
+Prelude| myAbs1 x = if x < 0 then (-x) else x
+Prelude| :}
+Prelude> myAbs1 (-2)
+2
+Prelude> myAbs1 2
+2
+-- guard syntax
+Prelude> :{
+Prelude| myAbs2 :: Integer -> Integer
+Prelude| myAbs2 x
+-- `|` denotes guard syntax.
+Prelude|   | x < 0 = (-x)
+-- `otherwise` is an alias for boolean `True`,
+-- here used as a catch-all.
+Prelude|   | otherwise = x
+Prelude| :}
+Prelude> myAbs2 (-2)
+2
+Prelude> myAbs2 2
+2
+Prelude>
+```
+
+```haskell
+Prelude> :{
+Prelude| bloodNa :: Integer -> String
+Prelude| bloodNa x
+Prelude|  | x < 135 = "too low"
+Prelude|  | x > 145 = "too high"
+Prelude|  | otherwise = "just right"
+Prelude| :}
+Prelude> bloodNa 0
+"too low"
+Prelude> bloodNa 1000
+"too high"
+Prelude> bloodNa 140
+"just right"
+Prelude>
+```
+
+```haskell
+-- Check if three sides make a triangle, third side is hypotenuse.
+Prelude> :{
+Prelude| isRight :: (Num a, Eq a) => a -> a -> a -> String
+Prelude| isRight a b c
+Prelude|   | a ^ 2 + b ^ 2 == c ^ 2 = "RIGHT ON"
+Prelude|   | otherwise = "not right"
+Prelude| :}
+Prelude> isRight 3 4 5
+"RIGHT ON"
+Prelude> isRight 3 4 9
+"not right"
+Prelude>
+```
+
+```haskell
+-- Map dog years to human years. Doggies age differently than people.
+Prelude> :{
+Prelude| dogYrs :: Integer -> Integer
+Prelude| dogYrs x
+Prelude|   | x <= 0 = 0
+Prelude|   | x <= 1 = x * 15
+Prelude|   | x <= 2 = x * 12
+Prelude|   | x <= 4 = x * 8
+Prelude|   | otherwise = x * 6
+Prelude| :}
+Prelude>
+```
+
+```haskell
+Prelude> :{
+Prelude| avgGrade :: (Fractional a, Ord a) => a -> Char
+Prelude| avgGrade x
+Prelude|   | y >= 0.9 = 'A'
+Prelude|   | y >= 0.8 = 'B'
+Prelude|   | y >= 0.7 = 'C'
+Prelude|   | y >= 0.59 = 'D'
+Prelude|   | y < 0.59 = 'F'
+-- `y` is in the scope of all guard blocks above it.
+-- We could have used `otherwise` as the catch-all, but chose to use `(<)`
+-- instead. This still handles all values.
+--
+-- GHCi cannot always tell you when you haven't accounted for all possible
+-- cases, so it's best to use `otherwise` in the final guard.
+--
+-- Can `:set -Wall` in GHCi to detect errors.
+Prelude|   where y = x / 100
+Prelude| :}
+Prelude>
+```
