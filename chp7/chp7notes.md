@@ -265,3 +265,35 @@ Prelude>
 ```
 
 - Pattern matching against data constructors
+    - Vary what functions do given different inputs (decouple method definitions
+      from input arguments)
+    - Unpack and expose contents of data.
+
+See `registeredUser1.hs`.
+
+See `registeredUser2.hs`.
+
+```haskell
+Prelude> :l registeredUser2.hs
+-- [1 of 1] Compiling RegisteredUser   ( registeredUser2.hs, interpreted )
+-- Ok, one module loaded.
+Prelude> :t RegisteredUser
+RegisteredUser :: Username -> AccountNumber -> User
+Prelude> :t Username
+Username :: String -> Username
+Prelude> :t AccountNumber
+AccountNumber :: Integer -> AccountNumber
+Prelude> printUser UnregisteredUser
+UnregisteredUser
+Prelude> myUser = Username "callen"
+Prelude> myAcct = AccountNumber 10456
+Prelude> :{
+*RegisteredUser| let rUser =
+*RegisteredUser|      RegisteredUser myUser myAcct
+*RegisteredUser| :}
+-- Method to unpack value `RegisteredUser`, and method varies based on different
+-- type constructors.
+Prelude> printUser rUser
+callen 10456
+Prelude>
+```
