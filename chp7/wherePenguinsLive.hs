@@ -32,6 +32,23 @@ macaroni = Peng Antarctica
 little = Peng Australia
 galapagos = Peng Galapagos
 
+-- Use pattern matching to unpack data of type `Penguin`, and use pattern
+-- matching to match on internal `WherePenguinsLives` value to generate a
+-- result.
+galapagosPenguin :: Penguin -> Bool
+galapagosPenguin (Peng Galapagos) = True
+galapagosPenguin _ = False
+
+antarcticPenguin :: Penguin -> Bool
+antarcticPenguin (Peng Antarctica) = True
+antarcticPenguin _ = False
+
+-- `(||)` is the OR method.
+antarcticOrGalapagos :: Penguin -> Bool
+antarcticOrGalapagos p =
+    (galapagosPenguin p) ||
+    (antarcticPenguin p)
+
 main :: IO ()
 main = do
     -- print location of penguin, unpack attribute `WherePenguinsLive` inside of
@@ -41,3 +58,13 @@ main = do
     print $ gimmeWhereTheyLive macaroni
     print $ gimmeWhereTheyLive little
     print $ gimmeWhereTheyLive galapagos
+
+    print $ galapagosPenguin galapagos
+    print $ galapagosPenguin little
+
+    print $ antarcticPenguin gentoo
+    print $ antarcticPenguin little
+
+    print $ antarcticOrGalapagos little
+    print $ antarcticOrGalapagos galapagos
+    print $ antarcticOrGalapagos gentoo
