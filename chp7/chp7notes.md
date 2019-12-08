@@ -595,3 +595,33 @@ Prelude>
 - We parenthesize to the left so that we can refer to a separate function.
 
 - See `employeeRank.hs`.
+
+********** BEGIN EXERCISES: ARTFUL DODGY **********
+
+```haskell
+dodgy x y = x + y * 10
+oneIsOne = dodgy 1
+oneIsTwo = (flip dodgy) 2
+```
+
+2. 11 (CORRECT)
+
+3. 22 (CORRECT)
+
+4. 21 (CORRECT)
+
+5. 12 (CORRECT)
+
+6. 11 (CORRECT)
+
+7. 12 (INCORRECT, 21)
+
+8. 21 (CORRECT)
+
+9. 22 (CORRECT)
+
+10. 13 (INCORRECT, 31)
+
+11. 21 (INCORRECT, 23)
+
+********** END EXERCISES: ARTFUL DODGY **********
