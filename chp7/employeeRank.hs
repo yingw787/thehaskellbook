@@ -64,3 +64,18 @@ employeeRank f e e' =
         GT -> reportBoss e e'
         EQ -> putStrLn "Neither employee is the boss"
         LT -> (flip reportBoss) e e'
+
+-- With a custom ordering possible through a method, we can define different
+-- results for method `employeeRank`.
+--
+-- ```haskell
+-- *EmployeeRank> employeeRank compare CEO Coder
+-- CEO is the boss of Coder
+-- *EmployeeRank> employeeRank codersRuleCEOsDrool CEO Coder
+-- Coder is the boss of CEO
+-- ```
+codersRuleCEOsDrool :: Employee -> Employee -> Ordering
+codersRuleCEOsDrool Coder Coder = EQ
+codersRuleCEOsDrool Coder _ = GT
+codersRuleCEOsDrool _ Coder = LT
+codersRuleCEOsDrool e e' = compare e e'
