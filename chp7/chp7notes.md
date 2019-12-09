@@ -797,3 +797,47 @@ Prelude>
 ```
 
 ********** END EXERCISES: GUARD DUTY **********
+
+- Function composition
+    - Nested higher-order functions
+
+```haskell
+-- Function composition operator `(.)`.
+--
+-- `(f . g) = f (g x)`
+Prelude> :t (.)
+(.) :: (b -> c) -> (a -> b) -> a -> c
+Prelude>
+```
+
+```haskell
+Prelude> xs = [1, 2, 3, 4, 5]
+-- Function composition example.
+-- Evaluated as:
+-- negate (sum xs)
+-- negate (15)
+-- (-15)
+-- By using operand `($)`, we are stating application of arguments
+-- should happen after functions are composed.
+Prelude> negate . sum $ xs
+-15
+Prelude>
+```
+
+```haskell
+-- Enumerate values from 3, and take the first 5.
+Prelude> take 5 (enumFrom 3)
+[3,4,5,6,7]
+-- Same operation, but now it is a function composition.
+--
+-- Yes, you can include numbers in functions if the function remains partially
+-- applied.
+Prelude> take 5 . enumFrom $ 3
+[3,4,5,6,7]
+-- Function composition is good at pipelining additional methods. Here, we
+-- can add `filter odd` before `take 5` to take 5 of an exclusively odd
+-- sequence.
+Prelude> take 5 . filter odd . enumFrom $ 3
+[3,5,7,9,11]
+Prelude>
+```
