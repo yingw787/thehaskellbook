@@ -135,3 +135,48 @@ Prelude>
 ```
 
 - See `brokenMaybe1.hs`.
+
+- Fibonacci numbers
+
+```haskell
+Prelude> :{
+Prelude| fibonacci :: Integral a => a -> a
+Prelude| fibonacci 0 = 0
+Prelude| fibonacci 1 = 1
+Prelude| fibonacci x = fibonacci (x - 1) + fibonacci (x - 2)
+Prelude| :}
+Prelude> fibonacci 6
+8
+Prelude>
+```
+
+- Integral division from scratch
+
+```haskell
+-- Weird indentation errors required by `go` statement. If it's not indented
+-- correctly, then a compile-time error will result.
+--
+-- `go` functions enable us to define functions with a `where` clause that can
+-- accept more arguments than top-level `dividedBy` function can. In this case,
+-- we need to keep track of how manyt times we have subtracted the current
+-- denominator from the current numerator.
+--
+-- Prelude> :{
+-- Prelude| dividedBy :: Integral a => a -> a -> (a, a)
+-- Prelude| dividedBy num denom = go num denom 0
+-- Prelude|   where   go   n d count
+-- Prelude|            | n < d = (count, n)
+-- Prelude|            | otherwise = go (n - d) d (count + 1)
+-- Prelude| :}
+-- Prelude> dividedBy 10 5
+-- (2,0)
+-- Prelude> dividedBy 10 6
+-- (1,4)
+-- Prelude>
+--
+dividedBy :: Integral a => a -> a -> (a, a)
+dividedBy num denom = go num denom 0
+  where   go   n d count
+           | n < d = (count, n)
+           | otherwise = go (n - d) d (count + 1)
+```
