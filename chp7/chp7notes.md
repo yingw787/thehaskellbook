@@ -908,3 +908,20 @@ Prelude> print'' 0
 0
 Prelude>
 ```
+
+********** BEGIN CHAPTER EXERCISES **********
+
+Multiple choice
+
+1. d) (CORRECT, ANSWER KEY https://github.com/johnchandlerburnham/hpfp)
+2. b) (CORRECT, ANSWER KEY https://github.com/johnchandlerburnham/hpfp)
+3. d) (CORRECT, ANSWER KEY https://github.com/johnchandlerburnham/hpfp)
+4. b) (CORRECT, ANSWER KEY https://github.com/johnchandlerburnham/hpfp)
+5. a) (CORRECT, ANSWER KEY https://github.com/johnchandlerburnham/hpfp)
+
+Let's write code
+
+See `LetsWriteCode.hs`.
+See `Arith4.hs`.
+
+********** END CHAPTER EXERCISES **********
