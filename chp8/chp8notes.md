@@ -86,3 +86,52 @@ Prelude>
 10
 
 ********** END INTERMISSION: EXERCISE **********
+
+- Bottom
+    - Refers to computations that do not successfully result in a value.
+    - Denoted by `(⊥)`.
+    - Mostly failed with error, or failed to terminate.
+    - In logic, corresponds to False.
+
+```haskell
+Prelude> :{
+Prelude| f :: Bool -> Int
+-- Calling `True` returns in an exception, which is an example of `bottom`.
+Prelude| f True = error "blah"
+-- Calling `False` doesn't result in a bottom value.
+Prelude| f False = 0
+Prelude| :}
+Prelude> f False
+0
+Prelude> f True
+*** Exception: blah
+CallStack (from HasCallStack):
+  error, called at <interactive>:79:10 in interactive:Ghci20
+Prelude> :{
+-- `f'` is an example of a method that is not totally defined, which results
+-- in an error when a valid typed input argument is called with no expected
+-- return value.
+Prelude| f' :: Bool -> Int
+Prelude| f' False = 0
+Prelude| :}
+Prelude> f' False
+0
+Prelude> f' True
+*** Exception: <interactive>:90:1-12: Non-exhaustive patterns in function f'
+
+Prelude> :{
+-- Method `f''` is equivalent to method `f'`.
+Prelude| f'' :: Bool -> Int
+Prelude| f'' False = 0
+Prelude| f'' _ = error $ "*** Exception: Non-exhaustive patterns in function f"
+Prelude| :}
+Prelude> f'' False
+0
+Prelude> f'' True
+*** Exception: *** Exception: Non-exhaustive patterns in function f
+CallStack (from HasCallStack):
+  error, called at <interactive>:97:9 in interactive:Ghci24
+Prelude>
+```
+
+- See `brokenMaybe1.hs`.
