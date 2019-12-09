@@ -36,3 +36,53 @@ Prelude> factorial 4
 24
 Prelude>
 ```
+
+- Another way to look at recursion
+    - Function composition (taking a function and passing it into another
+      function) is like recursion (except recursion enforces that the same
+      function gets passed around)
+    - Function composition is definite, while recursion is indefinite.
+    - A programming language built on top of lambda calculus has one verb for
+      expressing computations that can b evaluated: *apply*. Everything else is
+      pretty much syntactic sugar.
+
+```haskell
+Prelude> :{
+-- Prelude> incTimes 10 0
+-- 10
+-- Prelude> incTimes 5 0
+-- 5
+-- Prelude> incTimes 5 5
+-- 10
+Prelude| incTimes :: (Eq a, Num a) => a -> a -> a
+Prelude| incTimes 0 n = n
+-- `times` is variable denoting number of times to call method.
+Prelude| incTimes times n = 1 + (incTimes (times - 1) n)
+Prelude| :}
+Prelude> :{
+Prelude| applyTimes :: (Eq a, Num a) => a -> (b -> b) -> b -> b
+Prelude| applyTimes 0 f b = b
+Prelude| applyTimes n f b = f (applyTimes (n - 1) f b)
+-- Prelude> incTimes' 0 10
+-- 10
+-- Prelude> incTimes' 10 0
+-- 10
+-- Prelude> incTimes' 5 5
+-- 10
+Prelude| incTimes' :: (Eq a, Num a) => a -> a -> a
+Prelude| incTimes' times n = applyTimes times (+1) n
+Prelude| :}
+Prelude>
+```
+
+********** BEGIN INTERMISSION: EXERCISE **********
+
+(+1) . applyTimes (4) (+1) $ 5
+(+1) . (+1) . applyTimes (3) (+1) $ 5
+(+1) . (+1) . (+1) . applyTimes (2) (+1) $ 5
+(+1) . (+1) . (+1) . (+1) . applyTimes (1) (+1) $ 5
+(+1) . (+1) . (+1) . (+1) . (+1) . applyTimes (0) (+1) $ 5
+(+1) . (+1) . (+1) . (+1) . (+1) . 5
+10
+
+********** END INTERMISSION: EXERCISE **********
