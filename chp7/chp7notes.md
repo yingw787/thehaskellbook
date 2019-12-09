@@ -841,3 +841,33 @@ Prelude> take 5 . filter odd . enumFrom $ 3
 [3,5,7,9,11]
 Prelude>
 ```
+
+- Pointfree style
+    - Composing functions without specifying their arguments.
+
+```haskell
+-- Variable assignment to method composed with pointfree style
+--
+-- Note that the number of input arguments is not detailed anywhere.
+Prelude> f = negate . sum
+Prelude> f [1..5]
+-15
+-- Method without pointfree style
+Prelude> :{
+Prelude| f :: Int -> [Int] -> Int
+Prelude| f z xs = foldr (+) z xs
+Prelude| :}
+Prelude> :{
+-- Method with pointfree style
+Prelude| f' = foldr (+)
+Prelude| :}
+Prelude> f 0 [1..5]
+15
+Prelude> f' 0 [1..5]
+15
+-- Method to count the number of 'a' characters in character sequence.
+Prelude> f = length . filter (== 'a')
+Prelude> f "abracadabra"
+5
+Prelude>
+```
