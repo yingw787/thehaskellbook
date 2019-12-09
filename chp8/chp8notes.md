@@ -180,3 +180,134 @@ dividedBy num denom = go num denom 0
            | n < d = (count, n)
            | otherwise = go (n - d) d (count + 1)
 ```
+
+********** BEGIN CHAPTER EXERCISES **********
+
+Review of types
+
+(ALL CORRECT, ANSWER KEY https://github.com/johnchandlerburnham/hpfp)
+
+1. d)
+2. b)
+3. d)
+4. b)
+
+Reviewing currying
+
+```haskell
+:{
+cattyConny :: String -> String -> String
+cattyConny x y = x ++ " mrow " ++ y
+flippy = flip cattyConny
+appedCatty = cattyConny "woops"
+frappe = flippy "haha"
+:}
+```
+
+1. `x + "woops mrow woohoo!"`
+
+(CORRECT)
+
+```haskell
+Prelude> :{
+Prelude| cattyConny :: String -> String -> String
+Prelude| cattyConny x y = x ++ " mrow " ++ y
+Prelude| flippy = flip cattyConny
+Prelude| appedCatty = cattyConny "woops"
+Prelude| frappe = flippy "haha"
+Prelude| :}
+Prelude> appedCatty "woohoo!"
+"woops mrow woohoo!"
+Prelude>
+```
+
+2. `"haha mrow 1"` (INCORRECT, `"1 mrow haha"`)
+
+3. `"woops mrow 2 mrow haha"` (CORRECT)
+
+4. `"woops mrow blue mrow haha"` (CORRECT)
+
+5. `"pink mrow haha mrow green mrow woops mrow blue"` (CORRECT)
+
+6. `"are mrow Pugs mrow awesome"` (CORRECT)
+
+Recursion
+
+1. Below:
+
+```haskell
+dividedBy 15 2
+go 15 2 0
+go 13 2 1
+go 11 2 2
+go 9 2 3
+go 7 2 4
+go 5 2 5
+go 3 2 6
+go 1 2 7
+(7, 1)
+```
+
+2. Below:
+
+```haskell
+recursiveSum :: (Eq a, Num a) => a -> a
+recursiveSum 1 = 1
+recursiveSum n = n + recursiveSum (n - 1)
+```
+
+(CORRECT, GHCI RESULTS BELOW)
+
+```haskell
+Prelude> :{
+Prelude| recursiveSum :: (Eq a, Num a) => a -> a
+Prelude| recursiveSum 1 = 1
+Prelude| recursiveSum n = n + recursiveSum (n - 1)
+Prelude| :}
+Prelude> recursiveSum 5
+15
+Prelude>
+```
+
+3. Below:
+
+```haskell
+recursiveAdd :: (Integral a) => a -> a -> a
+recursiveAdd x y = go x y 0
+  where   go   a b count
+           | a == 0 = count
+           | otherwise = go (a - 1) b (count + b)
+```
+
+(CORRECT, GHCI RESULTS BELOW)
+
+```haskell
+Prelude> :{
+Prelude| recursiveAdd :: (Integral a) => a -> a -> a
+Prelude| recursiveAdd x y = go x y 0
+Prelude|   where   go   a b count
+Prelude|            | a == 0 = count
+Prelude|            | otherwise = go (a - 1) b (count + b)
+Prelude| :}
+Prelude> recursiveAdd 7 8
+56
+Prelude> recursiveAdd 8 7
+56
+Prelude> recursiveAdd 9 9
+81
+Prelude>
+```
+
+Fixing dividedBy
+
+See `dividedBy.hs`.
+
+McCarthy 91 function
+
+See `McCarthy91.hs`.
+
+Numbers into words
+
+See `NumbersIntoWords.hs`.
+
+********** END CHAPTER EXERCISES **********
