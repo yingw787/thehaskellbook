@@ -871,3 +871,40 @@ Prelude> f "abracadabra"
 5
 Prelude>
 ```
+
+- See `arith2.hs`.
+
+- Demonstrating composition
+
+```haskell
+-- `putStr` and `putStrLn` only accept type `String`.
+Prelude> :t putStr
+putStr :: String -> IO ()
+Prelude> :t putStrLn
+putStrLn :: String -> IO ()
+Prelude> :t print
+print :: Show a => a -> IO ()
+-- `show` converts something show-able to a concrete String type.
+Prelude> :t show
+show :: Show a => a -> String
+-- How do we re-create print?
+--
+-- By composing methods `show` and `putStrLn`.
+--
+-- This is an accepted pattern in Haskell programming.
+Prelude> :{
+Prelude| print' :: Show a => a -> IO ()
+-- Without pointfree syntax.
+Prelude| print' a = putStrLn (show a)
+Prelude| :}
+Prelude> :{
+Prelude| print'' :: Show a => a -> IO ()
+-- With pointfree syntax.
+Prelude| print'' a = (putStrLn . show) a
+Prelude| :}
+Prelude> print' 0
+0
+Prelude> print'' 0
+0
+Prelude>
+```
