@@ -725,3 +725,75 @@ Prelude|   where y = x / 100
 Prelude| :}
 Prelude>
 ```
+
+********** BEGIN EXERCISES: GUARD DUTY **********
+
+1. Everything will be the result of `otherwise`.
+
+(CORRECT)
+
+```haskell
+Prelude> :{
+Prelude| avgGrade :: (Fractional a, Ord a) => a -> Char
+Prelude| avgGrade x
+Prelude|   | otherwise = 'F'
+Prelude|   | y >= 0.9 = 'A'
+Prelude|   | y >= 0.8 = 'B'
+Prelude|   | y >= 0.7 = 'C'
+Prelude|   | y >= 0.59 = 'D'
+Prelude|   where y = x / 100
+Prelude| :}
+Prelude> avgGrade 90
+'F'
+Prelude> avgGrade 80
+'F'
+Prelude> avgGrade 70
+'F'
+Prelude> avgGrade 60
+'F'
+Prelude>
+```
+
+2. Reordering the guards causes business logic to fail, as broader pattern
+   matches elide narrower pattern matches.
+
+3. b)
+
+4. `pal :: (Ord x, Eq x) => x -> Bool`
+
+(INCORRECT)
+
+```haskell
+Prelude> :{
+Prelude| pal xs
+Prelude|   | xs == reverse xs = True
+Prelude|   | otherwise = False
+Prelude| :}
+Prelude> :t pal
+pal :: Eq a => [a] -> Bool
+Prelude>
+```
+
+5. Answered above
+
+6. c)
+
+7. Numbers that can be ordered.
+
+8. `numbers :: (Num a, Ord a) => a -> a`
+
+(INCORRECT)
+
+```haskell
+Prelude> :{
+Prelude| numbers x
+Prelude|   | x < 0 = -1
+Prelude|   | x == 0 = 0
+Prelude|   | x > 0 = 1
+Prelude| :}
+Prelude> :t numbers
+numbers :: (Ord a, Num a, Num p) => a -> p
+Prelude>
+```
+
+********** END EXERCISES: GUARD DUTY **********
