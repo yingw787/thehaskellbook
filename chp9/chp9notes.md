@@ -184,3 +184,35 @@ Prelude> :i splitAt
 splitAt :: Int -> [a] -> ([a], [a]) 	-- Defined in ‘GHC.List’
 Prelude>
 ```
+
+```haskell
+-- Methods `takeWhile` and `dropWhile` are higher-order functions that accept
+-- a predicate
+-- (https://en.wikipedia.org/wiki/Predicate_%28mathematical_logic%29) and a
+-- list together.
+--
+-- takeWhile (<3) [1..10]
+-- [1,2]
+-- takeWhile (<3) ['a'..'z']
+
+-- <interactive>:50:13: error:
+--     • No instance for (Num Char) arising from the literal ‘3’
+--     • In the second argument of ‘(<)’, namely ‘3’
+--       In the first argument of ‘takeWhile’, namely ‘(< 3)’
+--       In the expression: takeWhile (< 3) ['a' .. 'z']
+-- takeWhile (< 'j') ['a'..'z']
+-- "abcdefghi"
+-- takeWhile (> 6) [1..10]
+-- [] -- fails upon first match.
+-- takeWhile (== 'a') "abracadabra"
+-- "a" -- matches only the first 'a' encountered.
+-- takeWhile (> 6) [11..] -- Does not stop.
+--
+Prelude> :t takeWhile
+takeWhile :: (a -> Bool) -> [a] -> [a]
+-- Method `dropWhile` is like `takeWhile`, except that it drops instead of
+-- takes.
+Prelude> :t dropWhile
+dropWhile :: (a -> Bool) -> [a] -> [a]
+Prelude>
+```
