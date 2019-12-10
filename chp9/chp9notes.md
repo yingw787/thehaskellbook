@@ -306,3 +306,48 @@ Prelude> mySqr
 [1,4,9,16,25,36,49,64,81,100]
 Prelude>
 ```
+
+********** BEGIN EXERCISE: COMPREHEND THY LISTS **********
+
+1. Direct mapping of `mySqr`, filtering for values that are even only.
+
+`[4,16,36,64,100]`
+
+(CORRECT)
+
+```haskell
+Prelude> [x | x <- mySqr, rem x 2 == 0]
+[4,16,36,64,100]
+Prelude>
+```
+
+2. `[]`, double filter with same pivot value means no values will be ingested.
+
+(INCORRECT, filters work on different sets of data, which can then be joined
+together.)
+
+```haskell
+Prelude> :{
+Prelude| [
+Prelude|   (x, y) |
+Prelude|   x <- mySqr,
+Prelude|   y <- mySqr,
+Prelude|   x < 50,
+Prelude|   y > 50
+Prelude| ]
+Prelude| :}
+[(1,64),(1,81),(1,100),(4,64),(4,81),(4,100),(9,64),(9,81),(9,100),(16,64),(16,81),(16,100),(25,64),(25,81),(25,100),(36,64),(36,81),(36,100),(49,64),(49,81),(49,100)]
+```
+
+3. `[(1,64),(1,81),(1,100),(4,64),(4,81)]`
+
+(CORRECT)
+
+```haskell
+Prelude> thing = [(x, y) | x <- mySqr, y <- mySqr, x < 50, y > 50]
+Prelude> take 5 thing
+[(1,64),(1,81),(1,100),(4,64),(4,81)]
+Prelude>
+```
+
+********** END EXERCISE: COMPREHEND THY LISTS **********
