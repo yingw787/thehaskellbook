@@ -351,3 +351,33 @@ Prelude>
 ```
 
 ********** END EXERCISE: COMPREHEND THY LISTS **********
+
+- List comprehensions with Strings
+    - Strings are lists, so you can execute string comprehensions.
+
+```haskell
+-- Method `elem` returns `Bool`: An element is present in a list of those
+-- elements.
+--
+-- Type signature implies not just Char and String types.
+Prelude> :t elem
+elem :: (Foldable t, Eq a) => a -> t a -> Bool
+Prelude> elem 'a' "abracadabra"
+True
+Prelude> elem 'a' "Julie"
+False
+relude> :{
+Prelude| [
+Prelude|   x |
+Prelude|   x <- "Three Letter Acronym",
+Prelude|   elem x ['A'..'Z']
+Prelude| ]
+Prelude| :}
+"TLA"
+Prelude> let acro xs = [x | x <- xs, elem x ['A'..'Z']]
+Prelude> acro "Hello My Name Is"
+"HMNI"
+Prelude>
+```
+
+I think the function `myString xs = [x | x <- xs, elem x "aeiou"]`
