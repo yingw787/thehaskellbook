@@ -53,10 +53,29 @@ myLines x = word : myLines rest
         word = takeWhile (/= '\n') x
         rest = (drop 1) $ dropWhile (/= '\n') x
 
+-- (3)
+--
+-- a' is current string.
+-- b' is delimiter.
+-- c' is list.
+refactored :: String -> Char -> [String]
+refactored someString delimiter = go someString delimiter []
+    where
+        go a' b' c'
+            | a' == "" = reverse c'
+            | (take 1 a') == " " = go
+                (dropWhile (== b') a')
+                b'
+                (c')
+            | otherwise = go
+                (dropWhile (== b') $ dropWhile (/= b') a')
+                b'
+                (takeWhile (/= b') a' : c')
+
 main :: IO ()
 main =
     print $
-    "Are they equal? "
-    ++ show (myLines sentences == shouldEqual)
-
--- (3)
+        "Are they equal? "
+        -- ++ show (myLines sentences == shouldEqual)
+        ++ show (refactored sentences '\n' == shouldEqual)
+    -- putStrLn $ show (refactored "sheryl wants fun" ' ')
