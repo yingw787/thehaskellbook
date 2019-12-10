@@ -222,3 +222,87 @@ Prelude>
 See `ThyFearfulSymmetry.hs`.
 
 ********** END EXERCISE: THY FEARFUL SYMMETRY **********
+
+- List comprehensions
+    - Come directly from set comprehensions in mathematics
+    - One list (called the "generator") that gives input for comprehension
+
+```haskell
+Prelude> [x ^ 2 | x <- [1..10]]
+--        0     1      3
+-- 0: Function to apply transformation
+-- 1: Separation between output function and input.
+-- 2: Input set: generator list and variable representing variables drawn
+-- from that list.
+[1,4,9,16,25,36,49,64,81,100]
+Prelude>
+```
+
+- Adding predicates
+    - Can filter elements drawn from the generator list.
+    - Predicates must evaluate to values of type `Bool`. Values passed to output
+      function will only be those that met `True` case of predicate.
+
+```haskell
+-- Only square and output values that are originally even.
+Prelude> [x ^ 2 | x <- [1..10], rem x 2 == 0]
+[4,16,36,64,100]
+Prelude>
+```
+
+```haskell
+Prelude> :{
+Prelude| [x ^ y |
+-- Usage of multiple generator lists.
+Prelude|   x <- [1..10],
+Prelude|   y <- [2, 3],
+-- Condition to return values less than 200.
+Prelude|   x ^ y < 200]
+Prelude| :}
+[1,1,4,8,9,27,16,64,25,125,36,49,64,81,100]
+Prelude>
+```
+
+```haskell
+Prelude> :{
+-- Executing effectively what is a cross-multiply, or a cartesian join, between
+-- two separate generator lists.
+--
+-- Lists don't need to be the same length, or since tuples can be a collection
+-- of types, even the same type.
+Prelude| [
+Prelude|   (x, y) |
+Prelude|   x <- [1, 2, 3],
+Prelude|   y <- [6, 7]
+Prelude| ]
+Prelude| :}
+[(1,6),(1,7),(2,6),(2,7),(3,6),(3,7)]
+Prelude> :{
+Prelude| [
+Prelude|   (x, y) |
+Prelude|   x <- [1, 2, 3],
+Prelude|   y <- ['a', 'b']
+Prelude| ]
+Prelude| :}
+[(1,'a'),(1,'b'),(2,'a'),(2,'b'),(3,'a'),(3,'b')]
+Prelude>
+```
+
+- You can use variable assignment to assign the result of a list comprehension
+  to a new variable.
+
+```haskell
+Prelude> mySqr = [x ^ 2 | x <- [1..10]]
+Prelude> :{
+Prelude| [
+Prelude|   (x, y) |
+Prelude|   x <- mySqr,
+Prelude|   y <- [1..3],
+Prelude|   x < 4
+Prelude| ]
+Prelude| :}
+[(1,1),(1,2),(1,3)]
+Prelude> mySqr
+[1,4,9,16,25,36,49,64,81,100]
+Prelude>
+```
