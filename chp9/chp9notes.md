@@ -70,3 +70,67 @@ Prelude> safeTail [1,2,3]
 Just [2,3]
 Prelude>
 ```
+
+- List's syntactic sugar
+
+```haskell
+-- Syntactic sugar for operator `cons`.
+Prelude> [1, 2, 3] ++ [4]
+[1,2,3,4]
+-- The underlying, desugared command.
+--
+-- The `cons` constructor, or "cons cell" `a : [a]` at the very end of this
+-- list is the conceptual space that values may inhabit.
+--
+-- The "spine" is the connective structure that holds the cons cells
+-- together and in place
+Prelude> (1 : 2 : 3 : []) ++ 4 : []
+[1,2,3,4]
+Prelude>
+```
+
+- Using ranges to construct lists
+
+```haskell
+-- Range syntax (syntactic sugar)
+Prelude> [1..10]
+[1,2,3,4,5,6,7,8,9,10]
+-- Desugared equivalent using `Enum` methods.
+Prelude> enumFromTo 1 10
+[1,2,3,4,5,6,7,8,9,10]
+Prelude> [1,2..10]
+[1,2,3,4,5,6,7,8,9,10]
+Prelude> enumFromThenTo 1 2 10
+[1,2,3,4,5,6,7,8,9,10]
+Prelude> [1,3..10]
+[1,3,5,7,9]
+Prelude> enumFromThenTo 1 3 10
+[1,3,5,7,9]
+Prelude> [2, 4..10]
+[2,4,6,8,10]
+Prelude> enumFromThenTo 2 4 10
+[2,4,6,8,10]
+Prelude> ['t'..'z']
+"tuvwxyz"
+Prelude> enumFromTo 't' 'z'
+"tuvwxyz"
+Prelude>
+```
+
+```haskell
+-- Enumeration methods
+--
+-- Methods `enumFrom` and `enumFromThen` can create infinitely long lists.
+-- Should be ranging over type that has no upper bound in enumeration.
+Prelude> :t enumFrom
+enumFrom :: Enum a => a -> [a]
+Prelude> :t enumFromThen
+enumFromThen :: Enum a => a -> a -> [a]
+-- Method `enumFromTo` should have first argument lower than second argument
+-- otherwise an empty list will be returned.
+Prelude> :t enumFromTo
+enumFromTo :: Enum a => a -> a -> [a]
+Prelude> :t enumFromThenTo
+enumFromThenTo :: Enum a => a -> a -> a -> [a]
+Prelude>
+```
