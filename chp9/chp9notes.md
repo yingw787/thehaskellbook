@@ -381,3 +381,78 @@ Prelude>
 ```
 
 I think the function `myString xs = [x | x <- xs, elem x "aeiou"]`
+
+********** BEGIN EXERCISE: SQUARE CUBE **********
+
+```haskell
+mySqr = [x^2 | x <- [1..5]]
+myCube = [y^3 | y <- [1..5]]
+```
+
+1. Below:
+
+```haskell
+:{
+[
+    (x, y) |
+    x <- mySqr,
+    y <- myCube
+]
+:}
+```
+
+(CORRECT, GHCI RESULTS BELOW)
+
+```haskell
+Prelude> :{
+Prelude| [
+Prelude|     (x, y) |
+Prelude|     x <- mySqr,
+Prelude|     y <- myCube
+Prelude| ]
+Prelude| :}
+[(1,1),(1,8),(1,27),(1,64),(1,125),(4,1),(4,8),(4,27),(4,64),(4,125),(9,1),(9,8),(9,27),(9,64),(9,125),(16,1),(16,8),(16,27),(16,64),(16,125),(25,1),(25,8),(25,27),(25,64),(25,125)]
+Prelude>
+```
+
+2. Below:
+
+```haskell
+:{
+[
+    (x, y) |
+    x <- mySqr,
+    y <- myCube,
+    x < 50,
+    y < 50
+]
+:}
+```
+
+(CORRECT, GHCI RESULTS BELOW)
+
+```haskell
+Prelude> :{
+Prelude| [
+Prelude|     (x, y) |
+Prelude|     x <- mySqr,
+Prelude|     y <- myCube,
+Prelude|     x < 50,
+Prelude|     y < 50
+Prelude| ]
+Prelude| :}
+[(1,1),(1,8),(1,27),(4,1),(4,8),(4,27),(9,1),(9,8),(9,27),(16,1),(16,8),(16,27),(25,1),(25,8),(25,27)]
+Prelude>
+```
+
+3. Below:
+
+```haskell
+-- ASSUMED CORRECT, applied `length` to list comprehension assigned to variable.
+Prelude> thing = [(x, y) | x <- mySqr, y <- myCube, x < 50, y < 50]
+Prelude> length thing
+15
+Prelude>
+```
+
+********** END EXERCISE: SQUARE CUBE **********
