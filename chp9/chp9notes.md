@@ -216,3 +216,9 @@ Prelude> :t dropWhile
 dropWhile :: (a -> Bool) -> [a] -> [a]
 Prelude>
 ```
+
+********** BEGIN EXERCISE: THY FEARFUL SYMMETRY **********
+
+See `ThyFearfulSymmetry.hs`.
+
+********** END EXERCISE: THY FEARFUL SYMMETRY **********
