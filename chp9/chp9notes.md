@@ -134,3 +134,9 @@ Prelude> :t enumFromThenTo
 enumFromThenTo :: Enum a => a -> a -> a -> [a]
 Prelude>
 ```
+
+********** BEGIN EXERCISE: ENUMFROMTO **********
+
+See `enumFromTo.hs`.
+
+********** END EXERCISE: ENUMFROMTO **********
