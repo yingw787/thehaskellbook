@@ -140,3 +140,47 @@ Prelude>
 See `enumFromTo.hs`.
 
 ********** END EXERCISE: ENUMFROMTO **********
+
+- Extracting portions of lists
+
+```haskell
+-- `take` takes the specified number of elements out of a list and returns
+-- a list containing those elements.
+--
+-- take 7 ['a'..'z']
+-- "abcdefg"
+-- take 0 ['a'..'z']
+-- ""
+-- take 0 []
+-- []
+--
+Prelude> :i take
+take :: Int -> [a] -> [a] 	-- Defined in ‘GHC.List’
+-- `drop` drops the specified number of elements off the beginning of the
+-- list.
+--
+-- take 0 []
+-- []
+-- drop 5 [1..10]
+-- [6,7,8,9,10]
+-- drop 0 []
+-- []
+-- drop 5 []
+-- []
+--
+Prelude> :i drop
+drop :: Int -> [a] -> [a] 	-- Defined in ‘GHC.List’
+-- `splitAt` cuts a list into two parts at the index specified by `Int` and
+-- makes a tuple of two lists.
+--
+-- splitAt 5 [1..10]
+-- ([1,2,3,4,5],[6,7,8,9,10])
+-- splitAt 5 [1..6]
+-- ([1,2,3,4,5],[6])
+-- splitAt 5 []
+-- ([],[])
+--
+Prelude> :i splitAt
+splitAt :: Int -> [a] -> ([a], [a]) 	-- Defined in ‘GHC.List’
+Prelude>
+```
