@@ -579,3 +579,35 @@ Prelude> :sprint myNum
 myNum = 1 : 2 : _
 Prelude>
 ```
+
+- Pattern matching is strict by default
+    - Pattern matching on `cons` cells can mean forcing spine strictness if your
+      function doesn't stop recursing the list. (PERSONAL NOTE: HOO BOY I
+      thought everything was lazy; that may not be the case, it may be nicer to
+      cleanly separate out lazy and eager evaluation like in those Python
+      libraries)
+
+```haskell
+-- Calling `length` on `undefined` causes GHCi to crash.
+Prelude> length undefined
+*** Exception: Prelude.undefined
+CallStack (from HasCallStack):
+  error, called at libraries/base/GHC/Err.hs:79:14 in base:GHC.Err
+  undefined, called at <interactive>:145:8 in interactive:Ghci36
+-- Calling `length` on a list with `undefined` in it does not cause GHCi to
+-- crash.
+--
+-- `length` recurses the spine and counts how many `cons` cells there are, and
+-- doesn't check the actual values.
+Prelude> length [1, undefined]
+2
+Prelude> :{
+-- We can define our own version of method `length` as the following:
+Prelude| length' :: [a] -> Integer
+Prelude| length' [] = 0
+Prelude| length' (_ : xs) = 1 + length' xs
+Prelude| :}
+Prelude> length' [1, undefined]
+2
+Prelude>
+```
