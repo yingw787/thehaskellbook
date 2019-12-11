@@ -1129,6 +1129,14 @@ Prelude Data.Char>
 
 See `DataChar.hs`.
 
+Cipher
+
+See `Cipher.hs`.
+
+Writing your own standard functions
+
+See `StandardFunctions.hs`.
+
 ********** END CHAPTER EXERCISES **********
 
 __________
