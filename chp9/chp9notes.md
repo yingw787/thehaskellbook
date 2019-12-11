@@ -539,3 +539,43 @@ Prelude>
 ```
 
 - Spines are evaluated independently of values
+    - Weak head normal form: Contains possibility expression is fully evaluated
+      (normal form), and possibility that expression has been evaluated to the
+      point of arriving at a data constructor or lambda awaiting an argument.
+
+```haskell
+Prelude> (1, 2)
+-- WHNF && NF
+(1,2)
+Prelude> (1, 1 + 1)
+-- WHNF, Not NF, as operand `(+)` could be applied to arguments but
+-- hasn't been yet.
+(1,1+1)
+-- WHNF && NF, as operand `(*)` has been applied to two arguments, but
+-- cannot be further reduced until variable `x` has been applied to function.
+Prelude> f = \x -> x * 10
+-- Not WHNF and not NF, arguments are fully applied, but hasn't been evaluated.
+-- Is not currently a data constructor.
+Prelude> "Papu" ++ "chon"
+-- WHNF, is a data constructor.
+Prelude> (1, "Papu" ++ "chon")
+```
+
+```haskell
+-- `num` is in normal form; all values are known and listed. Nothing left
+-- to evaluate.
+Prelude> num :: [Int]; num = [1, 2, 3]
+Prelude> :sprint num
+-- (PERSONAL NOTE: Hmm, this is weird. Book example gives num = [1,2,3]
+-- indicating that variable `num` has been fully evaluated.)
+num = _
+Prelude> myNum :: [Int]; myNum = [1..10]
+Prelude> :sprint myNum
+myNum = _
+Prelude> take 2 myNum
+[1,2]
+Prelude> :sprint myNum
+-- WHNF of variable `myNum`; only evaluated when needed.
+myNum = 1 : 2 : _
+Prelude>
+```
