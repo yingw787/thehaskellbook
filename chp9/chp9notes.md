@@ -1036,6 +1036,82 @@ Prelude> zipWith (==) ['a'..'f'] ['a'..'m']
 Prelude>
 ```
 
+********** BEGIN EXERCISES: ZIPPING **********
+
+1. Below:
+
+```haskell
+zip' :: [a] -> [b] -> [(a, b)]
+zip' _ [] = []
+zip' [] _ = []
+zip' (x : xs) (y : ys) = (x, y) : zip' xs ys
+```
+
+(CORRECT, GHCI RESULTS BELOW)
+
+```haskell
+Prelude> :{
+Prelude| zip' :: [a] -> [b] -> [(a, b)]
+Prelude| zip' _ [] = []
+Prelude| zip' [] _ = []
+Prelude| zip' (x : xs) (y : ys) = (x, y) : zip' xs ys
+Prelude| :}
+Prelude> zip' [1, 2, 3] [4, 5, 6]
+[(1,4),(2,5),(3,6)]
+Prelude> zip' [1, 2] [4]
+[(1,4)]
+Prelude> zip' [1, 2] [4..10000000]
+[(1,4),(2,5)]
+Prelude>
+```
+
+2. Below:
+
+```haskell
+zipWith' :: (a -> b -> c) -> [a] -> [b] -> [c]
+zipWith' _ _ [] = []
+zipWith' _ [] _ = []
+zipWith' f (x : xs) (y : ys) = f x y : zipWith' f xs ys
+```
+
+(INCORRECT, COMPILE-TIME ERROR)
+(PERSONAL NOTE: I'm not sure why the error `Non type-variable argument in the
+constraint` pops up, this Stack Overflow post has some information:
+https://stackoverflow.com/a/40894683)
+(PERSONAL NOTE: Never mind, I typed in the operation wrong.)
+(CORRECT)
+
+```haskell
+Prelude> :{
+Prelude| zipWith' :: (a -> b -> c) -> [a] -> [b] -> [c]
+Prelude| zipWith' _ _ [] = []
+Prelude| zipWith' _ [] _ = []
+Prelude| zipWith' f (x : xs) (y : ys) = f x y : zipWith' f xs ys
+Prelude| :}
+Prelude> zipWith' (+1) [2, 3, 4] [1, 2, 3]
+
+--
+<interactive>:110:1: error:
+    • Non type-variable argument in the constraint: Num (b -> c)
+      (Use FlexibleContexts to permit this)
+    • When checking the inferred type
+        it :: forall b c. (Num b, Num (b -> c)) => [c]
+Prelude> zipWith (+) [1, 2, 3] [4, 5, 6]
+[5,7,9]
+Prelude>
+```
+
+3. Below:
+
+```haskell
+zip'' :: [a] -> [b] -> [(a, b)]
+zip'' x y = zipWith' (,) x y
+```
+
+(CORRECT, ANSWER KEY https://github.com/johnchandlerburnham/hpfp)
+
+********** END EXERCISES: ZIPPING **********
+
 __________
 
 More Haskell problems to work with!
