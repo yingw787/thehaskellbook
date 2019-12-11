@@ -928,6 +928,8 @@ Prelude Data.Bool> map (\x -> bool (x) (-x) (x == 3)) [1..10]
 Prelude Data.Bool>
 ```
 
+********** END EXERCISES: MORE BOTTOMS **********
+
 - Filtering lists of values
 
 ```haskell
@@ -957,7 +959,34 @@ Prelude> [x | x <- "abracadabra", elem x "aeiou"]
 Prelude>
 ```
 
-********** END EXERCISES: MORE BOTTOMS **********
+********** START EXERCISES: FILTERING **********
+
+1. Below:
+
+```haskell
+Prelude> filter (\x -> x `mod` 3 == 0) [1..30]
+[3,6,9,12,15,18,21,24,27,30]
+Prelude>
+```
+
+2. Below:
+
+```haskell
+Prelude> length $ filter (\x -> x `mod` 3 == 0) [1..30]
+10
+Prelude>
+```
+
+3. Below:
+
+```haskell
+Prelude> myFilter sentence = filter (\x -> x /= "the" && x /= "an" && x /= "a") (words sentence)
+Prelude> myFilter "the brown dog was a goof"
+["brown","dog","was","goof"]
+Prelude>
+```
+
+********** END EXERCISES: FILTERING **********
 
 __________
 
