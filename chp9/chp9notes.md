@@ -887,6 +887,49 @@ Prelude>
 - Common mantra for performance-sensitive code: "lazy in the spine, strict in
   the leaves".
 
+```haskell
+Prelude> map fst [(2, 3), (4, 5), (6, 7), (8, 9)]
+[2,4,6,8]
+Prelude> fmap fst [(2, 3), (4, 5), (6, 7), (8, 9)]
+[2,4,6,8]
+Prelude> map (take 3) [[1..5], [1..5], [1..5]]
+[[1,2,3],[1,2,3],[1,2,3]]
+Prelude> map (\x -> if x == 3 then (-x) else (x)) [1..10]
+[1,2,-3,4,5,6,7,8,9,10]
+Prelude>
+```
+
+********** BEGIN EXERCISES: MORE BOTTOMS **********
+
+1. Returns `'⊥'`. (CORRECT)
+
+2. Returns `2`. (CORRECT)
+
+3. Returns `'⊥'`. (CORRECT)
+
+4. Filters a string by whether it is a lowercase English vowel. (CORRECT)
+
+5. Below:
+
+a) `[1, 4, 9, 16, 25, 36, 49, 64, 81, 100]` (CORRECT)
+
+b) `[1, 10, 20]` (CORRECT)
+
+c) `[15, 15, 15]` (CORRECT)
+
+6. Below:
+
+```haskell
+Prelude> import Data.Bool
+Prelude Data.Bool> map (\x -> if x == 3 then (-x) else (x)) [1..10]
+[1,2,-3,4,5,6,7,8,9,10]
+Prelude Data.Bool> map (\x -> bool (x) (-x) (x == 3)) [1..10]
+[1,2,-3,4,5,6,7,8,9,10]
+Prelude Data.Bool>
+```
+
+********** END EXERCISES: MORE BOTTOMS **********
+
 __________
 
 More Haskell problems to work with!
