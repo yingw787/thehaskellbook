@@ -605,9 +605,42 @@ Prelude> :{
 -- We can define our own version of method `length` as the following:
 Prelude| length' :: [a] -> Integer
 Prelude| length' [] = 0
+-- `_` ignores values and proceeds to evaluate along the spine only.
+-- `_` is a special value, recognized by the compiler. You cannot bind to `_`.
 Prelude| length' (_ : xs) = 1 + length' xs
 Prelude| :}
 Prelude> length' [1, undefined]
 2
+-- Lists are lazily constructed, which may encounter runtime errors when
+-- incorrectly declared then consumed.
+Prelude> x = [1] ++ undefined ++ [3]
+Prelude> x
+[1*** Exception: Prelude.undefined
+CallStack (from HasCallStack):
+  error, called at libraries/base/GHC/Err.hs:79:14 in base:GHC.Err
+  undefined, called at <interactive>:7:12 in interactive:Ghci3
+Prelude>
+```
+
+```haskell
+-- Method `(+)` or `sum` is strict in both values and spine evaluation.
+Prelude> :{
+Prelude| mySum :: Num a => [a] -> a
+Prelude| mySum [] = 0
+Prelude| mySum (x : xs) = x + mySum xs
+Prelude| :}
+-- Evaluation of `mySum` will keep recursing along the spine and evaluating
+-- individual values before going back up the spin and summing up
+-- inhabitants.
+--
+-- 1 + (2 + (3 + (4 + (5 + 0))))
+-- 1 + (2 + (3 + (4 + 5)))
+-- 1 + (2 + (3 + 9))
+-- 1 + (2 + 12)
+-- 1 + 14
+-- 15
+--
+Prelude> mySum [1..5]
+15
 Prelude>
 ```
