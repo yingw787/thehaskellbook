@@ -456,3 +456,52 @@ Prelude>
 ```
 
 ********** END EXERCISE: SQUARE CUBE **********
+
+- Spines and non-strict evaluation
+    - When we talk about data structures in Haskell (esp. lists, sequences,
+      trees), we talk about them having a "spine".
+    - Spine: connective structure that ties the collection of values together.
+    - For a list, a spine is textually represented by the recursive cons `(:)`
+      operator.
+
+```haskell
+-- `cons` tree representation:
+--
+--   :
+--  / \
+-- 1   :
+--    / \
+--   2   []
+--
+Prelude> 1 : (2 : [])
+[1,2]
+Prelude>
+```
+
+- The `1` value does not exist *before* the `cons` cell, as the `cons` cell
+  contains the `1` value.
+- You can evaluate `cons` cells independently of what they contain.
+- It is possible to evaluate the spine of the list without evaluating individual
+  values.
+- It is also possible to evaluate only part of the spine of a list and not the
+  rest of it.
+
+- Evaluating list in `cons` representation proceeds down the spine.
+- Constructing the list proceeds up the spine.
+
+- Haskell applies non-strict evaluation, so the list isn't constructed until
+  it's consumed.
+    - Until value is consumed, a series of placeholders as a blueprint of the
+      list can be constructed.
+
+```haskell
+--
+--   : <------|
+--  / \       |
+-- _   : <----| This is the "spine"
+--    / \     |
+--   _   : <--|
+--      / \
+--     _   []
+--
+```
