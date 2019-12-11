@@ -1112,6 +1112,25 @@ zip'' x y = zipWith' (,) x y
 
 ********** END EXERCISES: ZIPPING **********
 
+********** BEGIN CHAPTER EXERCISES **********
+
+Data.Char
+
+1. Below:
+
+```haskell
+Prelude> import Data.Char
+Prelude Data.Char> :t isUpper
+isUpper :: Char -> Bool
+Prelude Data.Char> :t toUpper
+toUpper :: Char -> Char
+Prelude Data.Char>
+```
+
+See `DataChar.hs`.
+
+********** END CHAPTER EXERCISES **********
+
 __________
 
 More Haskell problems to work with!
