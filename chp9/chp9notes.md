@@ -505,3 +505,37 @@ Prelude>
 --     _   []
 --
 ```
+
+- Using GHCi's `:sprint` command
+
+- Print variables and see what is evaluated already and what hasn't
+    - GHC Haskell has some opportunistic optimizations which introduce
+      strictness to make code faster when it won't change how your code
+      evaluates.
+
+```haskell
+Prelude> blah = enumFromTo 'a' 'z'
+Prelude> :sprint blah
+-- Value `blah` has not been evaluated yet.
+blah = _
+Prelude> take 1 blah
+"a"
+Prelude> :sprint blah
+-- Only the first value has been evaluated.
+blah = 'a' : _
+Prelude> take 2 blah
+"ab"
+Prelude> :sprint blah
+-- The second value has been evaluated; the first value was evaluated
+-- from earlier.
+blah = 'a' : 'b' : _
+Prelude>
+```
+
+```haskell
+-- Method `length` is only strict in the spine, evaluates the spine of the
+-- list and not the values. However, GHCi may force `:sprint` to behave as
+-- though we had forced evaluation of the values as well.
+```
+
+- Spines are evaluated independently of values
