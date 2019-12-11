@@ -988,6 +988,54 @@ Prelude>
 
 ********** END EXERCISES: FILTERING **********
 
+- Zipping lists: combining values from multiple lists into a single list.
+
+```haskell
+Prelude> :t zip
+zip :: [a] -> [b] -> [(a, b)]
+Prelude> zip [1, 2, 3] [4, 5, 6]
+[(1,4),(2,5),(3,6)]
+-- `zip` stops on the shortest list.
+Prelude> zip [1, 2] [4, 5, 6]
+[(1,4),(2,5)]
+Prelude> zip [1, 2, 3] [4]
+[(1,4)]
+Prelude> zip [] [1..10000000000000]
+[]
+Prelude> zip ['a'] [1..10000000000000]
+[('a',1)]
+Prelude> zip [1..100] ['a'..'c']
+[(1,'a'),(2,'b'),(3,'c')]
+-- `unzip` can recover original lists.
+Prelude> unzip $ zip [1, 2, 3] [4, 5, 6]
+([1,2,3],[4,5,6])
+-- `unzip` cannot recover data lost during `zip` process.
+Prelude> unzip $ zip [1, 2] [4, 5, 6]
+([1,2],[4,5])
+Prelude>
+```
+
+```haskell
+-- Method `zipWith` applies a function between zipped elements of two lists
+-- and generates a result list.
+Prelude> :t zipWith
+zipWith :: (a -> b -> c) -> [a] -> [b] -> [c]
+Prelude> zipWith (+) [1, 2, 3] [10, 11, 12]
+[11,13,15]
+Prelude> zipWith (*) [1, 2, 3] [10, 11, 12]
+[10,22,36]
+-- Note that ordering of lists is important for non-commutative operations.
+Prelude> zipWith (-) [1, 2, 3] [10, 11, 12]
+[-9,-9,-9]
+Prelude> zipWith (-) [10, 11, 12] [1, 2, 3]
+[9,9,9]
+-- Note that `zip` will take shortest list before any operation is applied
+-- with `zipWith`.
+Prelude> zipWith (==) ['a'..'f'] ['a'..'m']
+[True,True,True,True,True,True]
+Prelude>
+```
+
 __________
 
 More Haskell problems to work with!
