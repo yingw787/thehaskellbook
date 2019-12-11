@@ -928,6 +928,35 @@ Prelude Data.Bool> map (\x -> bool (x) (-x) (x == 3)) [1..10]
 Prelude Data.Bool>
 ```
 
+- Filtering lists of values
+
+```haskell
+Prelude> filter even [1..10]
+[2,4,6,8,10]
+Prelude> :t filter
+filter :: (a -> Bool) -> [a] -> [a]
+-- Definition of `filter`.
+Prelude> :{
+Prelude| filter' :: (a -> Bool) -> [a] -> [a]
+Prelude| filter' _ [] = []
+Prelude| filter' pred (x : xs)
+-- `pred x` path is executed in guard syntax if it returns True only.
+Prelude|     | pred x = x : filter pred xs
+Prelude|     | otherwise = filter pred xs
+Prelude| :}
+Prelude> filter' even [1..10]
+[2,4,6,8,10]
+-- `filter` can also work with higher-order functions.
+Prelude> filter (\x -> (rem x 2) == 0) [1..20]
+[2,4,6,8,10,12,14,16,18,20]
+Prelude> filter (\x -> elem x "aeiou") "abracadabra"
+"aaaaa"
+-- Equivalent list comprehension.
+Prelude> [x | x <- "abracadabra", elem x "aeiou"]
+"aaaaa"
+Prelude>
+```
+
 ********** END EXERCISES: MORE BOTTOMS **********
 
 __________
