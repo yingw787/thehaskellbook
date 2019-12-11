@@ -644,3 +644,158 @@ Prelude> mySum [1..5]
 15
 Prelude>
 ```
+
+********** BEGIN EXERCISES: BOTTOM MADNESS **********
+
+Will it blow up?
+
+1. Returns `'⊥'`, since the `y` value will be undefined at time of `x ^ y = 1 ^
+   undefined`.
+
+(CORRECT)
+
+```haskell
+Prelude> [x ^ y | x <- [1..5], y <- [2, undefined]]
+[1,*** Exception: Prelude.undefined
+CallStack (from HasCallStack):
+  error, called at libraries/base/GHC/Err.hs:79:14 in base:GHC.Err
+  undefined, called at <interactive>:1:32 in interactive:Ghci1
+Prelude>
+```
+
+2. Returns `1`. List comprehension returns a lazily generated list, which even
+   though fully rendered using the `$` operator, remains lazy until consumed.
+   Since only the first value is consumed, which is valid, the invalid is never
+   hit and no exception is raised.
+
+(CORRECT)
+
+```haskell
+Prelude> take 1 $ [x ^ y | x <- [1..5], y <- [2, undefined]]
+[1]
+Prelude>
+```
+
+3. Returns `'⊥'`, since summation eagerly loads both the spine and the value.
+
+(CORRECT)
+
+```haskell
+Prelude> sum [1, undefined, 3]
+*** Exception: Prelude.undefined
+CallStack (from HasCallStack):
+  error, called at libraries/base/GHC/Err.hs:79:14 in base:GHC.Err
+  undefined, called at <interactive>:3:9 in interactive:Ghci2
+Prelude>
+```
+
+4. Returns `3`, since `length` evaluates the spine only, and not individual
+   values.
+
+(CORRECT)
+
+```haskell
+Prelude> length [1, 2, undefined]
+3
+Prelude>
+```
+
+5. Returns `'⊥'`, since fully evaluating operation `[1, 2, 3] ++ undefined`
+   results in an exception, before function `length` is executed, due to operand
+   `$`.
+
+(CORRECT)
+
+```haskell
+Prelude> length $ [1, 2, 3] ++ undefined
+*** Exception: Prelude.undefined
+CallStack (from HasCallStack):
+  error, called at libraries/base/GHC/Err.hs:79:14 in base:GHC.Err
+  undefined, called at <interactive>:5:23 in interactive:Ghci3
+Prelude>
+```
+
+6. Returns `'⊥'`, since `filter` should be applying a values-based comparison to
+   check whether the modulo of the number given 2 is 0, and hence all values in
+   the list should be numeric types.
+
+(INCORRECT, returns `[2]`) (PERSONAL NOTE: Not sure how it does this, whether it
+sees a sequence and then skips over certain elements without even comparing
+them.)
+
+```haskell
+Prelude> take 1 $ filter even [1, 2, 3, undefined]
+[2]
+Prelude>
+```
+
+7. Returns `[]`, since `undefined` is not even, and it should skip given result
+   of 6), and no values match `even` so `[]` will be returned from `$`. Taking
+   values from an empty list should return an empty list, and not fail.
+
+(INCORRECT, returns `'⊥'`.)
+
+```haskell
+Prelude> take 1 $ filter even [1, 3, undefined]
+*** Exception: Prelude.undefined
+CallStack (from HasCallStack):
+  error, called at libraries/base/GHC/Err.hs:79:14 in base:GHC.Err
+  undefined, called at <interactive>:7:29 in interactive:Ghci4
+Prelude>
+```
+
+8. Returns `'⊥'`, since `odd` characters in the list sequence means evaluating
+   the value at every index.
+
+(INCORRECT, returns `[1]`.)
+
+```haskell
+Prelude> take 1 $ filter odd [1, 3, undefined]
+[1]
+Prelude>
+```
+
+9. Returns `[1, 2]`, given result of 8).
+
+(CORRECT)
+
+```haskell
+Prelude> take 2 $ filter odd [1, 3, undefined]
+[1,3]
+Prelude>
+```
+
+10. Returns `'⊥'`, given actual return value of 8).
+
+(CORRECT)
+
+```haskell
+Prelude> take 3 $ filter odd [1, 3, undefined]
+[1,3*** Exception: Prelude.undefined
+CallStack (from HasCallStack):
+  error, called at libraries/base/GHC/Err.hs:79:14 in base:GHC.Err
+  undefined, called at <interactive>:10:28 in interactive:Ghci6
+Prelude>
+```
+
+__________
+
+Is it normal form?
+
+(ANSWER KEY https://github.com/johnchandlerburnham/hpfp)
+
+1. NORMAL FORM (CORRECT)
+
+2. WEAK HEAD NORMAL FORM (CORRECT)
+
+3. WEAK HEAD NORMAL FORM (INCORRECT, neither)
+
+4. NEITHER (CORRECT)
+
+5. NEITHER (CORRECT)
+
+6. WEAK HEAD NORMAL FORM (INCORRECT, neither)
+
+7. WEAK HEAD NORMAL FORM (CORRECT)
+
+********** END EXERCISES: BOTTOM MADNESS **********
