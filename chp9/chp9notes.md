@@ -799,3 +799,95 @@ Is it normal form?
 7. WEAK HEAD NORMAL FORM (CORRECT)
 
 ********** END EXERCISES: BOTTOM MADNESS **********
+
+- Transforming lists of values
+    - In part because Haskell uses lazy evaluation, higher-order functions are
+      generally used for transforming data instead of recursion.
+    - E.g. `map` or `fmap` enable applying a function over a list instead of
+      recursing through that list.
+    - `map` is only with `[]`, while `fmap` is a `Functor` typeclass that can be
+      applied to data other than lists.
+
+```haskell
+Prelude> map (+1) [1, 2, 3, 4]
+[2,3,4,5]
+Prelude> map (1-) [1, 2, 3, 4]
+[0,-1,-2,-3]
+Prelude> fmap (+1) [1, 2, 3, 4]
+[2,3,4,5]
+Prelude> fmap (2*) [1, 2, 3, 4]
+[2,4,6,8]
+Prelude> fmap id [1, 2, 3]
+[1,2,3]
+Prelude> map id [1, 2, 3]
+[1,2,3]
+Prelude> :t map
+map :: (a -> b) -> [a] -> [b]
+Prelude> :t fmap
+fmap :: Functor f => (a -> b) -> f a -> f b
+Prelude> :t map (+1)
+-- Partial method becomes more specific with typeclass constraint for `(+)`
+-- operator.
+map (+1) :: Num b => [b] -> [b]
+Prelude> :t fmap (+1)
+fmap (+1) :: (Functor f, Num b) => f b -> f b
+-- Definition of method `map` in `base`.
+Prelude> :{
+Prelude| map' :: (a -> b) -> [a] -> [b]
+-- Eliding function argument as unnecessary over an empty list.
+Prelude| map' _ [] = []
+-- `f` and `g` are common names for non-specific function values in Haskell.
+--
+-- Data is immutable is Haskell. The following builds a new list from the
+-- original list.
+Prelude| map' f (x : xs) = f x : map f xs
+Prelude| :}
+-- The desugared representation of below is `map' (+1) (1 : (2 : (3 : [])))`.
+-- This becomes:
+--
+-- map' (+1) (1 : (2 : (3 : [])))
+-- (+1) 1 : map (+1) (2 : (3 : []))
+-- (+1) 1 : ((+1) 2 : (map (+1) (3 : [])))
+-- (+1) 1 : ((+1) 2 : ((+1) 3 : (map (+1) [])))
+-- (+1) 1 : ((+1) 2 : ((+1) 3 : []))
+-- 2 : ((+1) 2 : ((+1) 3 : []))
+-- 2 : 3 : (+1) 3 : []
+-- 2 : 3 : 4 : []
+-- [2, 3, 4]
+--
+Prelude> map' (+1) [1, 2, 3]
+[2,3,4]
+Prelude>
+```
+
+- `map` doesn't traverse the whole list and apply the function immediately.
+    - The function is applied to the values you force out of the list one by
+      one.
+    - In GHCi, the whole list is printed out because output is printed by
+      default.
+
+```haskell
+Prelude> map (+1) [1, 2, undefined]
+-- Here, the `undefined` value is forced resulting in an exception.
+-- (PERSONAL NOTE: whattt...)
+[2,3,*** Exception: Prelude.undefined
+CallStack (from HasCallStack):
+  error, called at libraries/base/GHC/Err.hs:79:14 in base:GHC.Err
+  undefined, called at <interactive>:27:17 in interactive:Ghci14
+-- Here, the `take 2` implies that the `undefined` value is never forced by
+-- `map`.
+Prelude> take 2 $ map (+1) [1, 2, undefined]
+[2,3]
+Prelude>
+```
+
+- Strictness doesn't proceed only outside-in; you can have lazily evaluated code
+  (`map`) wrapped around a strict core (`(+)`).
+
+- Common mantra for performance-sensitive code: "lazy in the spine, strict in
+  the leaves".
+
+__________
+
+More Haskell problems to work with!
+- https://wiki.haskell.org/H-99:_Ninety-Nine_Haskell_Problems
