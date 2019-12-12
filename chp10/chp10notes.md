@@ -465,3 +465,74 @@ Prelude> fibsN 6
 13
 Prelude>
 ```
+
+********** BEGIN SCANS EXERCISES **********
+
+1. Below:
+
+```haskell
+Prelude> fibs = take 20 $ 1 : scanl (+) 1 fibs
+Prelude> fibs
+[1,1,2,3,5,8,13,21,34,55,89,144,233,377,610,987,1597,2584,4181,6765]
+Prelude> length fibs
+20
+Prelude>
+```
+
+2. Below:
+
+```haskell
+-- (Personal note: filtering on an infinite stream results in bottom due to
+-- a lack of process termination.)
+Prelude> fibs = filter (\x -> x < 100) (1 : scanl (+) 1 fibs)
+Prelude> fibs
+[1,1,2,3,5,8,13,21,34,55,89
+
+^CInterrupted.
+-- This isn't it either.
+Prelude> fibs = 1 : (\x -> if x < 100 then scanl (+1) 1 fibs else 0)
+
+<interactive>:73:13: error:
+    • Couldn't match expected type ‘[a]’
+                  with actual type ‘Integer -> [Integer]’
+    • The lambda expression ‘\ x -> ...’ has one argument,
+      but its type ‘[a]’ has none
+      In the second argument of ‘(:)’, namely
+        ‘(\ x -> if x < 100 then scanl (+ 1) 1 fibs else 0)’
+      In the expression:
+        1 : (\ x -> if x < 100 then scanl (+ 1) 1 fibs else 0)
+    • Relevant bindings include
+        fibs :: [a] (bound at <interactive>:73:1)
+
+<interactive>:73:42: error:
+    • Couldn't match type ‘Integer’ with ‘a -> Integer’
+      Expected type: Integer -> a -> Integer
+        Actual type: (a -> Integer) -> a -> Integer
+    • In the first argument of ‘scanl’, namely ‘(+ 1)’
+      In the expression: scanl (+ 1) 1 fibs
+      In the expression: if x < 100 then scanl (+ 1) 1 fibs else 0
+    • Relevant bindings include
+        fibs :: [a] (bound at <interactive>:73:1)
+Prelude>
+-- FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp
+-- (Use method `takeWhile` to naturally terminate this case. I forgot
+-- this method existed.)
+Prelude> fibs' n = takeWhile (< n) (1 : scanl (+) 1 fibs)
+Prelude> fibs' 100
+[1,1,2,3,5,8,13,21,34,55,89]
+Prelude>
+```
+
+3. Below:
+
+```haskell
+-- BLANKING NOT SURE
+--
+-- Prelude> factorial = 1 : scanl (*) 2 factorial
+-- Prelude> factorial = scanl (*) 2 factorial
+-- Prelude> factorial = scanl (*) 1 factorial
+-- FROM ANSWER KEY
+Prelude> factorial = scanl (*) 1 [1..]
+```
+
+********** END SCANS EXERCISES **********
