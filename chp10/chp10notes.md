@@ -96,3 +96,46 @@ Prelude> foldr'' (+) 0 [1, 2, 3]
 6
 Prelude>
 ```
+
+```haskell
+-- This is a trick to show how `foldr` associates.
+Prelude> map show [1..5]
+["1","2","3","4","5"]
+Prelude> xs = map show [1..5]
+Prelude> foldr (\x y -> concat ["(", x, "+", y, ")"]) "0" xs
+"(1+(2+(3+(4+(5+0)))))"
+Prelude>
+```
+
+- Folding occurs in two stages: traversal and folding.
+    - Traversal: fold recurses over the spine.
+    - Folding: Reduction of folding function applied over the values.
+
+```haskell
+Prelude> :{
+Prelude| foldr'' :: (a -> b -> b) -> b -> [a] -> b
+Prelude| foldr'' f z xs =
+Prelude|     case xs of
+Prelude|         [] -> z
+-- If method `f` doesn't evaluate the second argument, then the spine will
+-- not be forced.
+--
+-- This means`foldr` can avoid evaluating not only the values, but also the
+-- spine. This means `foldr` can be used with lists that are potentially
+-- infinite (e.g. stream processing).
+--
+-- There is no guarantee that `fold` on infinite list will finish evaluating
+-- since it depends on the fold function and input data.
+Prelude|         (x : xs) -> f x (foldr'' f z xs)
+Prelude| :}
+Prelude> :{
+Prelude| myAny :: (a -> Bool) -> [a] -> Bool
+Prelude| myAny f xs =
+Prelude|     foldr'' (\x b -> f x || b) False xs
+Prelude| :}
+-- `[1..]` is an infinite list, yet `myAny` doesn't fail because it returns
+-- immediately if a value evaluates to True.
+Prelude> myAny even [1..]
+True
+Prelude>
+```
