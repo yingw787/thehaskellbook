@@ -416,3 +416,52 @@ Prelude>
 See `DatabaseProcessing.hs`.
 
 ********** END EXERCISES: DATABASE PROCESSING **********
+
+- Folding and evaluation
+
+```haskell
+-- Relationship between `foldr` and `foldl`.
+--
+-- Only for finite lists!
+foldr f z xs = foldl (flip f) z (reverse xs)
+```
+
+- Summary
+
+- Scans
+
+```haskell
+Prelude> scanr (+) 0 [1..3]
+-- [1 + (2 + (3 + 0)), 2 + (3 + 0), 3 + 0, 0]
+[6,5,3,0]
+Prelude> scanl (+) 0 [1..3]
+-- [0, 0 + 1, 0 + 1 + 2, 0 + 1 + 2 + 3]
+[0,1,3,6]
+Prelude>
+```
+
+```haskell
+-- Older definition of method `scanl`.
+Prelude> :{
+Prelude| scanl' :: (a -> b -> a) -> a -> [b] -> [a]
+Prelude| scanl' f q ls =
+Prelude|   q : (case ls of
+Prelude|         [] -> []
+Prelude|         x : xs -> scanl f (f q x) xs)
+Prelude| :}
+Prelude>
+```
+
+```haskell
+-- Stream of fibanocci numbers.
+Prelude> fibs = 1 : scanl (+) 1 fibs
+-- Get the Nth fibanocci number out of the stream.
+Prelude> fibsN x = fibs !! x
+Prelude> fibsN 0
+1
+Prelude> fibsN 2
+2
+Prelude> fibsN 6
+13
+Prelude>
+```
