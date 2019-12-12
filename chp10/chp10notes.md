@@ -189,3 +189,31 @@ Prelude> length $ take 2 $ take 4 xs
 2
 Prelude>
 ```
+
+```haskell
+-- Assume an anonymous method that ignores all inputs and just returns 9001.
+--
+-- This method never forces evaluation of any of its argument.
+Prelude> foldr (\_ _ -> 9001) 0 [1..5]
+9001
+Prelude> foldr (\_ _ -> 9001) 0 [1, 2, 3, undefined]
+9001
+Prelude> foldr (\_ _ -> 9001) 0 ([1, 2, 3] ++ undefined)
+9001
+-- Only if the first `cons` cell is "bottom", does the method raise an
+-- exception.
+Prelude> foldr (\_ _ -> 9001) 0 undefined
+*** Exception: Prelude.undefined
+CallStack (from HasCallStack):
+  error, called at libraries/base/GHC/Err.hs:79:14 in base:GHC.Err
+  undefined, called at <interactive>:132:24 in interactive:Ghci32
+-- This input argument works b ecause it isn't the first `cons cell` that is
+-- bottom. The undefined values are inside the cons cell, not the spine
+-- itself. The cons cells "contain" bottom values but are not themselves
+-- bottom.
+Prelude> foldr (\_ _ -> 9001) 0 [undefined, undefined]
+9001
+Prelude>
+```
+
+- Fold left
