@@ -365,3 +365,54 @@ Prelude>
 5. See `UnderstandingFolds.hs`.
 
 ********** END EXERCISES: UNDERSTANDING FOLDS **********
+
+- Unconditional spine recursion
+    - `foldl` has the successive steps of fold as first argument; next recursion
+      is not intermediated by the folding function as it is in `foldr`, which
+      means recursion of the spine is unconditional.
+    - `foldl` is fine with non-strict evaluation of values, as long as the fold
+      function is also non-strict (e.g. `(\_ _ = 5)`).
+
+```haskell
+-- Include "bottom" as part of the spine of list `xs`.
+Prelude> xs = [1..5] ++ undefined
+-- Non-strict evaluation over both spine/values means only the first value of
+-- `xs` is fetched, and rest of `xs` is not evaluated.
+Prelude> foldr const 0 xs
+1
+-- "Bottom" is fetched by value, which results in an exception.
+Prelude> foldr (flip const) 0 xs
+*** Exception: Prelude.undefined
+CallStack (from HasCallStack):
+  error, called at libraries/base/GHC/Err.hs:79:14 in base:GHC.Err
+  undefined, called at <interactive>:1:16 in interactive:Ghci1
+-- `foldl` is left-associative, which means it traverses the entire spine.
+Prelude> foldl const 0 xs
+*** Exception: Prelude.undefined
+CallStack (from HasCallStack):
+  error, called at libraries/base/GHC/Err.hs:79:14 in base:GHC.Err
+  undefined, called at <interactive>:1:16 in interactive:Ghci1
+-- Doesn't matter if `flip` is applied, `xs` is still traversed in full.
+Prelude> foldl (flip const) 0 xs
+*** Exception: Prelude.undefined
+CallStack (from HasCallStack):
+  error, called at libraries/base/GHC/Err.hs:79:14 in base:GHC.Err
+  undefined, called at <interactive>:1:16 in interactive:Ghci1
+Prelude>
+```
+
+- This means `foldl` is generally inappropriate with streams or long lists.
+- In most cases, when needing a left fold, use `fold'`, or `fold-l-prime`, which
+  is strict for both spine/values.
+    - Apparently this has less negative effect on performance over long lists.
+
+- How to write fold functions
+    - Start value: identity value for the function (0, 1, []).
+    - Then consider arguments for folding function
+    - Then consider folding function itself.
+
+********** START EXERCISES: DATABASE PROCESSING **********
+
+See `DatabaseProcessing.hs`.
+
+********** END EXERCISES: DATABASE PROCESSING **********
