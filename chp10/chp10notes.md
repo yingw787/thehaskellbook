@@ -217,3 +217,47 @@ Prelude>
 ```
 
 - Fold left
+
+```haskell
+-- (I don't think you need to import `Data.List` for GHCi v8.4.3)
+Prelude> map show [1..5]
+["1","2","3","4","5"]
+Prelude> xs = map show [1..5]
+Prelude> foldl (\x y -> concat ["(", x, "+", y, ")"]) "0" xs
+"(((((0+1)+2)+3)+4)+5)"
+Prelude>
+```
+
+- `scans` can also see how folds evaluate.
+    - Scans return a list of all the intermediate stages of the fold.
+    - `scanl` and `scanr` map to `foldl` and `foldr` respectively.
+
+```haskell
+Prelude> foldr (+) 0 [1..5]
+15
+-- head (scanr f z xs) = foldr f z xs
+Prelude> scanr (+) 0 [1..5]
+[15,14,12,9,5,0]
+Prelude> foldl (+) 0 [1..5]
+15
+-- last (scanl f z xs) = foldl f z xs
+Prelude> scanl (+) 0 [1..5]
+[0,1,3,6,10,15]
+Prelude>
+```
+
+- Associativity and folding
+    - `foldl` and `foldr` differ in associativity in evaluation.
+
+```haskell
+-- Here demonstrated with a non-commutative operation `(-)`.
+Prelude> foldl (\x y -> concat ["(", x, "-", y, ")"]) "0" xs
+"(((((0-1)-2)-3)-4)-5)"
+Prelude> foldr (\x y -> concat ["(", x, "-", y, ")"]) "0" xs
+"(1-(2-(3-(4-(5-0)))))"
+Prelude> foldl (-) 0 [1..5]
+-15
+Prelude> foldr (-) 0 [1..5]
+3
+Prelude>
+```
