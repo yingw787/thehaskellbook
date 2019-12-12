@@ -362,4 +362,6 @@ Prelude>
 
 4. a)
 
+5. See `UnderstandingFolds.hs`.
+
 ********** END EXERCISES: UNDERSTANDING FOLDS **********
