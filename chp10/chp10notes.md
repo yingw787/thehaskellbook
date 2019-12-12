@@ -139,3 +139,53 @@ Prelude> myAny even [1..]
 True
 Prelude>
 ```
+
+```haskell
+Prelude> u = undefined
+-- Here, "bottom" is part of the value construction.
+Prelude> foldr (+) 0 [1, 2, 3, 4, u]
+*** Exception: Prelude.undefined
+CallStack (from HasCallStack):
+  error, called at libraries/base/GHC/Err.hs:79:14 in base:GHC.Err
+  undefined, called at <interactive>:111:5 in interactive:Ghci17
+Prelude> xs = take 4 [1, 2, 3, 4, u]
+-- `foldr` doesn't evaluate the value if it is not forced.
+Prelude> foldr (+) 0 xs
+10
+Prelude>
+-- Here, "bottom" is part of the spine as well.
+Prelude> xs' = [1, 2, 3, 4] ++ u
+Prelude> foldr (+) 0 xs'
+*** Exception: Prelude.undefined
+CallStack (from HasCallStack):
+  error, called at libraries/base/GHC/Err.hs:79:14 in base:GHC.Err
+  undefined, called at <interactive>:111:5 in interactive:Ghci17
+Prelude> xs'' = take 4 ([1, 2, 3, 4] ++ u)
+-- `foldr` also doesn't evaluate the spine if not needed.
+Prelude> foldr (+) 0 xs''
+10
+-- Method `length` is different, since it evaluates the spine only
+Prelude> length [1, 2, 3, 4, u]
+5
+-- If "bottom" is part of the spine, then `length` is forced to raise
+-- an exception.
+Prelude> length ([1, 2, 3, 4] ++ u)
+*** Exception: Prelude.undefined
+CallStack (from HasCallStack):
+  error, called at libraries/base/GHC/Err.hs:79:14 in base:GHC.Err
+  undefined, called at <interactive>:111:5 in interactive:Ghci17
+-- Method `take` is non-strict, and stops returning elements of list upon
+-- hitting length limit given.
+Prelude> length (take 4 xs')
+4
+Prelude>
+```
+
+```haskell
+Prelude> xs = [1, 2] ++ undefined
+-- Method `take 4` would hit bottom, but doesn't matter due to `take 2`
+-- in between.
+Prelude> length $ take 2 $ take 4 xs
+2
+Prelude>
+```
