@@ -261,3 +261,70 @@ Prelude> foldr (-) 0 [1..5]
 3
 Prelude>
 ```
+
+```haskell
+Prelude> foldr (:) [] [1..3]
+[1,2,3]
+-- Must use `flip` with `foldl`; because `(:)` dictates value be the first
+-- argument and the list the second argument. Value must be prepended to the
+-- front of the list.
+--
+-- This still results in a different association than `foldr`, as can be seen
+-- from the result.
+Prelude> foldl (flip (:)) [] [1..3]
+[3,2,1]
+Prelude> foldl (:) [] [1..3]
+
+<interactive>:21:7: error:
+    • Occurs check: cannot construct the infinite type: a ~ [a]
+      Expected type: [a] -> [a] -> [a]
+        Actual type: a -> [a] -> [a]
+    • In the first argument of ‘foldl’, namely ‘(:)’
+      In the expression: foldl (:) [] [1 .. 3]
+      In an equation for ‘it’: it = foldl (:) [] [1 .. 3]
+    • Relevant bindings include it :: [a] (bound at <interactive>:21:1)
+Prelude>
+```
+
+```haskell
+-- `const` takes two arguments and returns the first one.
+--
+-- Here, 0 is the identity value returned at the end of spine recursion,
+-- and 1 is the first value. Folding stops after 1 and 2 are fetched.
+--
+-- `(1 `const` (2 `const` (3 `const` (4 `const` (5 `const` 0)))))`
+-- `(1 `const` (2 `const` (3 `const` (4 `const` 5))))`
+-- `(1 `const` (2 `const` (3 `const` 4)))`
+-- `(1 `const` (2 `const` 3))`
+-- `(1 `const` 2)`
+-- `1`
+Prelude> foldr const 0 [1..5]
+1
+-- Here, 0 is the accumulator value.
+--
+-- `(1 `flip const` (2 `flip const` (3 `flip const` (4 `flip const` (5 `flip const` 0)))))`
+-- `(1 `flip const` (2 `flip const` (3 `flip const` (4 `flip const` 0))))`
+-- `(1 `flip const` (2 `flip const` (3 `flip const` 0)))`
+-- `(1 `flip const` (2 `flip const` 0))`
+-- `(1 `flip const` 0)`
+-- `0`
+Prelude> foldr (flip const) 0 [1..5]
+0
+-- `(((((0 `const` 1) `const` 2) `const` 3) `const` 4) `const` 5)`
+-- `((((0 `const` 2) `const` 3) `const` 4) `const` 5)`
+-- `(((0 `const` 3) `const` 4) `const` 5)`
+-- `((0 `const` 4) `const` 5)`
+-- `(0 `const` 5)`
+-- `0`
+Prelude> foldl const 0 [1..5]
+0
+-- `(((((0 `flip const` 1) `flip const` 2) `flip const` 3) `flip const` 4) `flip const` 5)`
+-- `((((1 `flip const` 2) `flip const` 3) `flip const` 4) `flip const` 5)`
+-- `(((2 `flip const` 3) `flip const` 4) `flip const` 5)`
+-- `((3 `flip const` 4) `flip const` 5)`
+-- `(4 `flip const` 5)`
+-- `5`
+Prelude> foldl (flip const) 0 [1..5]
+5
+Prelude>
+```
