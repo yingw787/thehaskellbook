@@ -328,3 +328,38 @@ Prelude> foldl (flip const) 0 [1..5]
 5
 Prelude>
 ```
+
+********** BEGIN EXERCISES: UNDERSTANDING FOLDS **********
+
+1. c), `(*)` is a commutative operator.
+
+(CORRECT)
+
+```haskell
+Prelude> foldr (*) 1 [1..5]
+120
+Prelude> foldl (*) 1 [1..5]
+120
+Prelude>
+```
+
+2. Below:
+
+```haskell
+-- `foldl (flip (*)) 1 [1..3]`
+-- `(((1 * 1) * 2) * 3)`
+-- `((1 * 2) * 3)`
+-- `(2 * 3)`
+-- `6`
+--
+-- (CORRECT, GHCI RESULTS BELOW)
+Prelude> foldl (flip (*)) 1 [1..3]
+6
+Prelude>
+```
+
+3. c)
+
+4. a)
+
+********** END EXERCISES: UNDERSTANDING FOLDS **********
