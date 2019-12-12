@@ -59,3 +59,40 @@ Prelude| concat' (x : xs) = x ++ concat' xs
 Prelude| :}
 Prelude>
 ```
+
+- Fold right
+
+```haskell
+Prelude> :{
+Prelude| foldr' :: (a -> b -> b) -> b -> [a] -> b
+Prelude| foldr' f z [] = z
+Prelude| foldr' f z (x : xs) = f x (foldr' f z xs)
+Prelude| :}
+Prelude> foldr' (+) 0 [1, 2, 3]
+6
+-- Here, we can see how `foldr''` or `foldr` is very similar to the
+-- recursive patterns from earlier. There is a method, and an identity
+-- value, evaluated to the right over a list.
+--
+-- Since `(+)` is strict in its arguments, it unconditionally forces the rest
+-- of the fold.
+--
+Prelude> :{
+Prelude| foldr'' :: (a -> b -> b) -> b -> [a] -> b
+Prelude| foldr'' f z xs =
+Prelude|     case xs of
+Prelude|         [] -> z
+Prelude|         (x : xs) -> f x (foldr'' f z xs)
+Prelude| :}
+-- The expression below could be rewritten as:
+--
+-- `(+) 1 ((+) 2 ((+) 3 0))`
+-- `1 + (2 + (3 + 0))`
+-- `1 + (2 + 3)`
+-- `1 + 5`
+-- `6`
+--
+Prelude> foldr'' (+) 0 [1, 2, 3]
+6
+Prelude>
+```
