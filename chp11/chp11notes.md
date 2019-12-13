@@ -216,3 +216,86 @@ data Airline = PapuAir | CatapultsR'Us | TakeYourChangesUnited deriving (Eq, Sho
 -- 0: Type constructor
 -- 1, 2, 3: Data constructors
 ```
+
+```haskell
+data Price = Price Integer deriving (Eq, Show)
+data Manufacturer = Mini | Mazda | Tata deriving (Eq, Show)
+data Airline = PapuAir | CatapultsR'Us | TakeYourChangesUnited deriving (Eq, Show)
+-- Datatype definition where data constructors have arguments.
+data Vehicle = Car Manufacturer Price | Plane Airline deriving (Eq, Show)
+--   0         1   2            3       4     5
+-- 0: Type constructor
+-- 1, 4: Data constructors
+-- 2, 3: Type arguments to data constructor `Car`
+-- 5: Type argument to data constructor `Plane`
+```
+
+- Type constructors used as type arguments to another type constructor must be
+  in scope in order to construct the type.
+
+- Deriving `Show` allows data to be printed to the screen as a string.
+- Deriving `Eq` is also common and enables you to use equality operations
+  automatically.
+
+- Type arguments can be types, not specific values. (e.g. `False` is invalid,
+  `Bool` is valid)
+
+********** START EXERCISES: VEHICLES **********
+
+```haskell
+myCar = Car Mini (Price 14000)
+urCar = Car Mazda (Price 20000)
+clownCar = Car Tata (Price 7000)
+doge = Plane PapuAir
+```
+
+1. The type of `myCar` is `Car`. (INCORRECT, it is `Vehicle`.)
+
+2. Below:
+
+```haskell
+isCar :: Vehicle -> Bool
+--
+-- CORRECT-ISH, NEED TO WRAP Car with parentheses since I'm doing pattern
+-- matching.
+--
+-- isCar Car _ _ = True
+isCar (Car _ _) = True
+isCar _ = False
+
+isPlane :: Vehicle -> Bool
+-- Answer key has two `_`; this doesn't seem right since the `Plane` data
+-- constructor has one type argument.
+--
+-- This may be due to 5), altering Plane to have two attributes.
+--
+-- (CORRECT)
+isPlane (Plane _) = True
+isPlane _ = False
+
+areCars :: [Vehicle] -> [Bool]
+-- This method checks whether every element is of type `Car`. Answer key
+-- has better check of `any isCar`.
+areCars = map . isCar
+```
+
+3. Below:
+
+```haskell
+getManu :: Vehicle -> Manufacturer
+-- CORRECT BY ANSWER KEY
+getManu (Car manufacturer _) = manufacturer
+getManu _ = undefined
+```
+
+4. A run-time error will occur, as the incorrect data will be present and the
+   attribute `Manufacturer` will not be present.
+
+5. Below:
+
+```haskell
+-- (CORRECT)
+data Vehicle = Car Manufacturer Price | Plane Airline Size deriving (Eq, Show)
+```
+
+********** END EXERCISES: VEHICLES **********
