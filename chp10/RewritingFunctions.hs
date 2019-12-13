@@ -24,19 +24,34 @@ myAnd''' = foldr (&&) True
 
 
 -- 1)
+--
+-- (CORRECT BY GHCI OUTPUT)
 myOr :: [Bool] -> Bool
-myOr = undefined
+myOr = foldr (||) False
 
 -- 2)
+--
+-- (INCORRECT, COMPILE-TIME ERROR)
 myAny :: (a -> Bool) -> [a] -> Bool
-myAny = undefined
+-- myAny f a = foldr f False a
+--
+-- (PERSONAL NOTE: This is where my brain is starting to melt)
+myAny f x = foldl check False x where
+    check x y = x || f y
 
 -- 3)
+--
+-- (CORRECT BY GHCI OUTPUT)
 myElem :: Eq a => a -> [a] -> Bool
-myElem = undefined
+myElem a b = myAny (\x -> x == a) b
 
+-- (I basically just copied method `myAny` and hardcoded the lambda in place of
+-- the function.)
 myElem' :: Eq a => a -> [a] -> Bool
-myElem' = undefined
+myElem' a b = foldl check False b where
+    check x y = x || (\x -> x == a) y
+-- Another way to write this would be:
+-- myElem x xs = myAny ((==) x) xs
 
 -- 4)
 myReverse :: [a] -> [a]
@@ -69,3 +84,21 @@ myMaximumBy = undefined
 -- 11)
 myMinimumBy :: (a -> a -> Ordering) -> [a] -> a
 myMinimumBy = undefined
+
+
+main :: IO ()
+main = do
+    -- 1)
+    print $ myOr [True, False, True]
+    print $ myOr [False]
+
+    -- 2)
+    print $ myAny even [1, 3, 5]
+    print $ myAny odd [1, 3, 5]
+
+    -- 3)
+    print $ myElem 1 [1..10]
+    print $ myElem 1 [2..10]
+
+    print $ myElem' 1 [1..10]
+    print $ myElem' 1 [2..10]
