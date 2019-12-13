@@ -105,15 +105,44 @@ squishMap f xs = foldr ((++) . f) [] xs
 
 -- 9)
 squishAgain :: [[a]] -> [a]
-squishAgain = undefined
+-- squishAgain = squishMap (++)
+-- squishAgain xs = squishMap (++) xs
+-- squishAgain = squishMap . (++)
+--
+-- (CORRECT BY GHCI OUTPUT)
+squishAgain xs = squishMap (++ []) xs
 
 -- 10)
 myMaximumBy :: (a -> a -> Ordering) -> [a] -> a
-myMaximumBy = undefined
+--
+-- myMaximumBy cmp xs = foldr g [] xs where
+--     g x y = if cmp x y == GT then x else y
+--
+-- myMaximumBy cmp xs = foldr g LT xs where
+--     g x y = if cmp x y == GT then x else y
+--
+-- myMaximumBy cmp xs = foldr g 0 xs where
+--     g x y = if cmp x y == GT then x else y
+--
+-- (COMPILES BUT IS INCORRECT)
+-- (Avoid typechecking error by pattern matching on first element, max of empty
+-- list should raise exception anyways)
+--
+-- myMaximumBy cmp (x : xs) = foldr g x xs where
+--     g x y = if cmp x y == GT then x else y
+--
+-- ANSWER KEY: https://github.com/johnchandlerburnham/hpfp
+-- (OK I forgot about method `foldr1`.)
+--
+myMaximumBy ord xs = foldr1 g xs
+    where g x y = if (ord x y) == GT then x else y
 
 -- 11)
+--
+-- (CORRECT BY GHCI OUTPUT)
 myMinimumBy :: (a -> a -> Ordering) -> [a] -> a
-myMinimumBy = undefined
+myMinimumBy ord xs = foldr1 g xs
+    where g x y = if (ord x y) == LT then x else y
 
 
 main :: IO ()
@@ -150,3 +179,16 @@ main = do
     -- 8)
     print $ squishMap (\x -> [1, x, 3]) [2]
     print $ squishMap (\x -> "WO " ++ [x] ++ " OT ") "blah"
+
+    -- 9)
+    print $ squishAgain [[1], [2], [3]]
+
+    -- 10)
+    print $ myMaximumBy (\_ _ -> GT) [1..10]
+    print $ myMaximumBy (\_ _ -> LT) [1..10]
+    print $ myMaximumBy compare [1..10]
+
+    -- 11)
+    print $ myMinimumBy (\_ _ -> GT) [1..10]
+    print $ myMinimumBy (\_ _ -> LT) [1..10]
+    print $ myMinimumBy compare [1..10]
