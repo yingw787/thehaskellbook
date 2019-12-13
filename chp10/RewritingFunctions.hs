@@ -50,12 +50,23 @@ myElem a b = myAny (\x -> x == a) b
 myElem' :: Eq a => a -> [a] -> Bool
 myElem' a b = foldl check False b where
     check x y = x || (\x -> x == a) y
--- Another way to write this would be:
+-- ANSWER KEY BELOW: https://github.com/johnchandlerburnham/hpfp
 -- myElem x xs = myAny ((==) x) xs
 
 -- 4)
 myReverse :: [a] -> [a]
-myReverse = undefined
+-- myReverse (x : xs) = foldl (++ x : []) xs
+-- myReverse (x : xs) = foldl (++ (x : [])) xs
+-- myReverse (x : xs) = foldl (++ (x : [])) "" xs
+
+-- myReverse (x : xs) = foldl concat "" xs where
+--     concat x y = y ++ x : []
+
+-- myReverse (x : xs) = foldl concat "" xs where
+--     concat x y = y : x
+
+-- ANSWER KEY: https://github.com/johnchandlerburnham/hpfp
+myReverse = foldl (flip (:)) []
 
 -- 5)
 myMap :: (a -> b) -> [a] -> [b]
@@ -102,3 +113,7 @@ main = do
 
     print $ myElem' 1 [1..10]
     print $ myElem' 1 [2..10]
+
+    -- 4)
+    print $ myReverse "blah"
+    print $ myReverse [1..5]
