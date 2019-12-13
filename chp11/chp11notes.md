@@ -188,3 +188,31 @@ Prelude>
    (CORRECT)
 
 ********** END EXERCISES: DOG TYPES **********
+
+- What's a type and what's data?
+    - Types are checked at compile-time
+    - Data is checked at run-time
+    - Type constructors are before the `=` in datatype definition.
+    - Data constructors are after the `=` in datatype definition.
+
+    - When data constructors take arguments, those arguments refer to other
+      types.
+
+```haskell
+data Price = Price Integer deriving (Eq, Show)
+--   0       1     2
+-- 0: Type constructor
+-- 1: Data constructor
+-- 2: Type argument
+```
+
+```haskell
+data Manufacturer = Mini | Mazda | Tata deriving (Eq, Show)
+--   0              1      2       3
+-- 0: Type constructor
+-- 1, 2, 3: Data constructors
+data Airline = PapuAir | CatapultsR'Us | TakeYourChangesUnited deriving (Eq, Show)
+--   0         1         2               3
+-- 0: Type constructor
+-- 1, 2, 3: Data constructors
+```
