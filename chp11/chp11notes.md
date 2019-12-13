@@ -124,5 +124,40 @@ Prelude> data HuskyType a = HuskyData
 -- are different things. As the variable in the data constructor appears in
 -- the type constructor, they are the same data.
 Prelude> data DogueDeBordeaux doge = DogueDeBordeaux doge
+-- We can use these definitions in constructing the following values.
+--
+-- We can construct `myPug` with or without casting to PugType.
+Prelude> myPug = PugData
+Prelude> myPug = PugData :: PugType
+-- We can apply whatever concrete types or constrained / free polymorphic
+-- types when casting myHusky or myOtherHusky, because the type variable
+-- is a phantom variable that does not affect the data constructor.
+Prelude> myHusky :: HuskyType a; myHusky = HuskyData
+Prelude> myOtherHusky :: Num a => HuskyType a; myOtherHusky = HuskyData
+-- We can apply a type and a matching value when constructing values of
+-- type DogueDeBordeaux.
+Prelude> myDoge :: DogueDeBordeaux Int; myDoge = DogueDeBordeaux 10
+-- If the type and value for the type variable of DogueDeBordeaux do not
+-- match, then a compile-time error occurs because the value cannot be
+-- reconciled.
+Prelude> badDoge :: DogueDeBordeaux String; badDoge = DogueDeBordeaux 10
+
+<interactive>:18:62: error:
+    • No instance for (Num String) arising from the literal ‘10’
+    • In the first argument of ‘DogueDeBordeaux’, namely ‘10’
+      In the expression: DogueDeBordeaux 10
+      In an equation for ‘badDoge’: badDoge = DogueDeBordeaux 10
+Prelude>
+```
+
+```haskell
+-- Type signature for Doggies looks very much like a function.
+Prelude> data Doggies a = Husky a | Mastiff a deriving (Eq, Show)
+-- Needs to be applied to become a concrete type.
+Prelude> :k Doggies
+Doggies :: * -> *
+-- Needs to be applied to become a concrete value.
+Prelude> :t Husky
+Husky :: a -> Doggies a
 Prelude>
 ```
