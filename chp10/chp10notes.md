@@ -536,3 +536,53 @@ Prelude> factorial = scanl (*) 1 [1..]
 ```
 
 ********** END SCANS EXERCISES **********
+
+********** BEGIN: CHAPTER EXERCISES **********
+
+Warm-up and review
+
+1a. Below:
+
+```haskell
+-- (CORRECT)
+stops = "pbtdkg"
+vowels = "aeiou"
+combos = [(x, y, z) | x <- stops, y <- vowels, z <- stops]
+```
+
+1b. Below:
+
+```haskell
+-- (CORRECT)
+stops = "pbtdkg"
+vowels = "aeiou"
+combos = [(x, y, z) | x <- stops, y <- vowels, z <- stops, x == 'p']
+-- (ANSWER KEY hardcodes variable `x` to be 'p' instead of using a filter.)
+```
+
+1c. Below:
+
+```haskell
+-- (CORRECT)
+nouns = ["noun1", "noun2", "noun3"]
+verbs = ["verb1", "verb2", "verb3"]
+combos = [(x, y, z) | x <- nouns, y <- verbs, z <- nouns]
+```
+
+2. Code `(length (words x))` calculates the number of words in a sentence. Code
+   `(sum (map length (words x)))` calculates the number of characters that are
+   words in the sentence. `div $1 $2` calculates the average word length in the
+   sentence.
+
+(CORRECT BY ANSWER KEY)
+
+3. Below:
+
+```haskell
+-- Using fractional division operator `(/)` instead of method `div`.
+seekritFunc' x = (sum (map length (words x))) / (length (words x))
+```
+
+Rewriting functions using folds
+
+********** END: CHAPTER EXERCISES **********
