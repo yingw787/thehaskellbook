@@ -69,12 +69,27 @@ myReverse :: [a] -> [a]
 myReverse = foldl (flip (:)) []
 
 -- 5)
+--
+-- (I know from `fold` that the identity value can change with the folding
+-- function, it doesn't seem right to set a specific default...)
 myMap :: (a -> b) -> [a] -> [b]
-myMap = undefined
+-- myMap f a = foldr f a
+--
+-- ANSWER KEY: https://github.com/johnchandlerburnham/hpfp
+-- (Yes right, the default for a fold function is `[]`, the default for a method
+-- that reduces is the one that varies...)
+myMap f xs = foldr ((:) . f) [] xs
 
 -- 6)
+--
+-- (I kinda forgot whether folding functions are supposed to reduce, I think
+-- they can if you apply the cons operator to only the elements that match the
+-- predicate)
 myFilter :: (a -> Bool) -> [a] -> [a]
-myFilter = undefined
+-- BLANKING DONT KNOW WHY
+-- ANSWER KEY: https://github.com/johnchandlerburnham/hpfp
+myFilter f xs = foldr g [] xs where
+    g x y = if (f x) then (x : y) else y
 
 -- 7)
 squish :: [[a]] -> [a]
@@ -117,3 +132,10 @@ main = do
     -- 4)
     print $ myReverse "blah"
     print $ myReverse [1..5]
+
+    -- 5)
+    print $ myMap length (words "Mary had a little lamb")
+
+    -- 6)
+    print $ myFilter even [1..10]
+    print $ myFilter odd [1..10]
