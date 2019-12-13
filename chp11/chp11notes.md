@@ -76,3 +76,53 @@ Prelude> data UnaryTypeCon a = UnaryValueCon a
 -- (PERSONAL NOTE: Not sure what phantom witnesses are in this case...)
 Prelude>
 ```
+
+- Type constructors and kinds
+    - Kind signature: Type of types of types one level up.
+    - Represented by `*`.
+    - Something is fully applied and concrete when represented as a kind (`*`).
+    - Something is waiting to be applied when it is a function (`* -> *`).
+
+```haskell
+Prelude> f = not True
+Prelude> :t f
+-- Of the form `*`.
+f :: Bool
+Prelude> f x = x > 3
+Prelude> :t f
+-- Of the form `* -> *`.
+f :: (Ord a, Num a) => a -> Bool
+-- We can query the kind signature of a type constructor using GHCi method
+-- `:kind`.
+Prelude> :kind Bool
+Bool :: *
+Prelude> :kind [Int]
+[Int] :: *
+Prelude> :kind []
+[] :: * -> *
+Prelude>
+```
+
+- Data constructors and values
+
+```haskell
+-- PugType is a type constant, that enumerates one constructor.
+--
+-- PugData is a constant value data constructor. Any function that requires
+-- a value of type PugType, that value will always be PugData.
+Prelude> data PugType = PugData
+-- HuskyType is a type constructor, enumerates one constructor, taking in a
+-- single parametrically polymorphic type variable as an argument.
+--
+-- HuskyData is a data constructor with no arguments. Type argument `a` is
+-- a phantom or "has no witness". HuskyData is a constant value.
+Prelude> data HuskyType a = HuskyData
+-- DogueDeBordeaux is a type constructor, enumerating one constructor, with
+-- one variable argument (equivalent to `a` through alpha equivalence).
+--
+-- The data constructor has the same name as the type constructor, but they
+-- are different things. As the variable in the data constructor appears in
+-- the type constructor, they are the same data.
+Prelude> data DogueDeBordeaux doge = DogueDeBordeaux doge
+Prelude>
+```
