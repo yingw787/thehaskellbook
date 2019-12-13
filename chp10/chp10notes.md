@@ -1,4 +1,4 @@
-# Chapter 10
+# Chapter 10 (NEED TO REVIEW AGAIN)
 
 - Folds
     - General concept called "catamorphisms"

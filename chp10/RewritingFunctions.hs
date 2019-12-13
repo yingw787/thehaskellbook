@@ -92,12 +92,16 @@ myFilter f xs = foldr g [] xs where
     g x y = if (f x) then (x : y) else y
 
 -- 7)
+--
+-- (CORRECT BY GHCI OUTPUT)
 squish :: [[a]] -> [a]
-squish = undefined
+squish = foldr (++) []
 
 -- 8)
+--
+-- (CORRECT BY GHCI OUTPUT)
 squishMap :: (a -> [b]) -> [a] -> [b]
-squishMap = undefined
+squishMap f xs = foldr ((++) . f) [] xs
 
 -- 9)
 squishAgain :: [[a]] -> [a]
@@ -139,3 +143,10 @@ main = do
     -- 6)
     print $ myFilter even [1..10]
     print $ myFilter odd [1..10]
+
+    -- 7)
+    print $ squish [[1], [2], [3]]
+
+    -- 8)
+    print $ squishMap (\x -> [1, x, 3]) [2]
+    print $ squishMap (\x -> "WO " ++ [x] ++ " OT ") "blah"
