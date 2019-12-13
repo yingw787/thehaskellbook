@@ -39,3 +39,40 @@ data [] a = [] | a : [a] 	-- Defined in ‘GHC.Types’
 
 - `|`, or logical disjunction, represents a "sum type", a type with more than
   one constructor.
+
+- Data and type constructors
+    - Type constructors
+        - Used at the type level, in type signatures, and typeclass declarations
+          and instances
+        - Static, resolve at compile time
+    - Data constructors
+        - Construct values at term level
+    - Can make a distinction between constants and constructors.
+        - Type/data constructors that don't take arguments are constants.
+        - `Bool` is a constant.
+        - `True` and `False` are constants.
+        - They're less constructors because they're not constructing anything.
+        - Sometimes, a constructor may need to be parametrized with different
+          types or amounts of data.
+        - Then, they become like functions that must be applied to become a
+          "concrete type/value".
+
+```haskell
+Prelude> data Trivial = Trivial'
+--            0         1
+-- 0: Type constructor is like a constant value at the type level.
+-- Otherwise called type constants.
+--
+-- 1: Data constructor is like constant value at the value/term/runtime
+-- level (all describe the same thing).
+Prelude> data UnaryTypeCon a = UnaryValueCon a
+--            0                1
+-- 0: UnaryTypeCon is a type constructor with one argument. Awaiting a type
+-- constant to be applied to. Type-level functions exist, but aren't covered
+-- here.
+--
+-- 1: UnaryValueCon is a data constructor with one value. Careful that
+-- not all type arguments to constructors have value-level witnesses.
+-- (PERSONAL NOTE: Not sure what phantom witnesses are in this case...)
+Prelude>
+```
