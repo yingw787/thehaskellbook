@@ -161,3 +161,30 @@ Prelude> :t Husky
 Husky :: a -> Doggies a
 Prelude>
 ```
+
+********** BEGIN EXERCISES: DOG TYPES **********
+
+1. `Doggies` is a type constructor, because it is on the left side of the `=`
+   sign.
+
+2. `Doggies` is a kind that is waiting to be applied (`* -> *`).
+
+3. `Doggies String` is a kind that has been fully applied (`*`).
+
+4. `Husky 10` has the type of `Doggies Num a => a` (PARTIALLY CORRECT, `Num a =>
+   Doggies a`).
+
+5. `Husky (10 :: Integer)` has the type of `Doggies Integer`. (CORRECT)
+
+6. `Mastiff "Scooby Doo"` has the type of `Doggies String`. (CORRECT)
+
+7. `DogueDeBordeaux` is both a type constructor and a data constructor. (CORRECT
+   BY ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+
+8. The type of `DogueDeBordeaux` should be `DogueDeBordeaux a`. (INCORRECT,
+   `doge -> DogueDeBordeaux doge`.)
+
+9. The type of `DogueDeBordeaux "doggie!"` should be `DogueDeBordeaux String`.
+   (CORRECT)
+
+********** END EXERCISES: DOG TYPES **********
