@@ -585,4 +585,6 @@ seekritFunc' x = (sum (map length (words x))) / (length (words x))
 
 Rewriting functions using folds
 
+See `RewritingFunctions.hs`.
+
 ********** END: CHAPTER EXERCISES **********
