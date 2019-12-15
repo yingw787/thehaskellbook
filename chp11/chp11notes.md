@@ -299,3 +299,45 @@ data Vehicle = Car Manufacturer Price | Plane Airline Size deriving (Eq, Show)
 ```
 
 ********** END EXERCISES: VEHICLES **********
+
+- Data constructor arities
+    - arity: number of arguments a function/constructor takes.
+    - nullary: 0-arity
+    - unary, binary: 1-arity, 2-arity
+    - nullary data constructors are constant values (witness of datatype)
+    - Data constructors that take more than one argument are called products.
+
+```haskell
+-- nullary
+Prelude> data Example0 = Example0 deriving (Eq, Show)
+-- unary
+Prelude> data Example1 = Example1 Int deriving (Eq, Show)
+-- binary, product of Int and String
+Prelude> data Example2 = Example2 Int String deriving (Eq, Show)
+Prelude>
+```
+
+- Tuples are the canonical product type; they are anonymous products because
+  they have no name.
+
+```haskell
+Prelude> data MyType = MyVal Int deriving (Eq, Show)
+--            1        2     3   4         5
+-- 1: Type constructor
+-- 2: Data constructor
+-- 3: Type argument
+-- 4: Driving clause
+-- 5: Typeclass instances being derived.
+Prelude> :t MyVal
+MyVal :: Int -> MyType
+Prelude> MyVal 10
+MyVal 10
+-- Free equality comparison operators.
+Prelude> MyVal 10 == MyVal 10
+True
+Prelude> MyVal 10 == MyVal 9
+False
+Prelude>
+```
+
+- What makes these datatypes algebraic?
