@@ -969,3 +969,37 @@ Prelude>
   - Don't have the type until the type argument is fully applied.
 
 - If an operator has a non-alphanumeric name, it's infix by default.
+
+- Binary tree
+  - See `BinaryTree.hs`.
+
+********** BEGIN CHAPTER EXERCISES **********
+
+Multiple choice (ALL CORRECT BY ANSWER KEY)
+
+1. a)
+2. c)
+3. b)
+4. c)
+
+Ciphers
+
+See `Ciphers.hs`.
+
+As-patterns
+
+See `AsPatterns.hs`.
+
+Language exercises
+
+See `LanguageExercises.hs`.
+
+Phone exercise
+
+See `Phone.hs`.
+
+Hutton's Razor
+
+See `HuttonsRazor.hs`.
+
+********** END CHAPTER EXERCISES **********
