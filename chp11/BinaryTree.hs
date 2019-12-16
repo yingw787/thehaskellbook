@@ -89,8 +89,20 @@ testPostorder =
     then putStrLn "Postorder fine!"
     else putStrLn "postorder failed check"
 
-main :: IO ()
-main = do
-    testPreorder
-    testInorder
-    testPostorder
+-- main :: IO ()
+-- main = do
+--     testPreorder
+--     testInorder
+--     testPostorder
+
+-- Write `foldr` for BinaryTree
+--
+-- (EUGH BIG BRAIN TIME...)
+-- (YEAH NOPE. ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+foldTree :: (a -> b -> b) -> b -> BinaryTree a -> b
+-- foldTree f a (Node left a right)
+--
+-- I'm guessing ac is accumulator and bt is binaryTree.
+-- (PERSONAL NOTE: The guy didn't fold over the tree, he folds over a flattened
+-- list like a regular fold.)
+foldTree f ac bt = foldr f ac (inorder bt)
