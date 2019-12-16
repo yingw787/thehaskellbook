@@ -397,3 +397,45 @@ cardinality of 18446744073709551616.
    in a doubling of the cardinality.
 
 ********** END EXERCISES: CARDINALITY **********
+
+- Simple datatypes with nullary data constructors
+  - Represent one value when reasoning about cardinality.
+
+********** BEGIN EXERCISES: FOR EXAMPLE **********
+
+1. Below:
+
+```haskell
+Prelude> data Example = MakeExample deriving Show
+-- Type of `MakeExample` is `Example`.
+Prelude> :t MakeExample
+MakeExample :: Example
+-- Requesting the type of `Example` results in an error.
+Prelude> :t Example
+
+<interactive>:1:1: error: Data constructor not in scope: Example
+Prelude>
+```
+
+2. Below:
+
+```haskell
+-- Typeclass instance `Show` is visible.
+Prelude> :i Example
+data Example = MakeExample 	-- Defined at <interactive>:14:1
+instance [safe] Show Example -- Defined at <interactive>:14:37
+Prelude>
+```
+
+3. Below:
+
+```haskell
+-- `Int` becomes a type argument that is applied to MakeExample2 data constructor
+-- to create a value of type `Example2`.
+Prelude> data Example2 = MakeExample2 Int deriving Show
+Prelude> :t MakeExample2
+MakeExample2 :: Int -> Example2
+Prelude>
+```
+
+********** END EXERCISES: FOR EXAMPLE **********
