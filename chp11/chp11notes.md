@@ -704,3 +704,78 @@ data Garden =
 ```
 
 ********** END EXERCISES: HOW DOES YOUR GARDEN GROW? **********
+
+- Constructing and deconstructing values
+  - Since data is immutable in Haskell, values carry with them information on
+    how they were created.
+
+```haskell
+-- Create some datatypes.
+data GuessWhat = Chickenbutt deriving (Eq, Show)
+data Id a = MkId a deriving (Eq, Show)
+data Product a b = Product a b deriving (Eq, Show)
+data Sum a b = First a | Second b deriving (Eq, Show)
+data RecordProduct a b = RecordProduct { pfirst :: a, psecond :: b } deriving (Eq, Show)
+```
+
+- Sum and product
+
+```haskell
+-- Ideally you avoid having nestable sum and product types...this is mostly
+-- for demonstration purposes.
+data Product a b = Product a b deriving (Eq, Show)
+data Sum a b = First a | Second b deriving (Eq, Show)
+
+newtype NumCow = NumCow Int deriving (Eq, Show)
+newtype NumPig = NumPig Int deriving (Eq, Show)
+
+-- Farmhouse and Farmhouse' are the same
+data Farmhouse = Farmhouse NumCow NumPig deriving (Eq, Show)
+type Farmhouse' = Product NumCow NumPig
+
+newtype NumSheep = NumSheep Int deriving (Eq, Show)
+
+-- BigFarmhouse and BigFarmhouse' are the same
+data BigFarmhouse = BigFarmhouse NumCow NumPig NumSheep deriving (Eq, Show)
+type BigFarmhouse' = Product NumCow (Product NumPig NumSheep)
+
+type Name = String
+type Age = Int
+type LovesMud = Bool
+-- Fun fact: Sheep can produce between 2 and 30 pounds of wool a year!
+type PoundsOfWool = Int
+
+data CowInfo = CowInfo Name Age deriving (Eq, Show)
+data PigInfo = PigInfo Name Age LovesMud deriving (Eq, Show)
+data SheepInfo = SheepInfo Name Age PoundsOfWool deriving (Eq, Show)
+
+-- Animal and Animal' are the same
+data Animal = Cow CowInfo | Pig PigInfo | Sheep SheepInfo deriving (Eq, Show)
+type Animal' = Sum CowInfo (Sum PigInfo SheepInfo)
+```
+
+- You can use `First` and `Second` to pattern match on data constructors of
+  `Sum`.
+
+```haskell
+-- With context from prior computations
+Prelude> bess' = (CowInfo "Bess" 4)
+Prelude> bess = First bess' :: Animal'
+Prelude>
+Prelude> let e' = Second (SheepInfo "Elmer" 5 5)
+Prelude> elmer = Second e' :: Animal'
+Prelude>
+-- Making a mistake
+Prelude> let elmo' = Second (SheepInfo "Elmo" 5 5)
+Prelude> elmo = First elmo' :: Animal'
+
+<interactive>:44:8: error:
+    • Couldn't match type ‘Sum a0 SheepInfo’ with ‘CowInfo’
+      Expected type: Animal'
+        Actual type: Sum (Sum a0 SheepInfo) (Sum PigInfo SheepInfo)
+    • In the expression: First elmo' :: Animal'
+      In an equation for ‘elmo’: elmo = First elmo' :: Animal'
+Prelude>
+```
+
+- Constructing values
