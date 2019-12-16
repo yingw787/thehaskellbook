@@ -341,3 +341,59 @@ Prelude>
 ```
 
 - What makes these datatypes algebraic?
+    - Algebraic: We can describe the patterns of argument structures, deriving
+      from type/set theory
+    - Two basic operations: sum & product
+
+- Cardinality of a datatype: number of possible values it defines
+    - From 0 to infinity
+    - This helps reason about programs (PERSONAL NOTE: Like generative testing
+      does with Enum types instead of string types)
+    - e.g. `Bool` has two types: `True` and `False`. `Bool` has cardinality 2.
+    - e.g. `Int8` has minBound -127 and maxBound 128. `Int8` has cardinality
+      256.
+
+********** BEGIN EXERCISES: CARDINALITY **********
+
+(ALL CORRECT, ANSWER KEY https://github.com/johnchandlerburnham/hpfp)
+
+1. 1, because there is no variation allowed in the data constructor through type
+   arguments.
+
+2. 3, because there are three separate data constructors, each with no type
+   arguments.
+
+3. It should be 2 ^ 16, or 65536.
+
+4. Below:
+
+```haskell
+Prelude> maxBound :: Int
+9223372036854775807
+Prelude> maxBound :: Integer
+
+<interactive>:11:1: error:
+    • No instance for (Bounded Integer)
+        arising from a use of ‘maxBound’
+    • In the expression: maxBound :: Integer
+      In an equation for ‘it’: it = maxBound :: Integer
+Prelude> minBound :: Int
+-9223372036854775808
+Prelude> minBound :: Integer
+
+<interactive>:13:1: error:
+    • No instance for (Bounded Integer)
+        arising from a use of ‘minBound’
+    • In the expression: minBound :: Integer
+      In an equation for ‘it’: it = minBound :: Integer
+Prelude>
+```
+
+Data type `Integer` is unbounded, so has infinite cardinality. Data type `Int`
+is bounded between -9223372036854775808 and 9223372036854775807, and so has a
+cardinality of 18446744073709551616.
+
+5. 2 ^ 8 = 256. Every digit place in the binary representation of `Int8` results
+   in a doubling of the cardinality.
+
+********** END EXERCISES: CARDINALITY **********
