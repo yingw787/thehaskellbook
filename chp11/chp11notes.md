@@ -536,3 +536,27 @@ Prelude> tooMany (Goats False)
       In the expression: tooMany (Goats False)
 Prelude>
 ```
+
+- For user-defined typeclasses, we can use language extension called
+  `GeneralizedNewTypeDeriving` in order to reuse typeclass instances.
+  - `LANGUAGE` pragma (pragma: special instruction to the compiler placed in
+    source code) tells compiler to process in ways beyond what standard provides
+    for.
+
+```haskell
+{-# LANGUAGE GeneralizedNewTypeDeriving #-}
+-- class TooMany a where ...
+-- instance TooMany Int where ...
+
+-- Now, no need to define instance TooMany for Goats; we can re-use the one
+-- from `TooMany Int`.
+newtype Goats = Goats Int deriving (Eq, Show, TooMany)
+```
+
+********** BEGIN EXERCISES: LOGIC GOATS **********
+
+See `LogicGoats.hs`.
+
+********** END EXERCISES: LOGIC GOATS **********
+
+- Sum types
