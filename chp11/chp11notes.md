@@ -430,8 +430,8 @@ Prelude>
 3. Below:
 
 ```haskell
--- `Int` becomes a type argument that is applied to MakeExample2 data constructor
--- to create a value of type `Example2`.
+-- `Int` becomes a type argument that is applied to MakeExample2 data
+-- constructor to create a value of type `Example2`.
 Prelude> data Example2 = MakeExample2 Int deriving Show
 Prelude> :t MakeExample2
 MakeExample2 :: Int -> Example2
@@ -439,3 +439,48 @@ Prelude>
 ```
 
 ********** END EXERCISES: FOR EXAMPLE **********
+
+- Unary constructors
+    - Data is not constructed at compile-time, but wil be constructed at runtime
+      from argument applied.
+    - Datatypes with a unary constructor have same cardinality as type contained.
+    - For cardinality, unary constructors are the identity function.
+
+- `newtype`
+    - Define a type that can only ever have a single unary data constructor.
+    - `newtype` cannot be a product type, sum type, or contain nullary
+      constructors.
+    - `newtype` has no runtime overhead; it re-uses the representation of the
+      type it contains.
+
+```haskell
+-- Unsafe; may confuse number of cows with number of goats
+Prelude> tooManyGoats :: Int -> Bool; tooManyGoats n = n > 42
+-- Use `newtype` to wrap `Int` as different types
+Prelude> newtype Goats = Goats Int deriving (Eq, Show)
+Prelude> newtype Cows = Cows Int deriving (Eq, Show)
+-- Safer version of prior method sets type in type signature, resulting in a
+-- compile-time error if incorrect type was passed.
+Prelude> tooManyGoats' :: Goats -> Bool; tooManyGoats' (Goats n) = n > 42
+-- Returns correct value
+Prelude> tooManyGoats' (Goats 43)
+True
+-- Compile-time error
+Prelude> tooManyGoats' (Cows 43)
+
+<interactive>:8:16: error:
+    • Couldn't match expected type ‘Goats’ with actual type ‘Cows’
+    • In the first argument of ‘tooManyGoats'’, namely ‘(Cows 43)’
+      In the expression: tooManyGoats' (Cows 43)
+      In an equation for ‘it’: it = tooManyGoats' (Cows 43)
+Prelude>
+```
+
+- `newtype` is similar to a "type synonym" in that representation of named type
+  and single type argument are identical and no distinction between them exists
+  at compile time.
+  - `String` -> `[Char]` (type synonym)
+  - `Goats` -> `Int` (newtype)
+
+- `newtype` and "type synonym" is that you can define typeclass instances for
+  `newtype`s on top of contained type, which is not possible for type aliases.
