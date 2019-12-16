@@ -621,3 +621,56 @@ data Person =
   - If you want to represent set cardinality, sum of products expression is the
     normal form, since there's no computation to perform
     - (PERSONAL NOTE: I don't understand this point)
+  - True of Haskell's type system. Product types distribute over sum types.
+
+```haskell
+-- Two types with nullary data constructors.
+-- This enables us to factor out book types from `Bool` (which cannot be used
+-- as you cannot declare a data constructor to be a concrete value)
+data Fiction = Fiction deriving Show
+data Nonfiction = Nonfiction deriving Show
+
+-- Sum type takes Fiction and Nonfiction types as arguments.
+--
+-- It is the type constructors that are passed to `Fictionbook` and
+-- `NonfictionBook`.
+data BookType = FictionBook Fiction | NonfictionBook Nonfiction deriving Show
+
+-- `AuthorName` is type synonym for `String`.
+type AuthorName = String
+data Author = Author (AuthorName, BookType)
+
+-- The above can be deconstructed to:
+--
+-- As products distribute over sums.
+data Author =
+  Fiction AuthorName
+  | Nonfiction AuthorName deriving (Eq, Show)
+
+-- `Expr` type used in type systems papers
+--
+-- This is normal form because it's a sum of products expression
+data Expr =
+  Number Int
+  | Add Expr Expr
+  | Minus Expr
+  | Mult Expr Expr
+  | Divide Expr Expr
+
+-- Another way to represent sum-of-products form would be to represent
+-- products with tuples and sums with `Either`.
+--
+-- Commonly used when you're writing functions or folds over
+-- datatype representations.
+type Number = Int
+type Add = (Expr, Expr)
+type Minus = Expr
+type Mult = (Expr, Expr)
+type Divide = (Expr, Expr)
+
+type Expr =
+  Either Number
+    (Either Add
+      (Either Minus
+        (Either Mult Divide)))
+```
