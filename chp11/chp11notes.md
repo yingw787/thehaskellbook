@@ -908,3 +908,64 @@ data Automobile = Null | Automobile Car deriving (Eq, Show)
 ```
 
 - Function type is exponential
+  - Given a function a -> b, cardinality exponentiates by b ^ a.
+  - e.g. `Bool -> Bool` -> `2 ^ 2`, and `Bool -> Bool -> Bool` is `2 ^ 2 ^ 2`.
+  - `a -> b -> c` is `(c ^ b) ^ a`, which is also equal to `c ^ (b * a)`.
+
+********** BEGIN EXERCISES: THE QUAD **********
+
+(CORRECT, all except 1. matches the answer key, I don't think the answer key is
+correct for 1.)
+
+1. 4 (four nullary data constructors)
+
+2. 16 (4 * 4, product type)
+
+3. 256 (4 ^ 4, function)
+
+4. 8 (2 * 2 * 2, product type)
+
+5. 16 (2 ^ 2 ^ 2, function)
+
+6. 65536 (4 ^ 4 ^ 2, function)
+
+********** END EXERCISES: THE QUAD **********
+
+- Higher-kinded datatypes
+  - Default kind seen before is `*`.
+  - Kinds are not types until fully applied
+  - `* -> *` and so forth are not kinds until fully applied; these are
+    higher-kinded types.
+  - Lists are higher-kinded datatypes in Haskell.
+
+```haskell
+Prelude> :{
+Prelude| data Silly a b c d =
+Prelude|   MkSilly a b c d deriving Show
+Prelude| :}
+Prelude> :kind Silly
+Silly :: * -> * -> * -> * -> *
+Prelude> :kind Silly Int
+Silly Int :: * -> * -> * -> *
+Prelude> :kind Silly Int String
+Silly Int String :: * -> * -> *
+Prelude> :kind Silly Int String Bool
+Silly Int String Bool :: * -> *
+Prelude> :kind Silly Int String Bool String
+Silly Int String Bool String :: *
+Prelude> :kind (,,,,)
+(,,,,) :: * -> * -> * -> * -> * -> *
+Prelude> :kind (Int, String, Bool, String)
+(Int, String, Bool, String) :: *
+Prelude>
+```
+
+- By not constraining the type (leaving it higher-kinded), the type can be
+  passed to a method that will enforce a constraint when needed, at
+  compile-time.
+
+- Lists are polymorphic
+  - Can contain values of any type.
+  - Don't have the type until the type argument is fully applied.
+
+- If an operator has a non-alphanumeric name, it's infix by default.
