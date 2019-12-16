@@ -586,3 +586,38 @@ data TwoQs = MkTwoQs QuantumBool QuantumBool deriving (Eq, Show)
 -- Can also write like this:
 type TwoQs = (QuantumBool, QuantumBool)
 ```
+
+- Record syntax
+  - Product types with additional syntax
+
+```haskell
+-- Cardinality: Very large
+data Person = MkPerson String Int deriving (Eq, Show)
+
+-- sample data
+jm = MkPerson "julie" 108
+ca = MkPerson "chris" 16
+
+-- This method will return the `String` attribute from the data.
+name :: Person -> String
+name (MkPerson s _) = s
+
+-- Record syntax, with named accessors.
+--
+-- name :: Person -> String
+-- age :: Person -> Int
+-- name jm = "julie" (If `jm` was converted from MkPerson to Person)
+-- age jm = 108 (If `jm` was converted from MkPerson to Person)
+data Person =
+  Person { name :: String,
+         , age :: Int }
+         deriving (Eq, Show)
+```
+
+- Normal form
+  - Distributive property `2 * (3 + 4) = 2 * 3 + 2 * 4`
+  - In normal arithmetic, normal form is when expression is reduced to final
+    result
+  - If you want to represent set cardinality, sum of products expression is the
+    normal form, since there's no computation to perform
+    - (PERSONAL NOTE: I don't understand this point)
