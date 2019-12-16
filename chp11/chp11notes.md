@@ -484,3 +484,55 @@ Prelude>
 
 - `newtype` and "type synonym" is that you can define typeclass instances for
   `newtype`s on top of contained type, which is not possible for type aliases.
+
+```haskell
+-- Typeclass `TooMany`.
+Prelude> class TooMany a where tooMany :: a -> Bool
+-- Instance for `Int`.
+Prelude> instance TooMany Int where tooMany n = n > 42
+Prelude> tooMany (42 :: Int)
+False
+-- If not cast to type `Int`, results in a runtime exception.
+Prelude> tooMany 42
+
+<interactive>:4:1: error:
+    • Ambiguous type variable ‘a0’ arising from a use of ‘tooMany’
+      prevents the constraint ‘(TooMany a0)’ from being solved.
+      Probable fix: use a type annotation to specify what ‘a0’ should be.
+      These potential instance exist:
+        instance [safe] TooMany Int -- Defined at <interactive>:2:10
+    • In the expression: tooMany 42
+      In an equation for ‘it’: it = tooMany 42
+
+<interactive>:4:9: error:
+    • Ambiguous type variable ‘a0’ arising from the literal ‘42’
+      prevents the constraint ‘(Num a0)’ from being solved.
+      Probable fix: use a type annotation to specify what ‘a0’ should be.
+      These potential instances exist:
+        instance Num Integer -- Defined in ‘GHC.Num’
+        instance Num Double -- Defined in ‘GHC.Float’
+        instance Num Float -- Defined in ‘GHC.Float’
+        ...plus two others
+        (use -fprint-potential-instances to see them all)
+    • In the first argument of ‘tooMany’, namely ‘42’
+      In the expression: tooMany 42
+      In an equation for ‘it’: it = tooMany 42
+-- To define a special instance of `TooMany` that has different behavior
+-- from `Int`, use `newtype`.
+Prelude> newtype Goats = Goats Int deriving Show
+Prelude> instance TooMany Goats where tooMany (Goats n) = n > 43
+-- Now, input argument is checked by `newtype`, and no direct casting to
+-- `Integer` is necessary.
+Prelude> tooMany (Goats 42)
+False
+Prelude> tooMany (Goats 43)
+False
+Prelude> tooMany (Goats False)
+
+<interactive>:11:16: error:
+    • Couldn't match expected type ‘Int’ with actual type ‘Bool’
+    • In the first argument of ‘Goats’, namely ‘False’
+      In the first argument of ‘tooMany’, namely ‘(Goats False)’
+      In the expression: tooMany (Goats False)
+Prelude>
+```
