@@ -560,3 +560,29 @@ See `LogicGoats.hs`.
 ********** END EXERCISES: LOGIC GOATS **********
 
 - Sum types
+  - To calculate cardinalities of sum types, add the cardinalities of their data
+    constructors.
+
+********** BEGIN EXERCISES: PITY THE BOOL **********
+
+1. 2 + 2 = 4 (CORRECT)
+
+2. 256 + 2 = 258 (CORRECT). Integer overflow should occur.
+
+********** END EXERCISES: PITY THE BOOL **********
+
+- Product types
+  - A product is like a C-like struct type, or a way to carry multiple values
+    around in a single data constructor.
+  - Any data constructor with 2+ type arguments is a product type.
+
+```haskell
+-- Cardinality of 3.
+data QuantumBool = QuantumTrue | QuantumFalse | QuantumBoth deriving (Eq, Show)
+
+-- Cardinality of 9 (3 * 3).
+data TwoQs = MkTwoQs QuantumBool QuantumBool deriving (Eq, Show)
+
+-- Can also write like this:
+type TwoQs = (QuantumBool, QuantumBool)
+```
