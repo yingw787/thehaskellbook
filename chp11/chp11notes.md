@@ -779,3 +779,78 @@ Prelude>
 ```
 
 - Constructing values
+
+```haskell
+-- Trivial types like this sometimes used to signal discrete concepts.
+trivialValue :: GuessWhat
+trivialValue = Chickenbutt
+
+idInt :: Id Integer
+idInt = MkId 10
+
+-- type synonyms for clarity.
+--
+-- Try to avoid using type synonyms with unstructured data like text/binary.
+type Awesome = Bool
+type Name = String
+
+person :: Product Name Awesome
+person = Product "Simon" True
+
+data Twitter = Twitter deriving (Eq, Show)
+data AskFm = AskFm deriving (Eq, Show)
+
+-- data socialNetwork = Twitter | AskFm deriving (Show, Eq)
+socialNetwork :: Sum Twitter AskFm
+socialNetwork = First Twitter
+```
+
+********** BEGIN EXERCISES: PROGRAMMERS **********
+
+See `Programmer.hs`.
+
+********** END EXERCISES: PROGRAMMERS **********
+
+- Accidental bottoms from records
+
+```haskell
+-- (Given context of `Programmer.hs`)
+-- Prelude> :l Programmer.hs
+-- [1 of 1] Compiling Programmer       ( Programmer.hs, interpreted )
+-- Ok, one module loaded.
+
+-- (Partial definition of data value, not defining lang)
+-- *Programmer> let partialAf = Programmer {os = GnuPlusLinux}
+
+-- <interactive>:2:17: warning: [-Wmissing-fields]
+--     • Fields of ‘Programmer’ not initialised: lang
+--     • In the expression: Programmer {os = GnuPlusLinux}
+--       In an equation for ‘partialAf’:
+--           partialAf = Programmer {os = GnuPlusLinux}
+
+-- (Then attempting to "show" the value results in a runtime exception)
+-- *Programmer> partialAf
+-- Programmer {os = GnuPlusLinux, lang = *** Exception: <interactive>:2:17-46: Missing field in record construction lang
+
+-- *Programmer>
+```
+
+- Either define the whole record at once, or not at all. If you think you need
+  to do this, your code needs to be refactored.
+  - (PERSONAL NOTE: Huh, no sane defaults applied by default..)
+  - Partial application of the data constructor can handle this.
+
+```haskell
+data ThereYet = There Float Int Bool deriving (Eq, Show)
+nope = There
+
+-- kind of like a builder pattern
+notYet :: Int -> Bool -> ThereYet
+notYet = nope 25.5
+
+notQuite :: Bool -> ThereYet
+notQuite = notYet 10
+
+yuss :: ThereYet
+yuss = notQuite False
+```
