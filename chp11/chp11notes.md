@@ -779,3 +779,34 @@ Prelude>
 ```
 
 - Constructing values
+
+```haskell
+-- Trivial types like this sometimes used to signal discrete concepts.
+trivialValue :: GuessWhat
+trivialValue = Chickenbutt
+
+idInt :: Id Integer
+idInt = MkId 10
+
+-- type synonyms for clarity.
+--
+-- Try to avoid using type synonyms with unstructured data like text/binary.
+type Awesome = Bool
+type Name = String
+
+person :: Product Name Awesome
+person = Product "Simon" True
+
+data Twitter = Twitter deriving (Eq, Show)
+data AskFm = AskFm deriving (Eq, Show)
+
+-- data socialNetwork = Twitter | AskFm deriving (Show, Eq)
+socialNetwork :: Sum Twitter AskFm
+socialNetwork = First Twitter
+```
+
+********** BEGIN EXERCISES: PROGRAMMERS **********
+
+See `Programmer.hs`.
+
+********** END EXERCISES: PROGRAMMERS **********
