@@ -674,3 +674,33 @@ type Expr =
       (Either Minus
         (Either Mult Divide)))
 ```
+
+********** BEGIN EXERCISES: HOW DOES YOUR GARDEN GROW? **********
+
+(CORRECT I THINK, ANSWER KEY https://github.com/johnchandlerburnham/hpfp)
+
+1. Below:
+
+```haskell
+data FlowerType = Gardenia | Daisy | Rose | Lilac deriving Show
+type Gardener = String
+
+data Garden = Garden Gardener FlowerType deriving Show
+
+-- Sum-of-products representation of `Garden`
+--
+-- A type synonym cannot have any typeclass or other deviations from base
+-- type, so I think it is safe to have Gardener remain instead of String.
+--
+-- Also I think order matters in data constructor (otherwise pattern
+-- matching would fail to convert between the two definitions, given how
+-- accessors are not named in either case, so I don't know why the answer
+-- key reversed them)
+data Garden =
+  Gardener Gardenia
+  | Gardener Daisy
+  | Gardener Rose
+  | Gardener Lilac deriving Show
+```
+
+********** END EXERCISES: HOW DOES YOUR GARDEN GROW? **********
