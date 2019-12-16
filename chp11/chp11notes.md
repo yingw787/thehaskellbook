@@ -887,3 +887,24 @@ isDairyFarmerRec farmer =
     DairyFarmer -> True
     _ -> False
 ```
+
+- Accidental bottoms from records
+  - You can easily propagate bottoms through record types (not a good idea)
+
+```haskell
+-- Don't do this
+--
+-- Instead of Null, there is datatype Maybe. Also consider case where you used
+-- a named successor but need to use Null anyways
+data Automobile = Null | Car { make :: String, model :: String, year :: Integer} deriving (Eq, Show)
+
+-- To fix this:
+-- Whenever you have a product type that uses record accessors, keep it
+-- separate from any sum type that is wrapping it.
+--
+-- This way, the type system and typechecker can catch it.
+data Car = Car { make :: String, model :: String, year :: Integer } deriving (Eq, Show)
+data Automobile = Null | Automobile Car deriving (Eq, Show)
+```
+
+- Function type is exponential
