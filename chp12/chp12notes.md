@@ -40,3 +40,29 @@ mkPerson name age
 ```
 
 - Bleating `Either`
+
+```haskell
+-- `Either` handles cases where an exception might otherwise occur.
+data Either a b = Left a | Right b
+
+-- Important to derive `Eq` to equality check constructors.
+data PersonInvalid = NameEmpty | AgeTooLow deriving (Eq, Show)
+```
+
+See `EqCaseGuard.hs`.
+
+- Kinds, a thousand stars in your types
+    - Describe types of type constructors.
+    - Type constants: types that take no arguments and are already types.
+    - Type constructor: types that must have arguments applied to become a type.
+
+```haskell
+-- `Example` is a type constructor because it takes in a type argument `a`.
+-- `* -> *`
+data Example a = Blah | Woot a
+```
+
+- `Maybe` is a type constructor with one type argument.
+- `Either` is a type constructor with two type arguments.
+
+- Lifted and unlifted types
