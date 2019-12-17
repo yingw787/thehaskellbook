@@ -46,3 +46,9 @@ countTheBeforeVowel str = go (words str) 0 where
     go (x:(c:cs):xss) n = if (x == "the" && (isVowel c))
                             then go xss (n + 1)
                             else go xss n
+
+-- 3)
+--
+-- (CORRECT BY GHCI OUTPUT)
+countVowels :: String -> Integer
+countVowels sentence = toInteger $ length $ filter isVowel sentence
