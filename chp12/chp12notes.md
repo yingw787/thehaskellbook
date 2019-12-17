@@ -126,14 +126,6 @@ Small library for Either
 
 See `Small LibraryForEither.hs`.
 
-Unfolds
-
-See `Unfolds.hs`.
-
-Why bother?
-
-See `WhyBother.hs`.
-
 Write your own iterate and unfoldr
 
 See `IterateAndUnfoldr.hs`.
