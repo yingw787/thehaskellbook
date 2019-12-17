@@ -1,4 +1,4 @@
-# Chapter 12
+# Chapter 12 (NEED TO REVIEW FOLDING)
 
 - Signaling adversity
     - Explicit datatypes signal when function received combination of inputs
