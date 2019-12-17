@@ -1,4 +1,6 @@
 -- Phone.hs
+--
+-- (ALL FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
 module Phone where
 
 -- 1:
@@ -21,7 +23,33 @@ module Phone where
 -- 22222 -> 'A'
 
 -- 1)
-data DaPhone = DaPhone
+data Phone = Phone {buttons :: [Button]} deriving (Eq, Show)
+
+-- Selecting shift.
+data Mode = Shift | None deriving (Eq, Show)
+
+-- Type synonyms for Char and Int.
+type Key = Char
+type Press = Int
+-- Named accessors in data constructor
+data Button = Button {key :: Key, output :: String} deriving (Eq, Show)
+
+daPhone :: Phone
+daPhone = Phone
+    [
+        Button '1' "1",
+        Button '2' "ABC2",
+        Button '3' "DEF3",
+        Button '4' "GHI4",
+        Button '5' "JKL5",
+        Button '6' "MNO6",
+        Button '7' "PQRS7",
+        Button '8' "TUV8",
+        Button '9' "WXYZ9s",
+        Button '*' "^*",
+        Button '0' " 0",
+        Button '#' ".,#"
+    ]
 
 -- 2)
 convo :: [String]
