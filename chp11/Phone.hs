@@ -64,28 +64,32 @@ convo = [
     "Lol ya",
     "Just making sure rofl ur turn"]
 
--- validButtons = "1234567890*#"
-type Digit = Char
 
--- valid presses: 1 and up
-type Presses = Int
+keyMap :: Phone -> (Key, Press) -> Mode -> Char
+keyMap = undefined
 
-reverseTaps :: DaPhone -> Char -> [(Digit, Presses)]
-reverseTaps = undefined
+textOut :: Phone  -> [(Key, Press)] -> String
+textOut = undefined
 
--- assuming the default phone definition
--- 'a' -> [('2', 1)]
--- 'A' -> [('*', 1), ('2', 1)]
-cellPhonesDead :: DaPhone -> String -> [(Digit, Presses)]
-cellPhonesDead = undefined
+invButton :: Button -> [(Char, (Key, Press))]
+invButton = undefined
+
+invKeyMap :: Phone -> Char -> Maybe (Key, Press)
+invKeyMap = undefined
+
+keyPressIn :: Phone -> String -> [Maybe (Key, Press)]
+keyPressIn = undefined
 
 -- 3)
-fingerTaps :: [(Digit, Presses)] -> Presses
+fingerTaps :: [Maybe (Key, Press)] -> Press
 fingerTaps = undefined
 
 -- 4)
 mostPopularLetter :: String -> Char
 mostPopularLetter = undefined
+
+costOfMostPopularLetter :: Phone -> String -> Press
+costOfMostPopularLetter = undefined
 
 -- 5)
 coolestLtr :: [String] -> Char
