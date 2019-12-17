@@ -1,4 +1,4 @@
-# Chapter 11
+# Chapter 11 (NEED TO REVIEW AGAIN)
 
 - Algebraic datatypes
     - Writing your own datatypes can help you leverage Haskell's most powerful
