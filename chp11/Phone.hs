@@ -3,6 +3,9 @@
 -- (ALL FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
 module Phone where
 
+import Data.Char -- `toLower`
+import Data.List -- `group`
+
 -- 1:
 -- 2: ABC
 -- 3: DEF
@@ -66,34 +69,66 @@ convo = [
 
 
 keyMap :: Phone -> (Key, Press) -> Mode -> Char
-keyMap = undefined
+keyMap phone (k, p) mode =
+    if mode == Shift then out else toLower out where
+        out = outCycle !! ((p - 1) `mod` (length outCycle))
+        outCycle = unpack $ lookup k $ zip (map key pb) (map output pb)
+        pb = (buttons phone)
+        unpack (Just a) = a
 
 textOut :: Phone  -> [(Key, Press)] -> String
-textOut = undefined
+textOut phone kps = go phone kps None where
+    go phone [] _ = []
+    go phone (('*', 1):kps) None = go phone kps Shift
+    go phone (('*', 1):kps) Shift = go phone kps None
+    go phone (kp:kps) m = ((keyMap phone) (shift kp) m) : go phone kps None
+    shift (k, p) = if k == '*' then (k, p - 1) else (k, p)
 
 invButton :: Button -> [(Char, (Key, Press))]
-invButton = undefined
+invButton b = go ((key b), (output b)) 1 where
+    go (k, []) _ = []
+    go (k, (c:cs)) n = (c, (k, n)) : go (k, cs) (n + 1)
 
 invKeyMap :: Phone -> Char -> Maybe (Key, Press)
-invKeyMap = undefined
+invKeyMap phone c = lookup c $ concatMap invButton $ buttons daPhone
 
+-- main :: IO ()
+-- main = do
+--     print $ keyPressIn daPhone "you wanna talk"
+--
+-- [Just ('9',3),Just ('6',3),Just ('8',2),Just ('0',1),Just ('9',1),Just
+-- ('2',1),Just ('6',2),Just ('6',2),Just ('2',1),Just ('0',1),Just ('8',1),Just
+-- ('2',1),Just ('5',3),Just ('5',2)]
+--
 keyPressIn :: Phone -> String -> [Maybe (Key, Press)]
-keyPressIn = undefined
+keyPressIn phone [] = []
+keyPressIn phone (x:xs) = if isUpper x then up else lo where
+    up = (Just ('*', 1)):(invKeyMap phone x):(keyPressIn phone xs)
+    lo = (invKeyMap phone (toUpper x)):(keyPressIn phone xs)
 
 -- 3)
+--
+-- (PERSONAL NOTE: I don't think the book has covered Just/Nothing yet, may be
+-- the next chapter)
 fingerTaps :: [Maybe (Key, Press)] -> Press
-fingerTaps = undefined
+fingerTaps a = go a 0 where
+    go [] n = n
+    go ((Nothing):xs) n = go xs n
+    go ((Just (k, p)):xs) n = go xs (p + n)
 
 -- 4)
 mostPopularLetter :: String -> Char
-mostPopularLetter = undefined
+mostPopularLetter str = head $ maximumBy cmp $ group str where
+    cmp a b = compare (length a) (length b)
 
 costOfMostPopularLetter :: Phone -> String -> Press
-costOfMostPopularLetter = undefined
+costOfMostPopularLetter phone str = fingerTaps $ keyPressIn phone [a] where
+    a = mostPopularLetter str
 
 -- 5)
 coolestLtr :: [String] -> Char
-coolestLtr = undefined
+coolestLtr msgs = mostPopularLetter $ map mostPopularLetter msgs
 
 coolestWord :: [String] -> String
-coolestWord = undefined
+coolestWord msgs = head $ maximumBy cmp $ group $ concatMap words msgs where
+cmp a b = compare (length a) (length b)
