@@ -66,3 +66,80 @@ data Example a = Blah | Woot a
 - `Either` is a type constructor with two type arguments.
 
 - Lifted and unlifted types
+    - Lifted type: any that can be inhabited by `bottom`.
+        - Represented by a pointer
+    - Unlifted type: cannot be represented by `bottom`.
+        - Native machine types and raw pointers.
+    - `newtype` are special: they are kind `*` but are unlifted, which means
+      they cannot create any new pointer, which means it cannot be inhabited by
+      `bottom` (only contained type can be inhabited by `bottom`).
+
+- You could wrap `Maybe` within a `Maybe` if it is fully applied and the kind is
+  `*`. Same goes for other higher-order types that are fully applied and satisfy
+  typeclass constraints.
+
+- Data constructors are functions
+    - They are curried, as well, just like Haskell functions.
+
+```haskell
+-- Nullary data constructors are not like functions:
+-- `Trivial 1` raises a runtime exception.
+data Trivial = Trivial deriving Show
+
+-- Unary data constructors are like functions
+-- They can be typechecked
+data UnaryC = UnaryC Int deriving Show
+-- They can be parametrized with a type variable instead of hardcoded type
+data UnaryC a = UnaryC a deriving Show
+
+-- You can apply a type constructor to values as well:
+-- fmap Just [1, 2, 3] = [Just 1, Just 2, Just 3]
+```
+
+********** BEGIN CHAPTER EXERCISES **********
+
+Determine the kinds:
+
+1. `a` has kind `*`. (CORRECT BY ANSWER KEY
+   https://github.com/johnchandlerburnham/hpfp)
+
+2. `a` has kind `*`, while `f` has kind `* -> *`. (CORRECT BY ANSWER KEY
+   https://github.com/johnchandlerburnham/hpfp)
+
+String processing
+
+See `StringProcessing.hs`.
+
+Validate the word
+
+See `ValidateTheWord.hs`.
+
+It's only natural
+
+See `ItsOnlyNatural.hs`.
+
+Small library for Maybe
+
+See `SmallLibraryForMaybe.hs`.
+
+Small library for Either
+
+See `Small LibraryForEither.hs`.
+
+Unfolds
+
+See `Unfolds.hs`.
+
+Why bother?
+
+See `WhyBother.hs`.
+
+Write your own iterate and unfoldr
+
+See `IterateAndUnfoldr.hs`.
+
+Finally something other than a list!
+
+See `OtherThanList.hs`.
+
+********** END CHAPTER EXERCISES **********
