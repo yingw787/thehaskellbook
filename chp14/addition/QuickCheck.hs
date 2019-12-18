@@ -13,5 +13,13 @@ main = hspec $ do
 prop_additionGreater :: Int -> Bool
 prop_additionGreater x = x + 1 > x
 
+-- Failure case
+--
+-- Will always fail on the first case to be tested.
+-- prop_additionGreater' :: Int -> Bool
+-- prop_additionGreater' x = x + 0 > x
+
 runQc :: IO ()
-runQc = quickCheck prop_additionGreater
+runQc = do
+    quickCheck prop_additionGreater
+    -- quickCheck prop_additionGreater'
