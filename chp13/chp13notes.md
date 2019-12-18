@@ -65,3 +65,22 @@ executable hello
 - Qualified Imports
     - `import qualified Data.Bool` to use `bool` as `Data.Bool.bool` and
       `Data.Bool.not`.
+    - `import qualified Data.Bool as B` to use `bool` as `B.bool` and `B.not`.
+
+********** BEGIN EXERCISES: CHECK YOUR UNDERSTANDING **********
+
+(CORRECT-ISH BY ANSWER KEY)
+
+1. `forever`, `when`
+
+2. `Database.Blacktip.Types`, `Data.Bits`
+
+3. Database types
+
+4. Below:
+
+a) `MV`, `FPC`, `CC` (INCORRECT, SHOULD LIST FULL NAME OF MODULE)
+b) `Filesystem`
+c) `Control.Monad`
+
+********** END EXERCISES: CHECK YOUR UNDERSTANDING **********
