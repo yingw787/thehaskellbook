@@ -96,20 +96,44 @@ handleGuess puzzle guess = do
                 \ the word, try again."
       return (fillInCharacter puzzle guess)
 
+-- gameOver :: Puzzle -> IO ()
+-- gameOver (Puzzle wordToGuess _ guessed) =
+--   if (length guessed) > 7
+--   then
+--     do  putStrLn "You lose!"
+--         putStrLn $ "The word was: " ++ wordToGuess
+--       exitSuccess
+--   else return ()
+
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+-- (PERSONAL NOTE: Not sure why there are so many "unexpected do block in
+-- function application" errors when running "stack build")
 gameOver :: Puzzle -> IO ()
 gameOver (Puzzle wordToGuess _ guessed) =
-  if (length guessed) > 7 then
+  if (length guessed) > 7
+  then
     do putStrLn "You lose!"
-        putStrLn $
-          "The word was: " ++ wordToGuess
-        exitSuccess
-  else return ()
+       putStrLn $ "The word was: " ++ wordToGuess
+       exitSuccess
+  else
+       return ()
 
+-- gameWin :: Puzzle -> IO ()
+-- gameWin (Puzzle _ filledInSoFar _) =
+--   if all isJust filledInSoFar then
+--     do putStrLn "You win!"
+--       exitSuccess
+--   else return ()
+
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+-- (PERSONAL NOTE: Not sure why there are so many "unexpected do block in
+-- function application" errors when running "stack build")
 gameWin :: Puzzle -> IO ()
-gameWin (Puzzle _ filledInSoFar _) =
-  if all isJust filledInSoFar then
+gameWin (Puzzle _ filledIn _) =
+  if all isJust filledIn
+  then
     do putStrLn "You win!"
-      exitSuccess
+       exitSuccess
   else return ()
 
 runGame :: Puzzle -> IO ()
