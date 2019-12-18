@@ -84,3 +84,42 @@ b) `Filesystem`
 c) `Control.Monad`
 
 ********** END EXERCISES: CHECK YOUR UNDERSTANDING **********
+
+- `do` syntax and IO
+    - Enables us to Sequence monadic actions.
+
+```haskell
+concatUserInput = do
+    x1 <- getLine
+    x2 <- getLine
+    return (x1 ++ x2)
+```
+
+- `do` : block of IO actions.
+- `x1` and `x2` are bound with `<-` to the first and second `getLine` method
+  calls.
+- `return` concludes the `do` block with a value, and places it in `IO()`.
+
+```haskell
+twoo :: IO Bool
+twoo = do
+    c <- getChar
+    c' <- getChar
+    -- THIS LINE IS ILLEGAL
+    -- c == c'
+    return (c == c')
+
+-- If you don't want to return anything from the `do` block
+twoo' :: IO ()
+twoo' = do
+    c <- getChar
+    c' <- getChar
+    if (c == c')
+        then putStrLn "True"
+        else return ()
+```
+
+- `do` blocks look like imperative programming, but explicitly requires having
+  IO () and generating side effects.
+
+- Don't overuse `do` blocks.
