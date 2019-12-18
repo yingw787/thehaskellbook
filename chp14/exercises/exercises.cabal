@@ -10,7 +10,12 @@ build-type:          Simple
 cabal-version:       >=1.10
 
 library
-  exposed-modules:    WordsIntoNumbers, QuickCheck
+  exposed-modules:    NumbersIntoWords
+                    , QuickCheck
+                    , Idempotence
+                    , GenRandomGenerator
+                    , HangmanTesting
+                    , Ciphers
   ghc-options:        -Wall -fwarn-tabs
   build-depends:      base >=4.7 && <5
                     , containers
