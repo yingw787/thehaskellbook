@@ -207,3 +207,13 @@ sample' :: Gen a -> IO [a]
 - We can generate `Either` and `Maybe` types as well.
 
 - Using `QuickCheck` without `Hspec`
+
+```bash
+(base) Yings-Macbook-Pro:morse yingwang$ echo "hi" | stack exec morse to
+.... ..
+(base) Yings-Macbook-Pro:morse yingwang$ echo ".... .." | stack exec morse from
+hi
+(base) Yings-Macbook-Pro:morse yingwang$ stack exec which morse
+/Users/yingwang/haskell_projects/thehaskellbook/chp14/morse/.stack-work/install/x86_64-osx/22001c1b6b8135ad4f756cd0abfe24f504d6577a5bb6fb7e2bd86e3d6d390ca9/8.6.5/bin/morse
+(base) Yings-Macbook-Pro:morse yingwang$
+```
