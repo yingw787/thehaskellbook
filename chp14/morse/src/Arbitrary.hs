@@ -2,6 +2,7 @@
 module Arbitrary where
 
 import Test.QuickCheck
+import Test.QuickCheck.Gen (oneof)
 
 data Trivial =
     Trivial
@@ -48,3 +49,26 @@ instance (Arbitrary a, Arbitrary b) => Arbitrary (Pair a b) where
 
 pairGenIntString :: Gen (Pair Int String)
 pairGenIntString = pairGen
+
+data Sum a b = First a | Second b deriving (Eq, Show)
+
+-- Select one or the other with equal probability
+sumGenEqual :: (Arbitrary a, Arbitrary b) => Gen (Sum a b)
+sumGenEqual = do
+    a <- arbitrary
+    b <- arbitrary
+    oneof [return $ First a, return $ Second b]
+
+sumGenCharInt :: Gen (Sum Char Int)
+sumGenCharInt = sumGenEqual
+
+-- Select one or the other, but the first has 10 times higher chance of being
+-- selected
+sumGenFirstPls :: (Arbitrary a, Arbitrary b) => Gen (Sum a b)
+sumGenFirstPls = do
+    a <- arbitrary
+    b <- arbitrary
+    frequency [(10, return $ First a), (1, return $ Second b)]
+
+sumGenCharIntFirst :: Gen (Sum Char Int)
+sumGenCharIntFirst = sumGenFirstPls
