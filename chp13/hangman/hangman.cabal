@@ -1,20 +1,19 @@
 name:                hangman
 version:             0.1.0.0
--- synopsis:
--- description:
-homepage:            https://github.com/githubuser/hangman#readme
+synopsis:            Playing Hangman
+homepage:            SOME_HOMEPAGE
 license:             BSD3
 license-file:        LICENSE
-author:              Author name here
+author:              Ying Wang
 maintainer:          example@example.com
-copyright:           2019 Author name here
-category:            Web
+copyright:           2019 Ying Wang
+category:            Game
 build-type:          Simple
 cabal-version:       >=1.10
-extra-source-files:  README.md
+extra-source-files:  data/dict.txt
 
 executable hangman
   hs-source-dirs:      src
   main-is:             Main.hs
   default-language:    Haskell2010
-  build-depends:       base >= 4.7 && < 5
+  build-depends:       base >= 4.7 && < 5, random, split
