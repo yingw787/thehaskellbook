@@ -1,6 +1,8 @@
 -- GimmePerson.hs
 module GimmePerson where
 
+import Data.Either (isRight)
+
 type Name = String
 type Age = Integer
 
@@ -23,4 +25,25 @@ mkPerson name age
             " Age was: " ++ show age
 
 gimmePerson :: IO ()
-gimmePerson = undefined
+gimmePerson = do
+    putStr "Give me a name: "
+    name <- getLine
+    putStr "Give me an age: "
+    age <- getLine
+
+    -- (INCORRECT, COMPILE-TIME ERROR)
+    -- (PERSONAL NOTE: No '=' sign allowed within a do block, adding a do block
+    -- afterwards does not help, adding a 'let' statement does not help)
+    --
+    -- personOrError = mkPerson name (read age)
+    -- if (isRight personOrError)
+    -- then
+    --     print $ "Here's the person: " ++ personOrError
+    -- else
+    --     print $ "Here's the error: " ++ personOrError
+    --
+    -- (FROM ANSWER KEY)
+    let person = mkPerson name (read age) in
+        case person of
+            (Left _) -> putStrLn ("Invalid person: " ++ (show person))
+            (Right _) -> putStrLn ("Valid person: " ++ (show person))
