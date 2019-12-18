@@ -45,3 +45,23 @@ executable hello
   the operating system.
 
 - Making our project a library
+    - (PERSONAL NOTE: I didn't get the same error authors did about GHC
+      suggestion)
+
+- More on importing modules
+    - Imported modules are top-level declarations, and have scope throughout the
+      module
+    - Effect of multiple import declarations is cumulative
+    - Ordering of import declarations is irrelevant
+
+- If you run GHCi using bash command `stack ghci --ghci-options
+  -XNoImplicitPrelude`, then you can use bare interpreter shell without having
+  Prelude library
+
+- To import one method in one package, use syntax `import Data.Bool (bool)`
+  (`not` is not in scope here); use `:browse` in GHCi in order to see what is
+  available in each module
+
+- Qualified Imports
+    - `import qualified Data.Bool` to use `bool` as `Data.Bool.bool` and
+      `Data.Bool.not`.
