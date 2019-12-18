@@ -217,3 +217,31 @@ hi
 /Users/yingwang/haskell_projects/thehaskellbook/chp14/morse/.stack-work/install/x86_64-osx/22001c1b6b8135ad4f756cd0abfe24f504d6577a5bb6fb7e2bd86e3d6d390ca9/8.6.5/bin/morse
 (base) Yings-Macbook-Pro:morse yingwang$
 ```
+
+********** BEGIN CHAPTER EXERCISES **********
+
+Validating numbers into words
+
+See `exercises/src/NumbersIntoWords.hs`.
+
+Using QuickCheck
+
+See `exercises/src/QuickCheck.hs`.
+
+Idempotence
+
+See `exercises/src/Idempotence.hs`.
+
+Make a Gen random generator for the datatype
+
+See `exercises/src/GenRandomGenerator.hs`.
+
+Hangman testing
+
+See `exercises/src/HangmanTesting.hs`.
+
+Validating Ciphers
+
+See `exercises/src/Ciphers.hs`.
+
+********** END CHAPTER EXERCISES **********
