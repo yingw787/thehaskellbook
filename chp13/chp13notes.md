@@ -123,3 +123,21 @@ twoo' = do
   IO () and generating side effects.
 
 - Don't overuse `do` blocks.
+
+- Adding a `newtype`
+
+********** BEGIN CHAPTER EXERCISES **********
+
+Hangman game logic: DID NOT DO
+
+Modifying code:
+
+1. See `Ciphers.hs`.
+
+2. See `Forever.hs`.
+
+3. See `Forever.hs`.
+
+4. See `GimmePerson.hs`.
+
+********** END CHAPTER EXERCISES **********
