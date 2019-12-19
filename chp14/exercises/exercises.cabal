@@ -19,6 +19,7 @@ library
   ghc-options:        -Wall -fwarn-tabs
   build-depends:      base >=4.7 && <5
                     , containers
+                    , hspec
                     , QuickCheck
   hs-source-dirs:     src
   default-language:   Haskell2010
