@@ -196,3 +196,7 @@ prop_readShowIdentity x = (read (show x)) == x
 runEleven :: IO ()
 runEleven = do
     quickCheck (prop_readShowIdentity :: String -> Bool)
+
+-- This property fails because square root takes a floating point number, which
+-- results in inaccuracies in floating point hardware. For example, my GHCi
+-- instance returns `5.000000000000001` for the expression `square . sqrt $ 5`.
