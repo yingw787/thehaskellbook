@@ -27,10 +27,10 @@ instance Arbitrary Fool where
 foolGen :: Gen Fool
 foolGen = arbitrary
 
+-- 2) 2/3s chance of Fulse, 1/3 chance of Frue.
+--
 -- (FROM ANSWER KEY)
 fulsishFoolGen :: Gen Fool
 fulsishFoolGen = do
     a <- arbitrary
     frequency [(2, return a), (1, return a)]
-
--- 2) 2/3s chance of Fulse, 1/3 chance of Frue.
