@@ -65,3 +65,23 @@ instance Monoid () -- Defined in ‘GHC.Base’
 ```
 
 - Examples of using Monoid
+
+```haskell
+-- Lists are an example of a type with typeclass Monoid
+Prelude> mappend [1, 2, 3] [4, 5, 6]
+[1,2,3,4,5,6]
+Prelude> mconcat [[1..3], [4..6]]
+[1,2,3,4,5,6]
+Prelude> mappend "Trout" " goes well with garlic"
+"Trout goes well with garlic"
+-- This monoid maps well to existing operator `(++)`
+Prelude> (++) [1, 2, 3] [4, 5, 6]
+[1,2,3,4,5,6]
+Prelude> (++) "Trout" " goes well with garlic"
+"Trout goes well with garlic"
+Prelude> foldr (++) [] [[1..3], [4..6]]
+[1,2,3,4,5,6]
+Prelude> foldr mappend mempty [[1..3], [4..6]]
+[1,2,3,4,5,6]
+Prelude>
+```
