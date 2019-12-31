@@ -33,3 +33,35 @@ Prelude> mappend [] [1..5]
 [1,2,3,4,5]
 Prelude>
 ```
+
+- How Monoid is defined in Haskell
+
+```haskell
+Prelude> :i Monoid
+class Semigroup a => Monoid a where
+  -- 'mempty` is the identity value
+  mempty :: a
+  -- 'mappend' is the binary associative operation
+  mappend :: a -> a -> a
+  mconcat :: [a] -> a
+  {-# MINIMAL mempty #-}
+        -- Defined in ‘GHC.Base’
+instance Monoid [a] -- Defined in ‘GHC.Base’
+instance Monoid Ordering -- Defined in ‘GHC.Base’
+instance Semigroup a => Monoid (Maybe a) -- Defined in ‘GHC.Base’
+instance Monoid a => Monoid (IO a) -- Defined in ‘GHC.Base’
+instance Monoid b => Monoid (a -> b) -- Defined in ‘GHC.Base’
+instance (Monoid a, Monoid b, Monoid c, Monoid d, Monoid e) =>
+         Monoid (a, b, c, d, e)
+  -- Defined in ‘GHC.Base’
+instance (Monoid a, Monoid b, Monoid c, Monoid d) =>
+         Monoid (a, b, c, d)
+  -- Defined in ‘GHC.Base’
+instance (Monoid a, Monoid b, Monoid c) => Monoid (a, b, c)
+  -- Defined in ‘GHC.Base’
+instance (Monoid a, Monoid b) => Monoid (a, b)
+  -- Defined in ‘GHC.Base’
+instance Monoid () -- Defined in ‘GHC.Base’
+```
+
+- Examples of using Monoid
