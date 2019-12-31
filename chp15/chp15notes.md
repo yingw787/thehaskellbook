@@ -85,3 +85,32 @@ Prelude> foldr mappend mempty [[1..3], [4..6]]
 [1,2,3,4,5,6]
 Prelude>
 ```
+
+- Why Integer doesn't have a Monoid
+    - No numeric types have `Monoid` instances.
+    - The monoid of numbers is summation, but it could also be multiplication.
+    - Therefore, two numeric types could be added or multiplied as part of a
+      `mappend` operation.
+    - Therefore, use `Sum` and `Product` types in order to get the appropriate
+      Monoid.
+
+```haskell
+Prelude> x = 1 :: Integer
+Prelude> y = 3 :: Integer
+Prelude> mappend x y
+
+<interactive>:16:1: error:
+    • No instance for (Monoid Integer) arising from a use of ‘mappend’
+    • In the expression: mappend x y
+      In an equation for ‘it’: it = mappend x y
+-- Use the `Sum` and `Product` newtypes to signal which monoid you want.
+-- Import module `Data.Monoid` to get access to these.
+Prelude> import Data.Monoid
+Prelude Data.Monoid> mappend (Sum 1) (Sum 5)
+Sum {getSum = 6}
+Prelude Data.Monoid> mappend (Product 5) (Product 5)
+Product {getProduct = 25}
+Prelude Data.Monoid> mappend (Sum 4.5) (Sum 3.4)
+Sum {getSum = 7.9}
+Prelude Data.Monoid>
+```
