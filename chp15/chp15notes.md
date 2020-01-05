@@ -110,7 +110,26 @@ Prelude Data.Monoid> mappend (Sum 1) (Sum 5)
 Sum {getSum = 6}
 Prelude Data.Monoid> mappend (Product 5) (Product 5)
 Product {getProduct = 25}
+-- `Sum` and `Product` work for typeclass `Num`.
 Prelude Data.Monoid> mappend (Sum 4.5) (Sum 3.4)
 Sum {getSum = 7.9}
 Prelude Data.Monoid>
 ```
+
+-   Why use `newtype` to enforce different monodial behaviors?
+    -   There's not a whole lot of difference between the following datatypes:
+
+        ```haskell
+        data Server = Server String
+        newtype Server' = Server' String
+        ```
+
+    -   `newtype` constrains the datatype to having a single unary data
+        constructor (cannot grow into a sum or product type)
+    -   To improve type safety
+    -   No additional runtime overhead in wrapping the original type
+        -   (PERSONAL NOTE: It looks like `newtype` is critically important to
+            building type classes with control flow, since you care about the
+            control flow aspect than the actual data aspect)
+
+- More on `Sum` and `Product`
