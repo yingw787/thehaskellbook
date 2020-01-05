@@ -246,3 +246,30 @@ Prelude Data.Monoid> foldr mappend mempty [Sum 1, Sum 2, Sum 3]
 Sum {getSum = 6}
 Prelude Data.Monoid>
 ```
+
+```haskell
+-- Use Monoid of lists
+--
+-- mempty is []
+-- mappend is (++)
+--
+-- left identity
+Prelude Data.Monoid> mappend mempty [1, 2, 3]
+[1,2,3]
+-- right identity
+Prelude Data.Monoid> mappend [1, 2, 3] mempty
+[1,2,3]
+-- associativity
+Prelude Data.Monoid> [1] <> ([2] <> [3])
+[1,2,3]
+Prelude Data.Monoid> ([1] <> [2]) <> [3]
+[1,2,3]
+-- `mconcat` = `foldr mappend mempty`
+Prelude Data.Monoid> mconcat [[1], [2], [3]]
+[1,2,3]
+Prelude Data.Monoid> foldr mappend mempty [[1], [2], [3]]
+[1,2,3]
+Prelude Data.Monoid>
+```
+
+- Different instance, same representation
