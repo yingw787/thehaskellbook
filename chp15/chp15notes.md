@@ -326,3 +326,14 @@ Last {getLast = Nothing}
 -- Using `First` with `Last` raises a typechecker exception.
 Prelude Data.Monoid>
 ```
+
+- Reusing algebras by asking for algebras
+  - We can write the third type of monoid for `Maybe` vs. `First` and `Last`.
+
+See `ReusingAlgebras.hs`.
+
+********** BEGIN EXERCISE: OPTIONAL MONOID **********
+
+See `OptionalMonoid.hs`.
+
+********** END EXERCISE: OPTIONAL MONOID **********
