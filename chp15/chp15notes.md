@@ -273,3 +273,56 @@ Prelude Data.Monoid>
 ```
 
 - Different instance, same representation
+  - Many datatypes can have more than one valid monoid
+  - Typical to use `newtype` to differentiate monoid usage
+  - For numeric types, addition / multiplication map clearly to append, but for
+    other datatypes it may be less clear.
+    - More generally, `mappend` is not combining values, but condensing a set of
+      values to a summary value
+
+  - `Bool` types have two possible monoids - conjunction and disjunction
+
+```haskell
+Prelude> import Data.Monoid
+-- `All` represents conjunction
+--
+-- `True` iff all values "appending" are `True`.
+Prelude Data.Monoid> All True <> All True
+All {getAll = True}
+Prelude Data.Monoid> All True <> All False
+All {getAll = False}
+-- `Any` represents disjunction
+--
+-- `True` iff any value is `True`.
+Prelude Data.Monoid> Any True <> Any False
+Any {getAny = True}
+Prelude Data.Monoid> Any False <> Any False
+Any {getAny = False}
+Prelude Data.Monoid> Any False <> Any True
+Any {getAny = True}
+Prelude Data.Monoid>
+```
+
+  - `Maybe` type has more than two possible monoids.
+    - `First` and `Last` have the most obvious relationship (like boolean
+      disjunction), with preference for one end of a series of `Maybe` values
+
+```haskell
+-- `First` returns leftmost non-`Nothing` value
+Prelude Data.Monoid> First (Just 1) `mappend` First (Just 2)
+First {getFirst = Just 1}
+-- `Last` returns rightmost non-`Nothing` value
+Prelude Data.Monoid> Last (Just 1) `mappend` Last (Just 2)
+Last {getLast = Just 2}
+Prelude Data.Monoid> Last Nothing `mappend` Last (Just 2)
+Last {getLast = Just 2}
+Prelude Data.Monoid> First Nothing `mappend` First (Just 2)
+First {getFirst = Just 2}
+-- Neither can return anything except `Nothing` if all values are `Nothing`
+Prelude Data.Monoid> First Nothing `mappend` First Nothing
+First {getFirst = Nothing}
+Prelude Data.Monoid> Last Nothing `mappend` Last Nothing
+Last {getLast = Nothing}
+-- Using `First` with `Last` raises a typechecker exception.
+Prelude Data.Monoid>
+```
