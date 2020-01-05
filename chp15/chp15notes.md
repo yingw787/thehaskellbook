@@ -204,3 +204,45 @@ Prelude Data.Monoid> foldr mappend mempty ["blah", "woot"]
 "blahwoot"
 Prelude Data.Monoid>
 ```
+
+- Laws
+    - Circumscribe and define our underlying algebra (set of operations)
+    - Programs are proofs, and we want our programs to be provably correct
+
+
+```haskell
+-- left identity
+mappend mempty x = x
+-- right identity
+mappend x mempty = x
+-- associativity
+mappend x (mappend y z) = mappend (mappend x y) z
+-- mconcat
+mconcat = foldr mappend mempty
+```
+
+In practice, this looks like:
+
+```haskell
+Prelude> import Data.Monoid
+-- left identity
+Prelude Data.Monoid> mappend mempty (Sum 1)
+Sum {getSum = 1}
+-- right identity
+Prelude Data.Monoid> mappend (Sum 1) mempty
+Sum {getSum = 1}
+Prelude Data.Monoid>
+-- `mappend` and `(<>)` should be identical in behavior.
+--
+-- associativity
+Prelude Data.Monoid> (Sum 1) <> (Sum 2 <> Sum 3)
+Sum {getSum = 6}
+Prelude Data.Monoid> (Sum 1 <> Sum 2) <> (Sum 3)
+Sum {getSum = 6}
+-- `mconcat` is the same as `foldr mappend mempty`
+Prelude Data.Monoid> mconcat [Sum 1, Sum 2, Sum 3]
+Sum {getSum = 6}
+Prelude Data.Monoid> foldr mappend mempty [Sum 1, Sum 2, Sum 3]
+Sum {getSum = 6}
+Prelude Data.Monoid>
+```
