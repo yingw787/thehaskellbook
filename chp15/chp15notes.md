@@ -178,3 +178,29 @@ Prelude Data.Monoid>
 ```
 
 - Why bother?
+    - Knowing monoids can help you recognize when you have a pattern.
+    - Having principled laws around monoids helps combine monoidal operations
+      safely.
+    - Monoidal: You can define at least one law-abiding Monoid instance for it.
+
+    - Monoids can be used to structure and describe common forms of data
+      processing.
+    - Say incrementally processing a large dataset.
+    - Guarantees around parallel / concurrent / distributed aggregations (e.g.
+      summation)
+        - Identity values are sane defaults! Sane defaults are great for when an
+          input may not be as expected / desired.
+    - Abelian / commutative monoids are helpful when ordering of computations
+      doesn't change the final result.
+
+- Monoids and folding
+
+```haskell
+Prelude Data.Monoid> foldr mappend mempty ([2, 4, 6] :: [Product Int])
+Product {getProduct = 48}
+Prelude Data.Monoid> foldr mappend mempty ([2, 4, 6] :: [Sum Int])
+Sum {getSum = 12}
+Prelude Data.Monoid> foldr mappend mempty ["blah", "woot"]
+"blahwoot"
+Prelude Data.Monoid>
+```
