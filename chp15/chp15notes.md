@@ -133,3 +133,48 @@ Prelude Data.Monoid>
             control flow aspect than the actual data aspect)
 
 - More on `Sum` and `Product`
+    - `:info Sum` and `:info Product` say we can use those newtypes as monoids
+      as long as they contain numeric values.
+
+```haskell
+-- (<>) is the infix operator for function `mappend`.
+Prelude Data.Monoid> :t (<>)
+(<>) :: Semigroup a => a -> a -> a
+-- Doesn't work because "Frank" and "Herbert" are not numeric types.
+Prelude Data.Monoid> Sum "Frank" <> Sum "Herbert"
+
+<interactive>:31:1: error:
+    • No instance for (Num [Char]) arising from a use of ‘<>’
+    • In the expression: Sum "Frank" <> Sum "Herbert"
+      In an equation for ‘it’: it = Sum "Frank" <> Sum "Herbert"
+-- This is equivalent to `mappend (Sum 8) (Sum 9)`
+Prelude Data.Monoid> (Sum 8) <> (Sum 9)
+Sum {getSum = 17}
+Prelude Data.Monoid> mappend mempty Sum 9
+Sum {getSum = 9}
+-- Doesn't work because `mappend` joins two things
+Prelude Data.Monoid> mappend (Sum 8) (Sum 9) (Sum 10)
+
+<interactive>:34:1: error:
+    • Couldn't match expected type ‘Sum Integer -> t’
+                  with actual type ‘Sum Integer’
+    • The function ‘mappend’ is applied to three arguments,
+      but its type ‘Sum Integer -> Sum Integer -> Sum Integer’
+      has only two
+      In the expression: mappend (Sum 8) (Sum 9) (Sum 10)
+      In an equation for ‘it’: it = mappend (Sum 8) (Sum 9) (Sum 10)
+    • Relevant bindings include it :: t (bound at <interactive>:34:1)
+-- You can fix the issue of monoidial operations accepting only two arguments by
+-- nesting them
+Prelude Data.Monoid> mappend (Sum 1) (mappend (Sum 2) (Sum 3))
+Sum {getSum = 6}
+-- This is an equivalent operation using the infix operator
+Prelude Data.Monoid> Sum 1 <> Sum 2 <> Sum 3
+Sum {getSum = 6}
+-- Or monoidial concatenation using a list type
+Prelude Data.Monoid> mconcat [Sum 1, Sum 2, Sum 3]
+Sum {getSum = 6}
+Prelude Data.Monoid>
+```
+
+- Why bother?
