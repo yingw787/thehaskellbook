@@ -267,6 +267,8 @@ instance Semigroup a => Semigroup (Validation a b) where
     (<>) _ (SemigroupExercises.Success a) = (SemigroupExercises.Success a)
     (<>) (SemigroupExercises.Failure a) (SemigroupExercises.Failure a') = (SemigroupExercises.Failure (a <> a'))
 
+type ValidationAssoc = (Validation String String) -> (Validation String String) -> (Validation String String) -> Bool
+
 main11 :: IO ()
 main11 = do
     -- (CORRECT BY GHCI OUTPUT)
@@ -278,3 +280,5 @@ main11 = do
     print $ failure "woot" <> failure "blah"
     print $ success 1 <> success 2
     print $ failure "woot" <> success 2
+
+    quickCheck (semigroupAssoc :: ValidationAssoc)
