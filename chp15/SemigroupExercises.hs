@@ -134,6 +134,23 @@ main5 =
     quickCheck (semigroupAssoc :: FourAssoc)
 
 -- 6)
+newtype BoolConj = BoolConj Bool deriving (Eq, Show)
+
+instance Arbitrary BoolConj where
+    arbitrary = do
+        oneof [return (BoolConj True), return (BoolConj False)]
+
+instance Semigroup BoolConj where
+    (<>) (BoolConj False) _ = (BoolConj False)
+    (<>) _ (BoolConj False) = (BoolConj False)
+    (<>) (BoolConj True) (BoolConj True) = (BoolConj True)
+
+type BoolConjAssoc = BoolConj -> BoolConj -> BoolConj -> Bool
+
+main6 :: IO ()
+main6 =
+    -- (CORRECT BY GHCI OUTPUT)
+    quickCheck (semigroupAssoc :: BoolConjAssoc)
 
 -- 7)
 
