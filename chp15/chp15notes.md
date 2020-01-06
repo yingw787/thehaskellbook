@@ -486,3 +486,19 @@ Prelude S N>
 ```
 
 - Strength can be weakness
+  - Strength of an algebra: number of operations provided
+  - Some datatypes are useful, but can't satisfy everything in a larger algebra
+  - Monoids are strict supersets of semigroups because it has a superset of
+    operations and laws
+
+********** BEGIN CHAPTER EXERCISES **********
+
+Semigroup exercises
+
+See `SemigroupExercises.hs`.
+
+Monoid exercises
+
+See `MonoidExercises.hs`.
+
+********** END CHAPTER EXERCISES **********
