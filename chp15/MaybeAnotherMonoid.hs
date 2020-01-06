@@ -5,10 +5,18 @@ import Control.Monad
 import Data.Monoid
 import Test.QuickCheck
 
-import OptionalMonoid
+import OptionalMonoid (Optional(..))
 import Check (monoidAssoc, monoidLeftIdentity, monoidRightIdentity)
 
 newtype First' a = First' { getFirst' :: Optional a } deriving (Eq, Show)
+
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+--
+-- Required for 'Test.QuickCheck'.
+instance Arbitrary a => Arbitrary (First' a) where
+    arbitrary = do
+        a <- arbitrary
+        oneof [return (First' (Only a)), return (First' Nada)]
 
 instance Semigroup (First' a) where
     -- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
