@@ -14,6 +14,9 @@ instance Arbitrary Bull where
 instance Semigroup Bull where
     (<>) _ _ = Fools
 
+-- This semigroup / monoid combination fails the test of associativity, since
+-- identity combined with non-identity results in identity value instead of
+-- non-identity value.
 instance Monoid Bull where
     mempty = Fools
 
