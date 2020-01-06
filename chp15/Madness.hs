@@ -14,3 +14,12 @@ madlibbin' e adv noun adj =
     adv <> " as he jumped into his car " <>
     noun <> " and drove off with his " <>
     adj <> " wife."
+
+
+main :: IO ()
+main = do
+    print $ madlibbin'
+            ("Alas!" :: Exclamation)
+            ("fiercely" :: Adjective)
+            ("dog" :: Noun)
+            ("hairy" :: Adjective)
