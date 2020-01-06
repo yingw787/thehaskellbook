@@ -394,3 +394,17 @@ Prelude>
   - When an instance is defined for a datatype and typeclass, but not in the
     same module as either of those declarations.
   - If you don't own the type class or the datatype, `newtype` it!
+
+See `orphan-instance/`.
+
+```bash
+# At commit 'c385f1fc9b274dcf66052f5eb622d6d4b17ea313', the following
+# compilation output appears.
+$ pwd
+/home/yingw787/src/thehaskellbook/chp15/orphan-instance
+$ ghc -- --version
+The Glorious Glasgow Haskell Compilation System, version 8.4.3
+$ stack ghc -- -I. --make ListyInstances.hs
+[1 of 2] Compiling Listy            ( Listy.hs, Listy.o ) [flags changed]
+[2 of 2] Compiling ListyInstances   ( ListyInstances.hs, ListyInstances.o ) [flags changed]
+```
