@@ -181,3 +181,32 @@ Prelude|   fmap f (Matter a) = Matter (f a)
 Prelude| :}
 Prelude>
 ```
+
+```haskell
+-- This is an example of a law-breaking functor.
+--
+-- (PERSONAL NOTE: Why are law-breaking functors compilable?)
+Prelude> :{
+Prelude| instance Functor WhoCares where
+Prelude|   fmap _ ItDoesnt = WhatThisIsCalled
+Prelude|   fmap f WhatThisIsCalled = ItDoesnt
+Prelude|   fmap f (Matter a) = Matter (f a)
+Prelude| :}
+-- Doesn't abide by the identity law, as can be seen below.
+Prelude> fmap id ItDoesnt
+WhatThisIsCalled
+Prelude> fmap id WhatThisIsCalled
+ItDoesnt
+Prelude> fmap id ItDoesnt == id ItDoesnt
+False
+Prelude> fmap id WhatThisIsCalled == id WhatThisIsCalled
+False
+Prelude>
+```
+
+- If you need a function that can change the value and the structure, write a
+  function, don't write a Functor
+  - `Functor` provides property-based oblivousness to additional structure
+    around types.
+
+- Composition should just work
