@@ -5,7 +5,6 @@ import Test.QuickCheck
 
 import Check (monoidAssoc, monoidLeftIdentity, monoidRightIdentity)
 
-
 -- 1)
 data Trivial = Trivial deriving (Eq, Show)
 
@@ -53,6 +52,32 @@ main2 = do
     quickCheck (monoidRightIdentity :: Identity String -> Bool)
 
 -- 3)
+--
+-- (PERSONAL NOTE: Struggled a lot on this question, turns out main method
+-- forgot do block, which resulted in a lot of confusion)
+data Two a b = Two a b deriving (Eq, Show)
+
+instance (Arbitrary a, Arbitrary b) => Arbitrary (Two a b) where
+    arbitrary = do
+        a' <- arbitrary
+        b' <- arbitrary
+        return (Two a' b')
+
+instance (Semigroup a, Semigroup b) => Semigroup (Two a b) where
+    (<>) (Two a1 b1) (Two a2 b2) = Two (a1 <> a2) (b1 <> b2)
+
+instance (Monoid a, Monoid b) => Monoid (Two a b) where
+    mempty = (Two mempty mempty)
+    mappend = (<>)
+
+type TwoAssoc = (Two String String) -> (Two String String) -> (Two String String) -> Bool
+
+main3 :: IO ()
+main3 = do
+    -- (CORRECT BY GHCI OUTPUT)
+    quickCheck (monoidAssoc :: TwoAssoc)
+    quickCheck (monoidLeftIdentity :: Two String String -> Bool)
+    quickCheck (monoidRightIdentity :: Two String String -> Bool)
 
 -- 4)
 
