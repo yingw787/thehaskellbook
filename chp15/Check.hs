@@ -39,6 +39,9 @@ monoidAssoc a b c = (a <> (b <> c)) == ((a <> b) <> c)
 monoidLeftIdentity :: (Eq m, Monoid m) => m -> Bool
 monoidLeftIdentity a = (mempty <> a) == a
 
+monoidRightIdentity :: (Eq m, Monoid m) => m -> Bool
+monoidRightIdentity a = (a <> mempty) == a
+
 
 main :: IO ()
 main = do
@@ -48,3 +51,4 @@ main = do
     -- casting to concrete types and GHCi's type-defaulting behavior. If
     -- compiled, `stack ghc` would complain about lack of type constraints.
     quickCheck (monoidLeftIdentity :: String -> Bool)
+    quickCheck (monoidRightIdentity :: String -> Bool)
