@@ -68,3 +68,55 @@ Prelude>
         - `a` and `b` must have kind `*`.
 
 - Shining star come into view
+
+```haskell
+Prelude> :k (->)
+(->) :: TYPE q -> TYPE r -> *
+Prelude>
+```
+
+```haskell
+-- 'a' has kind * (standalone)
+class Sumthin a where
+    s :: a -> a
+
+-- 'b' has kind * (standalone)
+-- 'f' has kind * -> * (one argument to be fully applied)
+-- 'g' has kind * -> * -> * -> * (three arguments to be fully applied)
+class Else where
+    e :: b -> f (g a b c)
+
+-- 'e' has kind * -> * -> *
+-- 'a' has kind *
+-- 'c' has kind *
+class Biffy where
+    slayer :: e a b
+        -> (a -> c)
+        -> (b -> d)
+        -> e c d
+```
+
+```haskell
+-- 'Impish' is an illegally defined class, fails kindness check.
+Prelude> :{
+Prelude| class Impish v where
+Prelude|   impossibleKind :: v -> v a
+Prelude| :}
+
+<interactive>:26:26: error:
+    • Expected kind ‘k0 -> *’, but ‘v’ has kind ‘*’
+    • In the type signature: impossibleKind :: v -> v a
+      In the class declaration for ‘Impish’
+-- 'AlsoImp' is an illegally defined class, fails kindness check.
+Prelude> :{
+Prelude| class AlsoImp v where
+Prelude|   nope :: v a -> v
+Prelude| :}
+
+<interactive>:30:18: error:
+    • Expecting one more argument to ‘v’
+      Expected a type, but ‘v’ has kind ‘k0 -> *’
+    • In the type signature: nope :: v a -> v
+      In the class declaration for ‘AlsoImp’
+Prelude>
+```
