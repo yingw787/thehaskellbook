@@ -191,3 +191,31 @@ main7 = do
     quickCheck compRightIdentity
 
 -- 8)
+newtype Mem s a = Mem { runMem :: s -> (a, s) }
+
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+--
+-- (PERSONAL NOTE: Not sure whether mappend operations now have to be part of a
+-- Semigroup)
+instance Semigroup a => Semigroup (Mem s a) where
+    (<>) (Mem f) (Mem g) = Mem h where
+        h = (\n -> ((fst $ f n) <> (fst $ g n), snd $ f $ snd $ g n))
+
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+instance Monoid a => Monoid (Mem s a) where
+    mempty = Mem (\n -> (mempty, n))
+    mappend = (<>)
+
+f' = Mem $ \s -> ("hi", s + 1 :: Int)
+
+main8 :: IO ()
+main8 = do
+    let rmzero = runMem mempty 0
+        rmleft = runMem (f' <> mempty) 0
+        rmright = runMem (mempty <> f') 0
+    print "Hello"
+    print $ rmleft
+    print $ rmright
+    print $ (rmzero :: (String, Int))
+    print $ rmleft == runMem f' 0
+    print $ rmright == runMem f' 0
