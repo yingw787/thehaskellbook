@@ -1,2 +1,5 @@
 /.vscode/
 .stack-work/
+
+*.hi
+*.o
