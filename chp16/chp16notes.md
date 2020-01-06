@@ -159,3 +159,25 @@ fmap (+1) . fmap (*2) $ [1..5] -- [3, 5, 7, 9, 11]
 ```
 
 - The Good, the Bad, and the Ugly
+
+```haskell
+Prelude> :{
+Prelude| data WhoCares a =
+Prelude|   ItDoesnt
+Prelude|   | Matter a
+Prelude|   | WhatThisIsCalled
+Prelude|   deriving (Eq, Show)
+Prelude| :}
+Prelude>
+Prelude> :{
+-- This is a law-abiding functor.
+Prelude| instance Functor WhoCares where
+-- `fmap id ItDoesnt == id ItDoesnt`
+Prelude|   fmap _ ItDoesnt = ItDoesnt
+-- `fmap id WhatThisIsCalled == id WhatThisIsCalled`
+Prelude|   fmap _ WhatThisIsCalled = WhatThisIsCalled
+-- `fmap id (Matter _) == id (Matter _)`
+Prelude|   fmap f (Matter a) = Matter (f a)
+Prelude| :}
+Prelude>
+```
