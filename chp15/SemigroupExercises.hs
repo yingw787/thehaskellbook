@@ -62,3 +62,29 @@ type IdentityAssoc = (Identity String) -> (Identity String) -> (Identity String)
 main2 :: IO ()
 main2 =
     quickCheck (semigroupAssoc :: IdentityAssoc)
+
+-- 3)
+data Two a b = Two a b deriving (Eq, Show)
+
+instance (Arbitrary a, Arbitrary b) => Arbitrary (Two a b) where
+    arbitrary = do
+        a' <- arbitrary
+        b' <- arbitrary
+        return (Two a' b')
+
+-- (PERSONAL NOTE: Not exactly sure what the book means when it says 'Ask for
+-- another `Semigroup` instance)
+--
+-- instance Semigroup a => Semigroup b => Semigroup (Two a b) where
+--     (<>) ()
+--
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+--
+instance (Semigroup a, Semigroup b) => Semigroup (Two a b) where
+    (<>) (Two a1 b1) (Two a2 b2) = Two (a1 <> a2) (b1 <> b2)
+
+type TwoAssoc = (Two String String) -> (Two String String) -> (Two String String) -> Bool
+
+main3 :: IO ()
+main3 =
+    quickCheck (semigroupAssoc :: TwoAssoc)
