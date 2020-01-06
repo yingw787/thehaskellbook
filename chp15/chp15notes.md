@@ -420,3 +420,14 @@ $ stack ghc -- -I. --make ListyInstances.hs
 
 - Better living through QuickCheck
   - See `Check.hs`.
+
+- Testing QuickCheck's patience
+  - See `Failure.hs`.
+
+********** BEGIN EXERCISE: MAYBE ANOTHER MONOID **********
+
+See `MaybeAnotherMonoid.hs`.
+
+********** END EXERCISE: MAYBE ANOTHER MONOID **********
+
+- Semigroup
