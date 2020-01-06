@@ -28,6 +28,7 @@ type TrivAssoc = Trivial -> Trivial -> Trivial -> Bool
 
 main1 :: IO ()
 main1 =
+    -- (CORRECT BY GHCI OUTPUT)
     quickCheck (semigroupAssoc :: TrivAssoc)
 
 -- 2)
@@ -61,6 +62,7 @@ type IdentityAssoc = (Identity String) -> (Identity String) -> (Identity String)
 
 main2 :: IO ()
 main2 =
+    -- (CORRECT BY GHCI OUTPUT)
     quickCheck (semigroupAssoc :: IdentityAssoc)
 
 -- 3)
@@ -87,4 +89,25 @@ type TwoAssoc = (Two String String) -> (Two String String) -> (Two String String
 
 main3 :: IO ()
 main3 =
+    -- (CORRECT BY GHCI OUTPUT)
     quickCheck (semigroupAssoc :: TwoAssoc)
+
+-- 4)
+data Three a b c = Three a b c deriving (Eq, Show)
+
+instance (Arbitrary a, Arbitrary b, Arbitrary c) => Arbitrary (Three a b c ) where
+    arbitrary = do
+        a' <- arbitrary
+        b' <- arbitrary
+        c' <- arbitrary
+        return (Three a' b' c')
+
+instance (Semigroup a, Semigroup b, Semigroup c) => Semigroup (Three a b c) where
+    (<>) (Three a1 b1 c1) (Three a2 b2 c2) = Three (a1 <> a2) (b1 <> b2) (c1 <> c2)
+
+type ThreeAssoc = (Three String String String) -> (Three String String String) -> (Three String String String) -> Bool
+
+main4 :: IO ()
+main4 =
+    -- (CORRECT BY GHCI OUTPUT)
+    quickCheck (semigroupAssoc :: ThreeAssoc)
