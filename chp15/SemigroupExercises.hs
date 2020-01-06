@@ -254,3 +254,27 @@ main10 =
     quickCheck compAssoc
 
 -- 11)
+data Validation a b = Failure a | Success b deriving (Eq, Show)
+
+instance (Arbitrary a, Arbitrary b) => Arbitrary (Validation a b) where
+    arbitrary = do
+        a' <- arbitrary
+        b' <- arbitrary
+        oneof [return (SemigroupExercises.Failure a'), return (SemigroupExercises.Success b')]
+
+instance Semigroup a => Semigroup (Validation a b) where
+    (<>) (SemigroupExercises.Success a) _ = (SemigroupExercises.Success a)
+    (<>) _ (SemigroupExercises.Success a) = (SemigroupExercises.Success a)
+    (<>) (SemigroupExercises.Failure a) (SemigroupExercises.Failure a') = (SemigroupExercises.Failure (a <> a'))
+
+main11 :: IO ()
+main11 = do
+    -- (CORRECT BY GHCI OUTPUT)
+    let failure :: String -> Validation String Int
+        failure = SemigroupExercises.Failure
+        success :: Int -> Validation String Int
+        success = SemigroupExercises.Success
+    print $ success 1 <> failure "blah"
+    print $ failure "woot" <> failure "blah"
+    print $ success 1 <> success 2
+    print $ failure "woot" <> success 2
