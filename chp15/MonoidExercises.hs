@@ -2,6 +2,7 @@
 module MonoidExercises where
 
 import Test.QuickCheck
+import Test.QuickCheck.Gen.Unsafe (promote)
 
 import Check (monoidAssoc, monoidLeftIdentity, monoidRightIdentity)
 
@@ -128,6 +129,34 @@ main5 = do
     quickCheck (monoidRightIdentity :: BoolDisj -> Bool)
 
 -- 6)
+newtype Combine a b = Combine { unCombine :: (a -> b) }
+
+instance (Show a, Show b) => Show (Combine a b) where
+    show _ = "Combine"
+
+instance (Semigroup b) => Semigroup (Combine a b) where
+    (<>) (Combine f) (Combine g) = Combine (\n -> (f n) <> (g n))
+
+instance (Monoid b) => Monoid (Combine a b) where
+    -- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+    mempty = Combine (\n -> mempty)
+    mappend = (<>)
+
+instance (CoArbitrary a, Arbitrary b) => Arbitrary (Combine a b) where
+    arbitrary = fmap Combine $ promote (\n -> coarbitrary n arbitrary)
+
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+combineLeftIdentity :: (Combine String String) -> String -> Bool
+combineLeftIdentity a s = ((unCombine (mempty <> a)) s) == ((unCombine a) s)
+
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+combineRightIdentity :: (Combine String String) -> String -> Bool
+combineRightIdentity a s = ((unCombine (a <> mempty)) s) == ((unCombine a) s)
+
+main9 :: IO ()
+main9 = do
+    quickCheck combineLeftIdentity
+    quickCheck combineRightIdentity
 
 -- 7)
 
