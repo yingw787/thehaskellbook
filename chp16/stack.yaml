@@ -1,0 +1,4 @@
+# stack.yaml
+
+resolver: lts-12.10
+packages: []
