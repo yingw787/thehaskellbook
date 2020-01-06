@@ -104,6 +104,28 @@ main4 = do
     quickCheck (monoidRightIdentity :: BoolConj -> Bool)
 
 -- 5)
+newtype BoolDisj = BoolDisj Bool deriving (Eq, Show)
+
+instance Arbitrary BoolDisj where
+    arbitrary = do
+        oneof [return (BoolDisj True), return (BoolDisj False)]
+
+instance Semigroup BoolDisj where
+    (<>) (BoolDisj False) (BoolDisj False) = (BoolDisj False)
+    (<>) _ _ = (BoolDisj True)
+
+instance Monoid BoolDisj where
+    mempty = (BoolDisj False)
+    mappend = (<>)
+
+type BoolDisjAssoc = BoolDisj -> BoolDisj -> BoolDisj -> Bool
+
+main5 :: IO ()
+main5 = do
+    -- (CORRECT BY GHCI OUTPUT)
+    quickCheck (monoidAssoc :: BoolDisjAssoc)
+    quickCheck (monoidLeftIdentity :: BoolDisj -> Bool)
+    quickCheck (monoidRightIdentity :: BoolDisj -> Bool)
 
 -- 6)
 
