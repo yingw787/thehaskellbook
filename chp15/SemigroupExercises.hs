@@ -2,6 +2,7 @@
 module SemigroupExercises where
 
 import Test.QuickCheck
+import Test.QuickCheck.Gen.Unsafe (promote)
 
 semigroupAssoc :: (Eq m, Semigroup m) => m -> m -> m -> Bool
 semigroupAssoc a b c = (a <> (b <> c)) == ((a <> b) <> c)
@@ -200,6 +201,33 @@ main8 =
     quickCheck (semigroupAssoc :: OrAssoc)
 
 -- 9)
+--
+-- (PERSONAL NOTE: WHAT...?!)
+-- newtype Combine a b = Combine { unCombine :: (a -> b) } deriving (Eq, Show)
+--
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+--
+newtype Combine a b = Combine { unCombine :: (a -> b) }
+
+instance (Show a, Show b) => Show (Combine a b) where
+    show _ = "Combine"
+
+instance (Semigroup b) => Semigroup (Combine a b) where
+    (<>) (Combine f) (Combine g) = Combine (\n -> (f n) <> (g n))
+
+instance (CoArbitrary a, Arbitrary b) => Arbitrary (Combine a b) where
+    arbitrary = fmap Combine $ promote (\n -> coarbitrary n arbitrary)
+
+combineAssoc :: (Combine String String) -> (Combine String String) -> (Combine String String) -> String -> Bool
+combineAssoc a b c s = (unCombine (a <> (b <> c)) s) == (unCombine ((a <> b) <> c) s)
+
+main9 :: IO ()
+main9 =
+    -- (CORRECT BY GHCI OUTPUT)
+    --
+    -- (PERSONAL NOTE: I still don't fully understand this method...need to go
+    -- back and review.)
+    quickCheck combineAssoc
 
 -- 10)
 
