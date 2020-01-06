@@ -408,3 +408,11 @@ $ stack ghc -- -I. --make ListyInstances.hs
 [1 of 2] Compiling Listy            ( Listy.hs, Listy.o ) [flags changed]
 [2 of 2] Compiling ListyInstances   ( ListyInstances.hs, ListyInstances.o ) [flags changed]
 ```
+
+- (PERSONAL NOTE: I can't exactly reproduce the exact orphan instance error
+  described by the author, using the GHC version mentioned above and the
+  stack.yaml committed into this directory.)
+
+- A type must have a unique implementation of a typeclass in scope.
+
+- Madness
