@@ -416,3 +416,7 @@ $ stack ghc -- -I. --make ListyInstances.hs
 - A type must have a unique implementation of a typeclass in scope.
 
 - Madness
+  - See `Madness.hs`.
+
+- Better living through QuickCheck
+  - See `Check.hs`.
