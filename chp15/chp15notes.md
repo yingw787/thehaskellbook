@@ -431,3 +431,58 @@ See `MaybeAnotherMonoid.hs`.
 ********** END EXERCISE: MAYBE ANOTHER MONOID **********
 
 - Semigroup
+
+```haskell
+-- Definition
+class Semigroup a where
+  (<>) :: a -> a -> a
+
+-- Only has associativity, and no conception of an identity value like a monoid.
+(a <> b) <> c = a <> (b <> c)
+```
+
+- `NonEmpty`, a useful datatype
+  - Has `Semigroup` instance but no `Monoid` instance
+  - `List` that can never be empty
+
+```haskell
+-- from Data.List.NonEmpty
+--
+-- `(:|)`: infix data constructor that takes two type arguments
+--
+-- Since a can never be empty, and [a] is a list and can be, combining the two
+-- creates a nonempty list.
+data NonEmpty a = a :| [a]
+--
+-- Can also write the above as:
+--
+newtype NonEmpty a = NonEmpty (a, [a]) deriving (Eq, Ord, Show)
+```
+
+- There is no monoid possible for `NonEmpty` because there is no identity value
+  possible, since it is defined as the set of lists besides the empty list
+  (traditional identity value of list data types).
+  - However, a binary associative operation is still possible because two
+    `NonEmpty` lists can be concatenated.
+
+```haskell
+Prelude> import Data.Semigroup as S
+Prelude S> import Data.List.NonEmpty as N
+Prelude S N> 1 :| [2, 3]
+1 :| [2,3]
+Prelude S N> :t 1 :| [2, 3]
+1 :| [2, 3] :: Num a => NonEmpty a
+Prelude S N> :t (<>)
+(<>) :: Semigroup a => a -> a -> a
+Prelude S N> let xs = 1 :| [2, 3]
+Prelude S N> let ys = 4 :| [5, 6]
+Prelude S N> xs <> ys
+1 :| [2,3,4,5,6]
+Prelude S N> N.head xs
+1
+Prelude S N> N.length (xs <> ys)
+6
+Prelude S N>
+```
+
+- Strength can be weakness
