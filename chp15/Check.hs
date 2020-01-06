@@ -36,6 +36,10 @@ import Test.QuickCheck
 monoidAssoc :: (Eq m, Monoid m) => m -> m -> m -> Bool
 monoidAssoc a b c = (a <> (b <> c)) == ((a <> b) <> c)
 
+monoidLeftIdentity :: (Eq m, Monoid m) => m -> Bool
+monoidLeftIdentity a = (mempty <> a) == a
+
+
 main :: IO ()
 main = do
     quickCheck (monoidAssoc :: String -> String -> String -> Bool)
@@ -43,3 +47,4 @@ main = do
     -- Run `verboseCheck monoidAssoc` in `stack ghci` to see results of not
     -- casting to concrete types and GHCi's type-defaulting behavior. If
     -- compiled, `stack ghc` would complain about lack of type constraints.
+    quickCheck (monoidLeftIdentity :: String -> Bool)
