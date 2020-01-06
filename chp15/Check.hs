@@ -20,6 +20,13 @@
 -- property of associativity for our function and given concrete types. Weak
 -- assertions since generative tests cannot prove that a property holds for all
 -- values.
+--
+-- In order to have module `Test.QuickCheck` available globally (i.e. without
+-- `stack.yaml`), run command(s):
+--
+-- stack install QuickCheck
+--
+-- Using QuickCheck v2.11.3
 module Check where
 
 
@@ -28,3 +35,7 @@ import Test.QuickCheck
 
 monoidAssoc :: (Eq m, Monoid m) => m -> m -> m -> Bool
 monoidAssoc a b c = (a <> (b <> c)) == ((a <> b) <> c)
+
+main :: IO ()
+main = do
+    quickCheck (monoidAssoc :: String -> String -> String -> Bool)
