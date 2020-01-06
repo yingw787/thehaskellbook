@@ -120,3 +120,15 @@ Prelude| :}
       In the class declaration for ‘AlsoImp’
 Prelude>
 ```
+
+********** BEGIN EXERCISES: BE KIND **********
+
+1. 'a' has kind `*`.
+
+2. 'b' has kind `* -> *`; 'T' has kind `* -> *`.
+
+3. 'c' has kind `* -> * -> *`.
+
+********** END EXERCISES: BE KIND **********
+
+- A shining star for you to see
