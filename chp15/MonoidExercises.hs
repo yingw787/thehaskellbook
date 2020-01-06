@@ -80,6 +80,28 @@ main3 = do
     quickCheck (monoidRightIdentity :: Two String String -> Bool)
 
 -- 4)
+newtype BoolConj = BoolConj Bool deriving (Eq, Show)
+
+instance Arbitrary BoolConj where
+    arbitrary = do
+        oneof [return (BoolConj True), return (BoolConj False)]
+
+instance Semigroup BoolConj where
+    (<>) (BoolConj True) (BoolConj True) = (BoolConj True)
+    (<>) _ _ = (BoolConj False)
+
+instance Monoid BoolConj where
+    mempty = (BoolConj True)
+    mappend = (<>)
+
+type BoolConjAssoc = BoolConj -> BoolConj -> BoolConj -> Bool
+
+main4 :: IO ()
+main4 = do
+    -- (CORRECT BY GHCI OUTPUT)
+    quickCheck (monoidAssoc :: BoolConjAssoc)
+    quickCheck (monoidLeftIdentity :: BoolConj -> Bool)
+    quickCheck (monoidRightIdentity :: BoolConj -> Bool)
 
 -- 5)
 
