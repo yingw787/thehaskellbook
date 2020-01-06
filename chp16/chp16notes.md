@@ -134,3 +134,28 @@ Prelude>
 - A shining star for you to see
 
 See `functors1.hs`.
+
+- A shining star for you to see what your `f` can truly be
+
+See `functors2.hs`.
+
+- Functor Laws
+    - Identity; `fmap id == id`
+        - This checks whether if the identity method is passed to inner values
+          of the structure, that the structure does not change.
+        - Substitute `fmap` for your functor.
+    - Composition; `fmap (f . g) == fmap f . fmap g`
+        - Composing functions serially vs. breaking up composition with functor
+          results in the same value.
+        - Substitute `fmap` for your functor.
+
+```haskell
+-- 1)
+fmap id "Hi Julie" == id "Hi Julie"
+
+-- 2)
+fmap ((+1) . (*2)) [1..5] -- [3, 5, 7, 9, 11]
+fmap (+1) . fmap (*2) $ [1..5] -- [3, 5, 7, 9, 11]
+```
+
+- The Good, the Bad, and the Ugly
