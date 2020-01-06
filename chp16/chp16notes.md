@@ -132,3 +132,5 @@ Prelude>
 ********** END EXERCISES: BE KIND **********
 
 - A shining star for you to see
+
+See `functors1.hs`.
