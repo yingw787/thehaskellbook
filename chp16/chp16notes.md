@@ -52,5 +52,19 @@ Prelude> fmap (10/) (4, 5)
 Prelude> rca = Right "Chris Allen"
 Prelude> fmap (++ ", Esq.") rca
 Right "Chris Allen, Esq."
+-- You can see 'fmap' behavior generalized to different typeclasses by setting
+-- config variable '-XTypeApplications'.
+Prelude> :set -XTypeApplications
+Prelude> :type fmap @Maybe
+fmap @Maybe :: (a -> b) -> Maybe a -> Maybe b
+Prelude> :type fmap @(Either _)
+fmap @(Either _) :: (a -> b) -> Either w a -> Either w b
 Prelude>
 ```
+
+- Let's talk about `f` baby
+    - `f` must have the kind `* -> *` (is higher-kinded).
+        - Each argument in the type signature must be a fully applied type.
+        - `a` and `b` must have kind `*`.
+
+- Shining star come into view
