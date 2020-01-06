@@ -153,11 +153,41 @@ combineLeftIdentity a s = ((unCombine (mempty <> a)) s) == ((unCombine a) s)
 combineRightIdentity :: (Combine String String) -> String -> Bool
 combineRightIdentity a s = ((unCombine (a <> mempty)) s) == ((unCombine a) s)
 
-main9 :: IO ()
-main9 = do
+main6 :: IO ()
+main6 = do
     quickCheck combineLeftIdentity
     quickCheck combineRightIdentity
 
 -- 7)
+newtype Comp a = Comp { unComp :: (a -> a) }
+
+instance Show (Comp a) where
+    show _ = "Comp"
+
+instance (Semigroup a) => Semigroup (Comp a) where
+    (<>) (Comp f) (Comp g) = Comp (f . g)
+
+instance (Monoid a) => Monoid (Comp a) where
+    -- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+    mempty = Comp id
+    mappend = (<>)
+
+instance (CoArbitrary a, Arbitrary a) => Arbitrary (Comp a) where
+    arbitrary = fmap Comp $ promote (\n -> coarbitrary n arbitrary)
+
+compAssoc :: (Comp String) -> (Comp String) -> (Comp String) -> String -> Bool
+compAssoc a b c s = (unComp (a <> (b <> c)) s) == (unComp ((a <> b) <> c) s)
+
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+compLeftIdentity :: (Comp String) -> String -> Bool
+compLeftIdentity a s = (unComp (mempty <> a) s) == (unComp a) s
+
+compRightIdentity :: (Comp String) -> String -> Bool
+compRightIdentity a s = (unComp (a <> mempty) s) == (unComp a) s
+
+main7 :: IO ()
+main7 = do
+    quickCheck compLeftIdentity
+    quickCheck compRightIdentity
 
 -- 8)
