@@ -385,3 +385,12 @@ Prelude>
   commutativity**
 
 - Identity
+  - Value that when partially applied to the operation, turns it into the
+    identity function.
+  - Identities cannot exist without operations.
+  - `0` is the additive identity, `1` is the multiplicative identity
+
+- The problem of orphan instances
+  - When an instance is defined for a datatype and typeclass, but not in the
+    same module as either of those declarations.
+  - If you don't own the type class or the datatype, `newtype` it!
