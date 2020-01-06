@@ -15,10 +15,27 @@ madlibbin' e adv noun adj =
     noun <> " and drove off with his " <>
     adj <> " wife."
 
+-- (CORRECT BY GHCI OUTPUT)
+madlibbinBetter' :: Exclamation -> Adverb -> Noun -> Adjective -> String
+madlibbinBetter' e adv noun adj = mconcat [
+    e,
+    "! he said ",
+    adv,
+    " as he jumped into his car ",
+    noun,
+    " and drove off with his ",
+    adj,
+    " wife."]
 
 main :: IO ()
 main = do
     print $ madlibbin'
+            ("Alas!" :: Exclamation)
+            ("fiercely" :: Adjective)
+            ("dog" :: Noun)
+            ("hairy" :: Adjective)
+
+    print $ madlibbinBetter'
             ("Alas!" :: Exclamation)
             ("fiercely" :: Adjective)
             ("dog" :: Noun)
