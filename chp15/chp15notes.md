@@ -337,3 +337,51 @@ See `ReusingAlgebras.hs`.
 See `OptionalMonoid.hs`.
 
 ********** END EXERCISE: OPTIONAL MONOID **********
+
+- Associativity
+  - Group arguments differently, get the same result
+
+```haskell
+-- Addition is associative
+Prelude> (1 + 9001) + 9001
+18003
+Prelude> 1 + (9001 + 9001)
+18003
+-- Multiplication is associative
+Prelude> (7 * 8) * 3
+168
+Prelude> 7 * (8 * 3)
+168
+-- Subtraction is not associative
+Prelude> (1 - 10) - 100
+-109
+Prelude> 1 - (10 - 100)
+91
+Prelude>
+```
+
+- Associativity does not imply commutativity
+
+```haskell
+-- `(+)` and `(++)` may be both monoidal conjunctions. Let's test commutativity
+-- for both of these operations.
+--
+-- `(+)` may be commutative
+Prelude> evilPlus = flip (+)
+Prelude> 76 + 67
+143
+Prelude> 76 `evilPlus` 67
+143
+-- `(++)` is definitely not commutative
+Prelude> evilPlusPlus = flip (++)
+Prelude> [1..3] ++ [4..6]
+[1,2,3,4,5,6]
+Prelude> [1..3] `evilPlusPlus` [4..6]
+[4,5,6,1,2,3]
+Prelude>
+```
+
+- `Monoid` abides by the law of associativity **but not the law of
+  commutativity**
+
+- Identity
