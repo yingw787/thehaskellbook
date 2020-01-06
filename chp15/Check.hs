@@ -26,7 +26,7 @@
 --
 -- stack install QuickCheck
 --
--- Using QuickCheck v2.11.3
+-- Using QuickCheck v2.11.3 (global)
 module Check where
 
 
@@ -39,3 +39,7 @@ monoidAssoc a b c = (a <> (b <> c)) == ((a <> b) <> c)
 main :: IO ()
 main = do
     quickCheck (monoidAssoc :: String -> String -> String -> Bool)
+    --
+    -- Run `verboseCheck monoidAssoc` in `stack ghci` to see results of not
+    -- casting to concrete types and GHCi's type-defaulting behavior. If
+    -- compiled, `stack ghc` would complain about lack of type constraints.
