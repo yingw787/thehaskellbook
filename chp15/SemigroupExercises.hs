@@ -230,5 +230,27 @@ main9 =
     quickCheck combineAssoc
 
 -- 10)
+--
+-- (PERSONAL NOTE: Yeah no still don't get what the hints are meaning)
+--
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+--
+newtype Comp a = Comp { unComp :: (a -> a) }
+
+instance Show (Comp a) where
+    show _ = "Comp"
+
+instance (Semigroup a) => Semigroup (Comp a) where
+    (Comp f) <> (Comp g) = Comp (f . g)
+
+instance (CoArbitrary a, Arbitrary a) => Arbitrary (Comp a) where
+    arbitrary = fmap Comp $ promote (\n -> coarbitrary n arbitrary)
+
+compAssoc :: (Comp String) -> (Comp String) -> (Comp String) -> String -> Bool
+compAssoc a b c s = (unComp (a <> (b <> c)) s) == (unComp ((a <> b) <> c) s)
+
+main10 :: IO ()
+main10 =
+    quickCheck compAssoc
 
 -- 11)
