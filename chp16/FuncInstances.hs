@@ -128,6 +128,19 @@ instance Functor (Three' a) where
     fmap f (Three' a b b') = Three' a (f b) (f b')
 
 -- 6)
+data Four a b c d = Four a b c d deriving (Eq, Show)
+
+instance (Arbitrary a, Arbitrary b, Arbitrary c, Arbitrary d) => Arbitrary (Four a b c d) where
+    arbitrary = do
+        a' <- arbitrary
+        b' <- arbitrary
+        c' <- arbitrary
+        d' <- arbitrary
+        return (Four a' b' c' d')
+
+-- (CORRECT BY GHCI OUTPUT AND CHECKING ANSWER KEY)
+instance Functor (Four a b c) where
+    fmap f (Four a b c d) = Four a b c (f d)
 
 -- 7)
 
@@ -153,3 +166,6 @@ main = do
 
     quickCheck (functorIdentity :: (Three' Int Int) -> Bool)
     quickCheck (functorCompose' :: IntToInt -> IntToInt -> (Three' Int Int) -> Bool)
+
+    quickCheck (functorIdentity :: (Four Int Int Int Int) -> Bool)
+    quickCheck (functorCompose' :: IntToInt -> IntToInt -> (Four Int Int Int Int) -> Bool)
