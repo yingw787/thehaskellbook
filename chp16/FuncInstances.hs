@@ -66,6 +66,25 @@ instance Functor Pair where
     fmap f (Pair a a') = Pair (f a) (f a')
 
 -- 3)
+data Two a b = Two a b deriving (Eq, Show)
+
+-- (PERSONAL NOTE: Not sure whether there should be two arbitrary declarations,
+-- one holding 'a' constant and one holding 'b' constant, in order to ensure
+-- kind-ness of arbitrary functor check) (I'm not sure how multiple functor
+-- declarations would work though; how would you know which one to choose? Tuple
+-- just passes the first argument on through instead of having multiple
+-- functors, so I think it should be fine)
+--
+-- (CORRECT BY GHCI OUTPUT AND CHECKING ANSWER KEY)
+--
+instance (Arbitrary a, Arbitrary b) => Arbitrary (Two a b) where
+    arbitrary = do
+        a' <- arbitrary
+        b' <- arbitrary
+        return (Two a' b')
+
+instance Functor (Two a) where
+    fmap f (Two a b) = Two a (f b)
 
 -- 4)
 
@@ -88,3 +107,6 @@ main = do
     -- kind-ness for a functor).
     quickCheck (functorIdentity :: (Pair Int) -> Bool)
     quickCheck (functorCompose' :: IntToInt -> IntToInt -> (Pair Int) -> Bool)
+
+    quickCheck (functorIdentity :: (Two Int Int) -> Bool)
+    quickCheck (functorCompose' :: IntToInt -> IntToInt -> (Two Int Int) -> Bool)
