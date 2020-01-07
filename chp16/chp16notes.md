@@ -210,3 +210,47 @@ Prelude>
     around types.
 
 - Composition should just work
+
+```haskell
+-- Example of when law of composability fails for a Functor
+Prelude> :{
+-- CountingBad has one type argument, while Heisenberg has two
+Prelude| data CountingBad a =
+Prelude|   Heisenberg Int a
+Prelude|   deriving (Eq, Show)
+Prelude| :}
+Prelude> :{
+Prelude| instance Functor CountingBad where
+Prelude|   fmap f (Heisenberg n a) =
+Prelude|     Heisenberg (n + 1) (f a)
+Prelude| :}
+Prelude> u = "Uncle"
+Prelude> oneWhoKnocks = Heisenberg 0 u
+-- Here, we can see `fmap (f . g)` does not equal `fmap f . fmap g`.
+Prelude> f = (++ " Jesse")
+Prelude> g = (++ " lol")
+Prelude> fmap (f . g) oneWhoKnocks
+Heisenberg 1 "Uncle lol Jesse"
+Prelude> fmap f . fmap g $ oneWhoKnocks
+Heisenberg 2 "Uncle lol Jesse"
+Prelude>
+```
+
+```haskell
+Prelude> :{
+Prelude| data CountingGood a =
+Prelude|   Heisenberg Int a
+Prelude|   deriving (Eq, Show)
+Prelude| :}
+Prelude> :{
+Prelude| instance Functor CountingGood where
+Prelude|   fmap f (Heisenberg n a) =
+-- Don't mess with the variable that isn't present in the overarching type
+-- signature (in this case, 'n'). This functor satisfies identity and
+-- composability.
+Prelude|     Heisenberg (n) (f a)
+Prelude| :}
+Prelude>
+```
+
+- Commonly used functors
