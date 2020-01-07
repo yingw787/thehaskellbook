@@ -254,3 +254,47 @@ Prelude>
 ```
 
 - Commonly used functors
+
+```haskell
+Prelude> :t const
+const :: a -> b -> a
+Prelude> replaceWithP = const 'p'
+Prelude> replaceWithP 10000
+'p'
+Prelude> replaceWithP "woohoo"
+'p'
+Prelude> replaceWithP (Just 10)
+'p'
+-- `fmap`
+Prelude> fmap replaceWithP (Just 10)
+Just 'p'
+Prelude> fmap replaceWithP Nothing
+Nothing
+Prelude> fmap replaceWithP [1, 2, 3, 4, 5]
+"ppppp"
+Prelude> fmap replaceWithP "Ave"
+"ppp"
+Prelude> fmap (+1) []
+[]
+Prelude> fmap replaceWithP []
+""
+Prelude> fmap replaceWithP (10, 20)
+(10,'p')
+Prelude> fmap replaceWithP (10, "woo")
+(10,'p')
+Prelude> negate 10
+-10
+Prelude> tossEmOne = fmap (+1) negate
+Prelude> tossEmOne 10
+-9
+Prelude> tossEmOne (-10)
+11
+Prelude> tossEmOne' = (+1) . negate
+Prelude> tossEmOne' 10
+-9
+Prelude> tossEmOne' (-10)
+11
+Prelude>
+```
+
+- The functors are stacked and that's a fact
