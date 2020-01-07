@@ -630,3 +630,5 @@ liftedShow = fmap show
 See `Either.hs`.
 
 ********** END EXERCISE: EITHER **********
+
+- A somewhat surprising functor
