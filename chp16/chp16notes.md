@@ -427,3 +427,49 @@ Prelude|   fmap f (Second b) = Second (f b)
 Prelude| :}
 Prelude>
 ```
+
+- QuickChecking Functor instances
+
+```haskell
+-- Functor laws
+fmap id = id
+fmap (p . q) = (fmap p) . (fmap q)
+
+-- Laws converted into QuickCheck properties
+functorIdentity :: (Functor f, Eq (f a)) => f a -> Bool
+functorIdentity f = fmap id f == f
+
+functorCompose :: (Eq (f c), Functor f) => (a -> b)-> (b -> c) -> f a -> Bool
+functorCompose f g x = (fmap g (fmap f x)) == (fmap (g . f) x)
+```
+
+```haskell
+Prelude> :{
+Prelude| -- Laws converted into QuickCheck properties
+Prelude| functorIdentity :: (Functor f, Eq (f a)) => f a -> Bool
+Prelude| functorIdentity f = fmap id f == f
+Prelude|
+Prelude| functorCompose :: (Eq (f c), Functor f) => (a -> b)-> (b -> c) -> f a -> Bool
+Prelude| functorCompose f g x = (fmap g (fmap f x)) == (fmap (g . f) x)
+Prelude| :}
+Prelude> :{
+-- Law of identity with concrete types
+Prelude| let f :: [Int] -> Bool
+Prelude|     f x = functorIdentity x
+Prelude| :}
+-- Law of composability with concrete types
+Prelude> c = functorCompose (+1) (*2)
+Prelude> li x = c (x :: [Int])
+Prelude> import Test.QuickCheck
+Prelude Test.QuickCheck> quickCheck f
++++ OK, passed 100 tests.
+Prelude Test.QuickCheck> quickCheck li
++++ OK, passed 100 tests.
+Prelude Test.QuickCheck>
+```
+
+********** BEGIN EXERCISES: INSTANCES OF FUNC **********
+
+See `FuncInstances.hs`.
+
+********** END EXERCISES: INSTANCES OF FUNC **********
