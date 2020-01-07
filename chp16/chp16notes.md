@@ -581,3 +581,9 @@ Prelude> liftedShow (Nothing)
 Nothing
 Prelude>
 ```
+
+********** BEGIN EXERCISE: POSSIBLY **********
+
+See `Possibly.hs`.
+
+********** END EXERCISE: POSSIBLY **********
