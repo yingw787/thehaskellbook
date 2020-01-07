@@ -345,3 +345,54 @@ See `HeavyLifting.hs`.
 ********** END EXERCISES: HEAVY LIFTING **********
 
 - Transforming the unapplied type argument
+    - We saw in tuples that only the latter argument was transformed
+    - Then we saw when we created `Heisenberg` and composed an existing
+      composite type that the additional type argument was not transformed
+    - What really happens to other type arguments?
+
+```haskell
+Prelude> :{
+-- Matches to `(,)`, the product type
+Prelude| data Two a b =
+Prelude|   Two a b
+Prelude|   deriving (Eq, Show)
+Prelude| :}
+Prelude> :{
+-- Matches to `Either`, the sum type
+Prelude| data Or a b =
+Prelude|   First a | Second b
+Prelude|   deriving (Eq, Show)
+Prelude| :}
+-- Types do not have the proper kind-ness for Functor
+Prelude> :k (,)
+(,) :: * -> * -> *
+Prelude> :k Either
+Either :: * -> * -> *
+Prelude> :k Two
+Two :: * -> * -> *
+Prelude> :k Or
+Or :: * -> * -> *
+-- By partially applying a type argument, you can reduce the kind-ness, which
+-- enables functor construction.
+Prelude> :k Either Integer
+Either Integer :: * -> *
+Prelude> :k Either Integer String
+Either Integer String :: *
+Prelude> :{
+-- Functor declaration w/ compiler error
+Prelude| instance Functor Two where
+Prelude|   fmap = undefined
+Prelude| :}
+
+<interactive>:135:18: error:
+    • Expecting one more argument to ‘Two’
+      Expected kind ‘* -> *’, but ‘Two’ has kind ‘* -> * -> *’
+    • In the first argument of ‘Functor’, namely ‘Two’
+      In the instance declaration for ‘Functor Two’
+Prelude> :{
+-- Functor declaration w/o compiler error
+Prelude| instance Functor (Two a) where
+Prelude|   fmap = undefined
+Prelude| :}
+Prelude>
+```
