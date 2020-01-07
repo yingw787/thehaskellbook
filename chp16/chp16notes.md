@@ -337,3 +337,11 @@ Prelude>
 - One more round for the P-Funkshun
 
 See `ReplaceExperiment.hs`.
+
+********** BEGIN EXERCISES: HEAVY LIFTING **********
+
+See `HeavyLifting.hs`.
+
+********** END EXERCISES: HEAVY LIFTING **********
+
+- Transforming the unapplied type argument
