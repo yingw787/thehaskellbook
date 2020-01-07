@@ -683,3 +683,45 @@ Prelude>
 ```
 
 - IO Functor
+    - IO is a fully abstract datatype
+    - No data constructors to pattern match over for I/O
+    - Only interface to I/O through typeclasses; one typeclass is Functor.
+
+```haskell
+-- getLine :: IO String
+-- read :: Read a => String -> a
+getInt :: IO Int
+getInt = fmap read getLine
+
+-- Int is readable
+-- 'fmap' lifts over the 'IO' type.
+
+-- 'getLine' isn't a string, but a way to get a string.
+--
+-- 'IO' doesn't guarantee that effects will be performed, but they could be
+-- performed.
+```
+
+- GHCi will not print any value of type `IO ()` to the console by default,
+  assumes IO is evaluated for effects
+
+- You can use `fmap` to lift over `IO` portion and get at the data
+
+```haskell
+fmap (+1) getInt
+
+fmap (++ " and me too!") getLine
+
+-- using 'do' notation
+meTooIsm :: IO String
+meTooIsm = do
+    input <- getLine
+    return (input ++ "and me too!")
+
+bumpIt :: IO Int
+bumpIt = do
+    intVal <- getInt
+    return (intVal + 1)
+```
+
+- What if we want to do something different?
