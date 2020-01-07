@@ -87,6 +87,17 @@ instance Functor (Two a) where
     fmap f (Two a b) = Two a (f b)
 
 -- 4)
+data Three a b c = Three a b c deriving (Eq, Show)
+
+instance (Arbitrary a, Arbitrary b, Arbitrary c) => Arbitrary (Three a b c) where
+    arbitrary = do
+        a' <- arbitrary
+        b' <- arbitrary
+        c' <- arbitrary
+        return (Three a' b' c')
+
+instance Functor (Three a b) where
+    fmap f (Three a b c) = Three a b (f c)
 
 -- 5)
 
@@ -110,3 +121,6 @@ main = do
 
     quickCheck (functorIdentity :: (Two Int Int) -> Bool)
     quickCheck (functorCompose' :: IntToInt -> IntToInt -> (Two Int Int) -> Bool)
+
+    quickCheck (functorIdentity :: (Three Int Int Int) -> Bool)
+    quickCheck (functorCompose' :: IntToInt -> IntToInt -> (Three Int Int Int) -> Bool)
