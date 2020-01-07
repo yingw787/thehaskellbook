@@ -725,3 +725,34 @@ bumpIt = do
 ```
 
 - What if we want to do something different?
+    - What if we want to transform the structure and leave the arguments
+      untouched?
+
+```haskell
+-- This isn't possible because unlike 'a', 'f' and 'g' are higher-kinded types
+nat :: (f -> g) -> f a -> g a
+```
+
+See `Nat.hs`.
+
+- Functors are unique to a datatype
+    - Not the case for `Monoid`
+    - Functors are like this in part because arguments to type constructors are
+      applied in order of definition
+
+********** BEGIN CHAPTER EXERCISES **********
+
+Determine if a valid `Functor` can be written for the datatype provided.
+
+See `IsValid.hs`.
+
+Rearrange arguments of type constructor of the datatype so `Functor` instance
+works.
+
+See `Rearrange.hs`.
+
+Write `Functor` instances for the following datatypes.
+
+See `Written.hs`.
+
+********** END CHAPTER EXERCISES **********
