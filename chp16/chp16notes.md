@@ -473,3 +473,111 @@ Prelude Test.QuickCheck>
 See `FuncInstances.hs`.
 
 ********** END EXERCISES: INSTANCES OF FUNC **********
+
+- Ignoring possibilities
+    - `Maybe` and `Either` functors are useful for when you want to ignore left
+      (error / failure) cases.
+    - You can use `fmap` seamlessly with them because they are functors.
+
+```haskell
+-- Pattern matching on `Maybe`
+incIfJust :: Num a => Maybe a -> Maybe a
+incIfJust (Just n) = Just $ n + 1
+incIfJust Nothing = Nothing
+
+showIfJust :: Show a => Maybe a -> Maybe String
+showIfJust (Just s) = Just $ show s
+showIfJust Nothing = Nothing
+
+-- Refactoring the above using `fmap`
+incMaybe :: Num a => Maybe a -> Maybe a
+incMaybe m = fmap (+1) m
+
+showMaybe :: Show a => Maybe a -> Maybe String
+showMaybe s = fmap show s
+
+-- Refactoring even more in order to reduce the functions even more
+incMaybe' :: Num a => Maybe a -> Maybe a
+incMaybe' = fmap (+1)
+
+showMaybe' :: Show a => Maybe a -> Maybe String
+showMaybe' = fmap show
+
+-- Refactoring to remove reference to `Maybe` within type signature
+liftedInc :: (Functor f, Num b) => f b -> f b
+liftedInc = fmap (+1)
+
+liftedShow :: (Functor f, Show a) => f a -> f String
+liftedShow = fmap show
+```
+
+```haskell
+Prelude> :{
+Prelude| -- Pattern matching on `Maybe`
+Prelude| incIfJust :: Num a => Maybe a -> Maybe a
+Prelude| incIfJust (Just n) = Just $ n + 1
+Prelude| incIfJust Nothing = Nothing
+Prelude|
+Prelude| showIfJust :: Show a => Maybe a -> Maybe String
+Prelude| showIfJust (Just s) = Just $ show s
+Prelude| showIfJust Nothing = Nothing
+Prelude|
+Prelude| -- Refactoring the above using `fmap`
+Prelude| incMaybe :: Num a => Maybe a -> Maybe a
+Prelude| incMaybe m = fmap (+1) m
+Prelude|
+Prelude| showMaybe :: Show a => Maybe a -> Maybe String
+Prelude| showMaybe s = fmap show s
+Prelude|
+Prelude| -- Refactoring even more in order to reduce the functions even more
+Prelude| incMaybe' :: Num a => Maybe a -> Maybe a
+Prelude| incMaybe' = fmap (+1)
+Prelude|
+Prelude| showMaybe' :: Show a => Maybe a -> Maybe String
+Prelude| showMaybe' = fmap show
+Prelude|
+Prelude| -- Refactoring to remove reference to `Maybe` within type signature
+Prelude| liftedInc :: (Functor f, Num b) => f b -> f b
+Prelude| liftedInc = fmap (+1)
+Prelude|
+Prelude| liftedShow :: (Functor f, Show a) => f a -> f String
+Prelude| liftedShow = fmap show
+Prelude| :}
+-- Original pattern matching
+Prelude> incIfJust (Just 1)
+Just 2
+Prelude> incIfJust (Nothing)
+Nothing
+Prelude> showIfJust (Just 1)
+Just "1"
+Prelude> showIfJust (Nothing)
+Nothing
+-- Refactored
+Prelude> incMaybe (Just 1)
+Just 2
+Prelude> incMaybe Nothing
+Nothing
+Prelude> showMaybe (Just 1)
+Just "1"
+Prelude> showMaybe (Nothing)
+Nothing
+-- Refactored again
+Prelude> incMaybe' (Just 1)
+Just 2
+Prelude> incMaybe' (Nothing)
+Nothing
+Prelude> showMaybe' (Just 1)
+Just "1"
+Prelude> showMaybe' (Nothing)
+Nothing
+-- Refactored yet again
+Prelude> liftedInc (Just 1)
+Just 2
+Prelude> liftedInc (Nothing)
+Nothing
+Prelude> liftedShow (Just 1)
+Just "1"
+Prelude> liftedShow (Nothing)
+Nothing
+Prelude>
+```
