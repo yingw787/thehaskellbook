@@ -394,5 +394,36 @@ Prelude> :{
 Prelude| instance Functor (Two a) where
 Prelude|   fmap = undefined
 Prelude| :}
+Prelude> :{
+-- Illegal functor declaration, alters type argument 'a'.
+Prelude| instance Functor (Two a) where
+Prelude|   fmap f (Two a b) = Two $ (f a) (f b)
+Prelude| :}
+
+<interactive>:144:22: error:
+    • Couldn't match expected type ‘Two a b’
+                  with actual type ‘b0 -> Two a0 b0’
+    • In the expression: Two $ (f a) (f b)
+      In an equation for ‘fmap’: fmap f (Two a b) = Two $ (f a) (f b)
+      In the instance declaration for ‘Functor (Two a)’
+    • Relevant bindings include
+        a :: a (bound at <interactive>:144:15)
+        f :: a1 -> b (bound at <interactive>:144:8)
+        fmap :: (a1 -> b) -> Two a a1 -> Two a b
+          (bound at <interactive>:144:3)
+Prelude> :{
+-- Proper functor declaration, does not alter 'a'.
+Prelude| instance Functor (Two a) where
+Prelude|   fmap f (Two a b) = Two a (f b)
+Prelude| :}
+Prelude> :{
+-- For the 'Or' functor, there are different values / types, but same constraint
+-- applies. Not altering 'a' because 'a' is held constant during functor
+-- declaration. This would probably change if 'b' was held constant during
+-- functor declaration.
+Prelude| instance Functor (Or a) where
+Prelude|   fmap _ (First a) = First a
+Prelude|   fmap f (Second b) = Second (f b)
+Prelude| :}
 Prelude>
 ```
