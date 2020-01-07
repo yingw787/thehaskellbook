@@ -143,6 +143,30 @@ instance Functor (Four a b c) where
     fmap f (Four a b c d) = Four a b c (f d)
 
 -- 7)
+data Four' a b = Four' a a a b deriving (Eq, Show)
+
+-- (PERSONAL NOTE: Not sure what the data constructor should be for "Four'".
+-- "Four' a b" doesn't work, "Four' a a b" doesn't work, "Four' a a a" doesn't
+-- work, "Four' a a a b" doesn't work.)
+--
+-- (PERSONAL NOTE: Looked at answer key, and it has "Four' a b". At this point,
+-- I have only defined the arbitrary instance, and not the functor nor the
+-- quickCheck declarations. Not sure why having just the arbitrary instance
+-- would fail to compile. Everything else matches.)
+--
+-- (PERSONAL NOTE: My God, it's because I had "Four' a, a', a'', b" instead of
+-- "Four' a a' a'' b". I had commas!!)
+instance (Arbitrary a, Arbitrary b) => Arbitrary (Four' a b) where
+    arbitrary = do
+        a <- arbitrary
+        a' <- arbitrary
+        a'' <- arbitrary
+        b <- arbitrary
+        return (Four' a a' a'' b)
+
+-- (CORRECT BY CHECKING ANSWER KEY)
+instance Functor (Four' a) where
+    fmap f (Four' a a' a'' b) = Four' a a' a'' (f b)
 
 -- 8)
 
@@ -169,3 +193,7 @@ main = do
 
     quickCheck (functorIdentity :: (Four Int Int Int Int) -> Bool)
     quickCheck (functorCompose' :: IntToInt -> IntToInt -> (Four Int Int Int Int) -> Bool)
+
+    -- (CORRECT BY CHECKING ANSWER KEY)
+    quickCheck (functorIdentity :: (Four' Int Int) -> Bool)
+    quickCheck (functorCompose' :: IntToInt -> IntToInt -> (Four' Int Int) -> Bool)
