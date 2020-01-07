@@ -632,3 +632,21 @@ See `Either.hs`.
 ********** END EXERCISE: EITHER **********
 
 - A somewhat surprising functor
+    - `Data.Functor.Constant`
+        - (PERSONAL NOTE: Not sure how to acquire this functor, Hackage says it
+          is part of module `Data.Functor`, but I can't reference it in GHCi)
+
+```haskell
+-- 'b' is a phantom type
+newtype Constant a b = Constant { getConstant :: a } deriving (Eq, Show)
+
+-- Apply a type variable to reduce kind-ness of `Constant`.
+--
+-- First type argument is part of the structure Functor skips over.
+--
+-- Since it satisfies identity and composability, `Constant` is a proper Functor
+instance Functor (Constant m) where
+    fmap _ (Constant v) = Constant v
+```
+
+- More structure, more functors
