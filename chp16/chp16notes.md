@@ -650,3 +650,36 @@ instance Functor (Constant m) where
 ```
 
 - More structure, more functors
+
+```haskell
+-- data type for a Functor instance for an intermediate type layer
+--
+-- 'a' is argument for function 'f'.
+data Wrap f a = Wrap (f a) deriving (Eq, Show)
+
+-- This won't work, since the outer 'f' cannot be applied to the 'a' part of
+-- 'fa'.
+instance Functor (Wrap f) where
+    fmap f (Wrap fa) = Wrap (f fa)
+
+-- This correctly maps function 'f' to inner value 'a', but without knowing
+-- whether the intermediate 'f' can be mapped over, it may break.
+instance Functor (Wrap f) where
+    fmap f (Wrap fa) = Wrap (fmap f fa)
+
+-- Constrain polymorphism of f to have Functor typeclass.
+instance Functor f => Functor (Wrap f) where
+    fmap f (Wrap fa) = Wrap (fmap f fa)
+```
+
+```haskell
+-- Functor passes through extraneous `Wrap` structure, affecting functors `Just`
+-- and `[]`.
+Prelude> fmap (+1) (Wrap (Just 1))
+Wrap (Just 2)
+Prelude> fmap (+1) (Wrap [1, 2, 3])
+Wrap [2,3,4]
+Prelude>
+```
+
+- IO Functor
