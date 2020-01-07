@@ -298,3 +298,40 @@ Prelude>
 ```
 
 - The functors are stacked and that's a fact
+
+```haskell
+-- ~ > "is roughly equal to"
+Prelude> n = Nothing
+Prelude> w = Just "woohoo"
+Prelude> ave = Just "Ave"
+-- lms ~ List (Maybe (String))
+Prelude> lms = [ave, n, w]
+Prelude> replaceWithP = const 'p'
+-- Replaces the entire list, since it's accepted as one argument
+Prelude> replaceWithP lms
+'p'
+-- Replaces each element within the entire list w/o regard for the element
+-- itself.
+Prelude> fmap replaceWithP lms
+"ppp"
+-- Since all elements of this list are functors, you can do *another* `fmap`
+-- in order to replace the value within each list element with 'p'.
+Prelude> (fmap . fmap) replaceWithP lms
+[Just 'p',Nothing,Just 'p']
+-- Since each list element within the list contains a string (a list type),
+-- another `fmap` replaces each element within that inner list with 'p'.
+Prelude> (fmap . fmap . fmap) replaceWithP lms
+[Just "ppp",Nothing,Just "pppppp"]
+Prelude> :t fmap
+fmap :: Functor f => (a -> b) -> f a -> f b
+Prelude> :t (fmap . fmap)
+(fmap . fmap)
+  :: (Functor f1, Functor f2) => (a -> b) -> f1 (f2 a) -> f1 (f2 b)
+Prelude> :t (fmap . fmap . fmap)
+(fmap . fmap . fmap)
+  :: (Functor f1, Functor f2, Functor f3) =>
+     (a -> b) -> f1 (f2 (f3 a)) -> f1 (f2 (f3 b))
+Prelude>
+```
+
+- One more round for the P-Funkshun
