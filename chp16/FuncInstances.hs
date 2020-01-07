@@ -33,9 +33,58 @@ instance Arbitrary a => Arbitrary (Identity a) where
 instance Functor Identity where
     fmap f (Identity a) = Identity (f a)
 
+-- 2)
+data Pair a = Pair a a deriving (Eq, Show)
+
+-- (PERSONAL NOTE: Just because type constructor for Pair has the same type
+-- arguments, doesn't mean that arbitrary declaration can have the same
+-- reference (since it is a data constructor)).
+--
+-- (INCORRECT, GHC COMPILE ERROR)
+--
+-- instance Arbitrary a => Arbitrary (Pair a b) where
+--     arbitrary = do
+--         a' <- arbitrary
+--         b' <- arbitrary
+--         return (Pair a' b')
+--
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+instance Arbitrary a => Arbitrary (Pair a) where
+    arbitrary = do
+        a <- arbitrary
+        a' <- arbitrary
+        return (Pair a a')
+
+-- (INCORRECT, GHC COMPILE ERROR)
+--
+-- instance Functor Pair where
+--     fmap f (Pair a a) = Pair (f a) (f a)
+--
+-- (CORRECT BY GHCI OUTPUT AND CHECKING ANSWER KEY)
+--
+instance Functor Pair where
+    fmap f (Pair a a') = Pair (f a) (f a')
+
+-- 3)
+
+-- 4)
+
+-- 5)
+
+-- 6)
+
+-- 7)
+
+-- 8)
+
 
 main :: IO ()
 main = do
     -- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
     quickCheck (functorIdentity :: (Identity Int) -> Bool)
     quickCheck (functorCompose' :: IntToInt -> IntToInt -> (Identity Int) -> Bool)
+
+    -- (PERSONAL NOTE: Not 'Pair Int Int', because it would not have the proper
+    -- kind-ness for a functor).
+    quickCheck (functorIdentity :: (Pair Int) -> Bool)
+    quickCheck (functorCompose' :: IntToInt -> IntToInt -> (Pair Int) -> Bool)
