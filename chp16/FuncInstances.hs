@@ -96,10 +96,36 @@ instance (Arbitrary a, Arbitrary b, Arbitrary c) => Arbitrary (Three a b c) wher
         c' <- arbitrary
         return (Three a' b' c')
 
+-- (CORRECT BY GHCI OUTPUT)
 instance Functor (Three a b) where
     fmap f (Three a b c) = Three a b (f c)
 
 -- 5)
+data Three' a b = Three' a b b deriving (Eq, Show)
+
+-- (PERSONAL NOTE: Not sure how to manage the kind-ness of Three'; should it
+-- should "Three a" or "Three a b"?) (When it is "Three a b" I get a
+-- compile-time type matching error. Not sure whether it is an indication of
+-- something else wrong with the program.) (Yeah I'm really stuck.)
+--
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+instance (Arbitrary a, Arbitrary b) => Arbitrary (Three' a b) where
+    arbitrary = do
+        a' <- arbitrary
+        b <- arbitrary
+        b' <- arbitrary
+        -- (PERSONAL NOTE: Error I was getting with type matching error was
+        -- because I was parenthesizing the answer wrong. It is not "Three' (a'
+        -- b b')" nor "Three' a' b b'", but "(Three' a' b b')".)
+        return (Three' a' b b')
+
+instance Functor (Three' a) where
+    -- (PERSONAL NOTE: Not exactly sure why GHC is giving 'conflicting
+    -- definitions for 'b')
+    --
+    -- fmap f (Three' a b b) = Three' a (f b) (f b)
+    --
+    fmap f (Three' a b b') = Three' a (f b) (f b')
 
 -- 6)
 
@@ -124,3 +150,6 @@ main = do
 
     quickCheck (functorIdentity :: (Three Int Int Int) -> Bool)
     quickCheck (functorCompose' :: IntToInt -> IntToInt -> (Three Int Int Int) -> Bool)
+
+    quickCheck (functorIdentity :: (Three' Int Int) -> Bool)
+    quickCheck (functorCompose' :: IntToInt -> IntToInt -> (Three' Int Int) -> Bool)
