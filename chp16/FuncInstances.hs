@@ -169,6 +169,11 @@ instance Functor (Four' a) where
     fmap f (Four' a a' a'' b) = Four' a a' a'' (f b)
 
 -- 8)
+--
+-- (You cannot implement a functor for this data type, because the kindness (*)
+-- is below that of a functor (* -> *), and therefore there is nothing you can
+-- do in order to transform the kindness by partially applying a type argument.)
+data Trivial = Trivial
 
 
 main :: IO ()
