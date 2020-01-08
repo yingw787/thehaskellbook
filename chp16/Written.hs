@@ -71,6 +71,9 @@ instance (Arbitrary a, Arbitrary b) => Arbitrary (Flip K' a b) where
 instance Functor (Flip K' a) where
     fmap f (Flip (K' a)) = fmap Flip K' (f a)
 
+-- (PERSONAL NOTE: I'm just...going to step away quietly...marking chapter as
+-- need to review later.)
+
 -- 4)
 data EvilGoateeConst a b = GoatyConst b
 

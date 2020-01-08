@@ -1,4 +1,4 @@
-# Chapter 16
+# Chapter 16 (NEED TO REVIEW LATER)
 
 - Functors
     - Monoids taught us how to take an algebra and turn it into a typeclass.
