@@ -215,4 +215,54 @@ pure :: a -> [ ] a
 ```
 
 ```haskell
+-- with `[]` Functor, we were mapping one function over many values
+(2^) <$> [1, 2, 3]
+[2, 4, 8]
+-- with `[]` Applicative, we map many functions over many values
+[(+1), (*2)] <*> [2, 4]
+[3, 5, 4, 8]
+```
+
+```haskell
+(<*>) :: Applicative f => f (a -> b) -> f a -> f b
+-- f ~ []
+listApply :: [(a -> b)] -> [a] -> [b]
+listFmap :: (a -> b) -> [a] -> [b]
+```
+
+- That `listApply` doesn't return two lists or a nested list is from the
+  monoidal part (binary associative operation with an identity, that returns one
+  value of the same type)
+- Function application over structure (functorial result) means no unapplied
+  functions in the final result
+
+```haskell
+(,) <$> [1, 2] <*> [3, 4]
+-- (NOTE: GHCi doesn't allow the partial result of fmapping partial tuple
+-- construction with a list of values since it doesn't implement the Show
+-- typeclass. Hence, manually list intermediate step as comment below.)
+--
+-- -> [(1, ), (2, )] <*> [3, 4]
+[(1,3),(1,4),(2,3),(2,4)]
+```
+
+```haskell
+Prelude> (,) <$> [1, 2] <*> [3, 4]
+[(1,3),(1,4),(2,3),(2,4)]
+Prelude> import Control.Applicative
+Prelude Control.Applicative> liftA2 (,) [1, 2] [3, 4]
+[(1,3),(1,4),(2,3),(2,4)]
+Prelude Control.Applicative> (+) <$> [1, 2] <*> [3, 5]
+[4,6,5,7]
+Prelude Control.Applicative> liftA2 (+) [1, 2] [3, 5]
+[4,6,5,7]
+Prelude Control.Applicative> max <$> [1, 2] <*> [1, 4]
+[1,4,2,4]
+Prelude Control.Applicative> liftA2 max [1, 2] [1, 4]
+[1,4,2,4]
+Prelude Control.Applicative>
+```
+
+```haskell
+
 ```
