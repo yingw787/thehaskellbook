@@ -264,5 +264,39 @@ Prelude Control.Applicative>
 ```
 
 ```haskell
+-- `lookup`: A method that searches inside a list of tuples for a value that
+--  matches the input, and returns paired value wrapped in `Maybe` context.
+Prelude> :t lookup
+lookup :: Eq a => a -> [(a, b)] -> Maybe b
+Prelude> l = lookup 3 [(3, "hello")]
+Prelude> l
+Just "hello"
+Prelude> :t l
+l :: Maybe [Char]
+Prelude> fmap length $ l
+Just 5
+Prelude> import Data.Char
+Prelude Data.Char> c (x : xs) = toUpper x : xs
+Prelude Data.Char> fmap c $ l
+Just "Hello"
+Prelude Data.Char>
+```
 
+See `ApplicativeFunctions.hs`.
+
+```haskell
+Prelude> :l ApplicativeFunctions.hs
+[1 of 1] Compiling ApplicativeFunctions ( ApplicativeFunctions.hs, interpreted )
+Ok, one module loaded.
+*ApplicativeFunctions> f 3
+Just "hello"
+*ApplicativeFunctions> g 8
+Just "chris"
+-- I read the following line as "(++) fmap to 'f 3' from ApplicativeFunctions.hs apply to 'g 7' from ApplicativeFunctions.hs"
+*ApplicativeFunctions> (++) <$> f 3 <*> g 7
+Just "hellosup?"
+*ApplicativeFunctions> (+) <$> h 5 <*> m 1
+Just 9007
+*ApplicativeFunctions> (+) <$> h 5 <*> m 6
+Nothing
 ```
