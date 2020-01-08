@@ -431,3 +431,56 @@ mkPerson' :: String -> String -> Maybe Person
 mkPerson' n a =
     Person <$> mkName n <*> mkAddress
 ```
+
+- Before we mooove on
+
+```haskell
+data Cow = Cow {
+        name :: String
+    ,   age :: Int
+    ,   weight :: Int
+} deriving (Eq, Show)
+
+noEmpty :: String -> Maybe String
+noEmpty "" = Nothing
+noEmpty str = Just str
+
+noNegative :: Int -> Maybe Int
+noNegative n
+    | n >= 0 = Just n
+    | otherwise = Nothing
+
+-- Validate to remove empty strings and negative numbers
+--
+-- Pretty bad way to do it tho
+cowFromString :: String -> Int -> Int -> Maybe Cow
+cowFromString name' age' weight' =
+    case noEmpty name' of
+        Nothing -> Nothing
+        Just nammy ->
+            case noNegative age' of
+                Nothing -> Nothing
+                Just agey ->
+                    case noNegative weight' of
+                        Nothing -> Nothing
+                        Just weighty ->
+                            Just (Cow nammy agey weighty)
+
+-- Refactored using Applicative
+cowFromString' :: String -> Int -> Int -> Maybe Cow
+cowFromString' name' age' weight' =
+    Cow <$> noEmpty name'
+        <*> noNegative age'
+        <*> noNegative weight'
+
+-- Must import module 'Control.Applicative' into execution context beforehand
+cowFromString'' :: String -> Int -> Int -> Maybe Cow
+cowFromString'' name' age' weight' =
+    liftA3 Cow (noEmpty name') (noNegative age') (noNegative weight')
+```
+
+********** BEGIN EXERCISE: FIXER UPPER **********
+
+See `FixerUpper.hs`.
+
+********** END EXERCISE: FIXER UPPER **********
