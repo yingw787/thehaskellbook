@@ -42,6 +42,8 @@ instance Functor (Quant e) where
     fmap f (Floor b) = Floor (f b)
 
 -- 2)
+--
+-- (CORRECT BY GHCI OUTPUT)
 data K a b = K a deriving (Eq, Show)
 
 instance (Arbitrary a, Arbitrary b) => Arbitrary (K a b) where
@@ -54,12 +56,20 @@ instance Functor (K e) where
     fmap f (K a) = K a
 
 -- 3)
+--
+-- (CORRECT BY GHCI OUTPUT)
 newtype Flip f a b = Flip (f b a) deriving (Eq, Show)
 
-newtype K' a b = K' a
+newtype K' a b = K' a deriving (Eq, Show)
 
-instance Functor (Flip K a) where
-    fmap = undefined
+instance (Arbitrary a, Arbitrary b) => Arbitrary (Flip K' a b) where
+    arbitrary = do
+        a' <- arbitrary
+        return (Flip (K' a'))
+
+-- (PERSONAL NOTE: I have no idea what I'm doing)
+instance Functor (Flip K' a) where
+    fmap f (Flip (K' a)) = fmap Flip K' (f a)
 
 -- 4)
 data EvilGoateeConst a b = GoatyConst b
@@ -93,3 +103,6 @@ main = do
 
     quickCheck (functorIdentity :: (K Int Int) -> Bool)
     quickCheck (functorCompose' :: IntToInt -> IntToInt -> (K Int Int) -> Bool)
+
+    quickCheck (functorIdentity :: (Flip K' Int Int) -> Bool)
+    quickCheck (functorCompose' :: IntToInt -> IntToInt -> (Flip K' Int Int) -> Bool)
