@@ -9,7 +9,20 @@ import Data.List (elemIndex)
 
 -- 1)
 added :: Maybe Integer
-added = (+3) (lookup 3 $ zip [1, 2, 3] [4, 5, 6])
+-- added = (+3) (lookup 3 $ zip [1, 2, 3] [4, 5, 6])
+
+-- 'zip [1, 2, 3] [4, 5, 6]' -> '(Num a, Num b) => [(a, b)]'
+-- 'lookup 3 $ zip [1, 2, 3] [4, 5, 6]' -> 'Num a => Maybe a'
+-- '(<$>) (+3) (lookup 3 $ zip [1, 2, 3] [4, 5, 6])' -> 'Num a => Maybe a'
+--
+-- (PERSONAL NOTE: Not sure how to use the above methods in order to lift the
+-- value from a Maybe context)
+--
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+--
+-- (PERSONAL NOTE: I got it right, I forgot that the type signature constrains
+-- the concrete value and I don't actually need to do any casting myself.)
+added = (<$>) (+3) (lookup 3 $ zip [1, 2, 3] [4, 5, 6])
 
 -- 2)
 y :: Maybe Integer
