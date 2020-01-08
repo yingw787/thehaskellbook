@@ -1,4 +1,4 @@
-# Chapter 17
+# Chapter 17 (NEED TO REVIEW FURTHER)
 
 - Applicative
     - monoidal functors
@@ -484,3 +484,52 @@ cowFromString'' name' age' weight' =
 See `FixerUpper.hs`.
 
 ********** END EXERCISE: FIXER UPPER **********
+
+- `Applicative` laws
+
+```haskell
+-- Identity
+--
+-- id v = v
+-- id <$> v = v
+-- pure id <*> v = v
+--
+Prelude> pure id <*> [1..5]
+[1,2,3,4,5]
+Prelude> pure id <*> Just "Hello Applicative"
+Just "Hello Applicative"
+Prelude> pure id <*> Nothing
+Nothing
+Prelude> pure id <*> Left "Error'ish"
+Left "Error'ish"
+Prelude> pure id <*> Right 8001
+Right 8001
+Prelude> pure id <*> (+1) $ 2
+3
+Prelude>
+```
+
+```haskell
+-- Composition
+--
+-- pure (.) <*> u <*> v <*> w = u <*> (v <*> w)
+--
+-- Composing functions first, then applying them == applying functions then
+-- composing the result.
+--
+-- `pure (.)` helps embed the function composition into (<*>) (apply) by lifting
+-- it into functorial structure.
+Prelude> pure (.) <*> [(+1)] <*> [(*2)] <*> [1, 2, 3]
+[3,5,7]
+Prelude> [(+1)] <*> ([(*2)] <*> [1, 2, 3])
+[3,5,7]
+Prelude> pure (.) <*> Just (+1) <*> Just (*2) <*> Just 1
+Just 3
+Prelude> Just (+1) <*> (Just (*2) <*> Just 1)
+Just 3
+Prelude>
+```
+
+```haskell
+-- Homomorphism
+```
