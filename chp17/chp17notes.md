@@ -147,3 +147,38 @@ Prelude>
 ```
 
 - Show me the monoids
+
+```haskell
+-- `Functor` instance for two-tuple ignores first value inside the tuple, due to
+-- kind-ness issues
+Prelude> fmap (+1) ("blah", 0)
+("blah",1)
+Prelude> ("Woo", (+1)) <*> (" Hoo!", 0)
+("Woo Hoo!",1)
+Prelude>
+```
+
+```haskell
+Prelude> import Data.Monoid
+Prelude Data.Monoid> (Sum 2, (+1)) <*> (Sum 0, 0)
+(Sum {getSum = 2},1)
+Prelude Data.Monoid> (Product 3, (+9)) <*> (Product 2, 8)
+(Product {getProduct = 6},17)
+Prelude Data.Monoid> (All True, (+1)) <*> (All False, 0)
+(All {getAll = False},1)
+Prelude Data.Monoid>
+```
+
+- Tuple Monoid and Applicative side by side
+
+```haskell
+instance (Monoid a, Monoid b) => Monoid (a, b) where
+    mempty = (mempty, mempty)
+    (a, b) `mappend` (a', b') = (a `mappend` a', b `mappend` b')
+
+instance Monoid a => Applicative ((,) a) where
+    pure x = (mempty, x)
+    (u, f) <*> (v, x) = (u `mappend` v, f x)
+```
+
+- Maybe Monoid and Applicative
