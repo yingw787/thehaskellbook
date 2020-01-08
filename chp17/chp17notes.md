@@ -40,3 +40,43 @@ Prelude Control.Applicative>
 ```
 
 - `Functor` vs. `Applicative`
+    - Any `Applicative` also has a `Functor`, and you can define a `Functor`
+      w.r.t. a provided `Applicative`.
+
+```haskell
+fmap f x = pure f <*> x
+```
+
+```haskell
+Prelude> fmap (+1) [1, 2, 3]
+[2,3,4]
+Prelude> pure (+1) <*> [1, 2, 3]
+[2,3,4]
+Prelude>
+```
+
+```haskell
+-- `pure` lifts a value into functorial structure
+--
+-- Since "functorial structure" is quite abstract, should cast to different
+-- Functors using `::`.
+--
+-- Functor `[]`
+Prelude> pure 1 :: [Int]
+[1]
+-- Functor `Maybe`
+Prelude> pure 1 :: Maybe Int
+Just 1
+-- Functor `Either`
+--
+-- Functors with multiple arguments have arguments lifted into the last type
+-- argument, just as with `fmap` and `()` (tuple).
+Prelude> pure 1 :: Either a Int
+Right 1
+-- Functor `()`
+Prelude> pure 1 :: ([a], Int)
+([],1)
+Prelude>
+```
+
+- Applicative functors are monoidal functors
