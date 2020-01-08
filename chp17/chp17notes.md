@@ -379,3 +379,22 @@ Prelude Data.Functor.Constant Data.Monoid>
 See `ConstantInstance.hs`.
 
 ********** END EXERCISES: CONSTANT INSTANCE **********
+
+- `Maybe` Applicative
+
+```haskell
+-- f ~ Maybe
+type M = Maybe
+
+(<*>) :: f (a -> b) -> f a -> f b
+(<*>) :: M (a -> b) -> M a -> M b
+
+pure :: a -> f a
+pure :: a -> M a
+```
+
+- Using the `Maybe` Applicative
+
+```haskell
+-- We want to validate inputs to create a value of type `Maybe Person`
+```
