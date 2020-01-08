@@ -80,3 +80,35 @@ Prelude>
 ```
 
 - Applicative functors are monoidal functors
+
+```haskell
+-- ($) does nothing except change operation precedence. Said another way,
+-- it could represent ordinary function application.
+ ($)  ::   (a -> b) ->   a ->   b
+ -- (<$>) lifts (a -> b) over 'f' wrapped around value and applies the function
+ -- to that value.
+(<$>) ::   (a -> b) -> f a -> f b
+-- (<*>) has function embedded in functorial structure
+--
+-- Arguments to the function are `f (a -> b)` and `f a`.
+(<*>) :: f (a -> b) -> f a -> f b
+```
+
+```haskell
+:: f (a -> b) -> f a -> f b
+-- If 'f' is a type constrained with 'Monoid', then it can take two values of
+-- the same type and return one value of the same type.
+--
+-- Prelude> :t mappend
+-- mappend :: Monoid a => a -> a -> a
+-- Prelude>
+   f             f      f
+   (a -> b)      a      b
+```
+
+```haskell
+mappend  :: f          -> f   -> f
+($)      ::   (a -> b) ->   a ->   b
+
+(<*>)    :: f (a -> b) -> f a -> f b
+```
