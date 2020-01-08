@@ -112,3 +112,38 @@ mappend  :: f          -> f   -> f
 
 (<*>)    :: f (a -> b) -> f a -> f b
 ```
+
+```haskell
+-- `applicative` with `[]` functor
+--
+-- We can use a *list of functions* to lift over our list of values, instead of
+-- just having one function to lift over our list of values as with plain
+-- Functor.
+--
+-- (PERSONAL NOTE: This seems a lot like effective matrix multiplication, or
+-- matrix operations in Haskell, and being to vary the operation done to each
+-- column, which would be extremely helpful in dataframe transformations for a
+-- possible Haskell data engineering framework like a "pandas" analogue...)
+--
+-- (PERSONAL NOTE: I wonder how well it works with the C FFI...)
+Prelude> [(*2), (*3)] <*> [4, 5]
+-- [2 * 4, 2 * 5, 3 * 4, 3 * 5]
+[8,10,12,15]
+Prelude>
+```
+
+```haskell
+-- `Maybe` maps over possibility of value's non-existence.
+-- With `Applicative`, function also may not be provided.
+Prelude> Just (*2) <*> Just 2
+Just 4
+Prelude> Just (*2) <*> Nothing
+Nothing
+Prelude> Nothing <*> Just 2
+Nothing
+Prelude> Nothing <*> Nothing
+Nothing
+Prelude>
+```
+
+- Show me the monoids
