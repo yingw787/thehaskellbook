@@ -349,3 +349,27 @@ Prelude> const <$> xs <*> xs'
 See `IdentityInstance.hs`.
 
 ********** END EXERCISES: IDENTITY INSTANCE **********
+
+- Constant
+    - Like `Identity`, but also acts like the `const` function
+    - Removes a function application
+
+```haskell
+Prelude> import Data.Functor.Constant
+Prelude Data.Functor.Constant> import Data.Monoid
+Prelude Data.Functor.Constant Data.Monoid> f = Constant (Sum 1)
+Prelude Data.Functor.Constant Data.Monoid> g = Constant (Sum 2)
+Prelude Data.Functor.Constant Data.Monoid> f <*> g
+Constant (Sum {getSum = 3})
+Prelude Data.Functor.Constant Data.Monoid> Constant undefined <*> g
+-- (PERSONAL NOTE: It's still so weird to see exceptions coming halfway out of a declared value)
+Constant (Sum {getSum = *** Exception: Prelude.undefined
+CallStack (from HasCallStack):
+  error, called at libraries/base/GHC/Err.hs:79:14 in base:GHC.Err
+  undefined, called at <interactive>:193:10 in interactive:Ghci7
+Prelude Data.Functor.Constant Data.Monoid> pure 1
+1
+Prelude Data.Functor.Constant Data.Monoid> pure 1 :: Constant String Int
+Constant ""
+Prelude Data.Functor.Constant Data.Monoid>
+```
