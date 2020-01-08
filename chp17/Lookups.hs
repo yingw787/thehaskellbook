@@ -61,11 +61,25 @@ maxed = max' <$> x' <*> y'
 xs = [1, 2, 3]
 ys = [4, 5, 6]
 
-x :: Maybe Integer
-x = lookup 3 $ zip xs ys
+x'' :: Maybe Integer
+x'' = lookup 3 $ zip xs ys
 
-y :: Maybe Integer
-y = lookup 2 $ zip xs ys
+y'' :: Maybe Integer
+y'' = lookup 2 $ zip xs ys
 
+-- summed :: Maybe Integer
+-- summed = sum $ (,) x'' y''
+--
+-- summed = sum $ (,) <$> x'' <*> y''
+--
+-- (INCORRECT COMPILE ERROR)
+--
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+--
+-- (PERSONAL NOTE: You can and have to remove the '$' to lift 'sum' inside
+-- functorial structure)
 summed :: Maybe Integer
-summed = sum $ (,) x y
+summed = (pure sum) <*> ((,) <$> x4 <*> y4)
+
+summed2 :: Maybe Integer
+summed2 = sum <$> ((,) <$> x4 <*> y4)
