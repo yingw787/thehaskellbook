@@ -299,4 +299,20 @@ Just "hellosup?"
 Just 9007
 *ApplicativeFunctions> (+) <$> h 5 <*> m 6
 Nothing
+*ApplicativeFunctions> import Control.Applicative
+*ApplicativeFunctions Control.Applicative> liftA2 (++) (g 9) (f 4)
+Just "alohajulie"
+*ApplicativeFunctions Control.Applicative> liftA2 (^) (h 5) (m 4)
+Just 60466176
+*ApplicativeFunctions Control.Applicative> liftA2 (*) (h 5) (m 4)
+Just 60
+*ApplicativeFunctions Control.Applicative> liftA2 (*) (h 1) (m 1)
+Nothing
+*ApplicativeFunctions Control.Applicative>
 ```
+
+********** BEGIN EXERCISES: LOOKUPS **********
+
+See `Lookups.hs`.
+
+********** BEGIN EXERCISES: LOOKUPS **********
