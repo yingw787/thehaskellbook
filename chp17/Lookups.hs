@@ -32,7 +32,17 @@ z :: Maybe Integer
 z = lookup 2 $ zip [1, 2, 3] [4, 5, 6]
 
 tupled :: Maybe (Integer, Integer)
-tupled = (,) y z
+-- tupled = (,) y z
+--
+-- (PERSONAL NOTE: I know I need to lift the tuplization inside the 'Maybe'
+-- contexts of both 'y' and 'z'.)
+--
+-- (CORRECT BY GHC COMPILE AND CHECKING ANSWER KEY)
+tupled = (,) <$> y <*> z
+
+-- (ANSWER KEY HAS ADDITIONAL SOLUTION)
+tupled' :: Maybe (Integer, Integer)
+tupled' = (pure (,)) <*> y <*> z
 
 -- 3)
 x :: Maybe Int
