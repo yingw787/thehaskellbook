@@ -201,3 +201,18 @@ instance Applicative Maybe where
 ```
 
 - Applicative in use
+
+- List Applicative
+
+```haskell
+-- 'f' here is roughly equivalent to the `[]` Functor
+(<*>) ::  f  (a -> b) ->  f  a ->  f  b
+(<*>) :: [ ] (a -> b) -> [ ] a -> [ ] b
+(<*>) ::    [(a -> b)] -> [a] -> [b]
+
+pure :: a -> f a
+pure :: a -> [ ] a
+```
+
+```haskell
+```
