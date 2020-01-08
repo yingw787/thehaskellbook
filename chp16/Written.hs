@@ -42,7 +42,16 @@ instance Functor (Quant e) where
     fmap f (Floor b) = Floor (f b)
 
 -- 2)
-data K a b = K a
+data K a b = K a deriving (Eq, Show)
+
+instance (Arbitrary a, Arbitrary b) => Arbitrary (K a b) where
+    arbitrary = do
+        a' <- arbitrary
+        return (K a')
+
+-- Yeah, it isn't interesting by itself...lifted type argument is elided.
+instance Functor (K e) where
+    fmap f (K a) = K a
 
 -- 3)
 newtype Flip f a b = Flip (f b a) deriving (Eq, Show)
@@ -81,3 +90,6 @@ main :: IO ()
 main = do
     quickCheck (functorIdentity :: (Quant Int Int) -> Bool)
     quickCheck (functorCompose' :: IntToInt -> IntToInt -> (Quant Int Int) -> Bool)
+
+    quickCheck (functorIdentity :: (K Int Int) -> Bool)
+    quickCheck (functorCompose' :: IntToInt -> IntToInt -> (K Int Int) -> Bool)
