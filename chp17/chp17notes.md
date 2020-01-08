@@ -373,3 +373,9 @@ Prelude Data.Functor.Constant Data.Monoid> pure 1 :: Constant String Int
 Constant ""
 Prelude Data.Functor.Constant Data.Monoid>
 ```
+
+********** BEGIN EXERCISES: CONSTANT INSTANCE **********
+
+See `ConstantInstance.hs`.
+
+********** END EXERCISES: CONSTANT INSTANCE **********
