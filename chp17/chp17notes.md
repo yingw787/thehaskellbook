@@ -316,3 +316,36 @@ Nothing
 See `Lookups.hs`.
 
 ********** BEGIN EXERCISES: LOOKUPS **********
+
+- Identity Applicative
+    - Introduce structure without changing semantics of what you're doing
+
+```haskell
+-- f ~ Identity
+-- Applicative f =>
+type Id = Identity
+
+(<*>) :: f (a -> b) -> f a -> f b
+(<*>) :: Id (a -> b) -> Id a -> Id b
+
+pure :: a -> f a
+pure :: a -> Id a
+```
+
+```haskell
+-- Map over Identity instead of elements within the list
+Prelude> xs = [1, 2, 3]
+Prelude> xs' = [9, 9, 9]
+Prelude> const <$> xs <*> xs'
+[1,1,1,2,2,2,3,3,3]
+-- (PERSONAL NOTE: I'm not able to import `Identity` from modules
+-- 'Data.Functor' or 'Control.Applicative'.)
+```
+
+- `Identity` enables mapping over `Identity` instead of over the list.
+
+********** BEGIN EXERCISES: IDENTITY INSTANCE **********
+
+See `IdentityInstance.hs`.
+
+********** END EXERCISES: IDENTITY INSTANCE **********
