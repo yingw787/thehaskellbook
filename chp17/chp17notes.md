@@ -531,5 +531,18 @@ Prelude>
 ```
 
 ```haskell
--- Homomorphism
+-- Homomorphism: structure-preserving map between two algebraic structures
+--
+-- `pure` provides arbitrary structure for statement of law, so it can be
+-- abstracted away with (<*>) and the same result should be generated.
+--
+-- pure f <*> pure x = pure (f x)
+--
+Prelude> pure (+1) <*> pure 1
+2
+Prelude> pure ((+1) 1)
+2
+Prelude> (+1) 1
+2
+Prelude>
 ```
