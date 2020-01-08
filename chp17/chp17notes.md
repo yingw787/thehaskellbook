@@ -182,3 +182,22 @@ instance Monoid a => Applicative ((,) a) where
 ```
 
 - Maybe Monoid and Applicative
+    - (?) `Monoid` and `Applicative` aren't required / guaranteed "monoid of
+      structure", functorial part may change way it behaves.
+
+```haskell
+instance Monoid a => Monoid (Maybe a) where
+    mempty = Nothing
+    mappend m Nothing = m
+    mappend Nothing m = m
+    mappend (Just a) (Just a') = Just (mappend a a')
+
+instance Applicative Maybe where
+    pure = Just
+
+    Nothing <*> _ = Nothing
+    _ <*> Nothing = Nothing
+    Just f <*> Just a = Just (f a)
+```
+
+- Applicative in use
