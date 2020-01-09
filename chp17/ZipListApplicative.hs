@@ -24,9 +24,30 @@ instance Functor ZipList' where
     fmap f (ZipList' xs) =
         ZipList' $ fmap f xs
 
+-- (CORRECT BY CHECKING ANSWER KEY)
+instance Arbitrary a => Arbitrary (ZipList' a) where
+    arbitrary = do
+        as <- arbitrary
+        return (ZipList' as)
+
+-- (CORRECT BY CHECKING ANSWER KEY)
+--
+-- (PERSONAL NOTE: All book examples have newtype inheriting from List, while
+-- 1.0-RC4 has bare [] type. I basically took the existing solutions and
+-- translated them; it's probably trivial, but I didn't count it as directly
+-- copying as with `ListApplicative.hs`. Maybe I should.)
+repeat' :: a -> [a]
+repeat' a = [a] ++ (repeat' a)
+
+zipWith' :: [(a -> b)] -> [a] -> [b]
+zipWith' [] _ = []
+zipWith' _ [] = []
+zipWith' (f:fs) (x:xs) = [(f x)] ++ (zipWith' fs xs)
+
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
 instance Applicative ZipList' where
-    pure = undefined
-    (<*>) = undefined
+    pure a = ZipList' $ repeat' a
+    (<*>) (ZipList' fs) (ZipList' xs) = ZipList' (zipWith' fs xs)
 
 
 main :: IO ()
