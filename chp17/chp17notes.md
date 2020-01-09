@@ -557,3 +557,66 @@ Prelude> pure (+1) <*> pure 1 :: Either a Int
 Right 2
 Prelude>
 ```
+
+```haskell
+-- Interchange
+--
+-- u <*> pure y = pure ($ y) <*> u
+--
+-- u: function embedded in some structure (`[]`, `Maybe`, etc.)
+Prelude> Just (+2) <*> pure 2
+Just 4
+-- ($ 2) can become more concrete
+--
+-- Prelude> :t ($ 2)
+-- ($ 2) :: Num a => (a -> b) -> b
+--
+-- (SAME AS THE ABOVE)
+-- Prelude> :t (\f -> f $ 2)
+-- (\f -> f $ 2) :: Num t1 => (t1 -> t2) -> t2
+--
+-- Prelude> :t Just (+ 2)
+-- Just (+ 2) :: Num a => Maybe (a -> a)
+--
+Prelude> pure ($ 2) <*> Just (+ 2)
+Just 4
+Prelude> :{
+--
+-- (<*>) :: Applicative f
+--       => f (x -> y)
+--       -> f x
+--       -> f y
+--
+-- mApply :: Maybe ((a -> b) -> b)
+--        -> Maybe  (a -> b)
+--        -> Maybe              b
+-- mApply = (<*>)
+--
+-- f ~ Maybe
+-- x ~ (a -> b)
+-- y ~ b
+-- (x -> ) ~ (a -> b) -> b
+--
+Prelude| mApply :: Maybe ((a -> b) -> b) -> Maybe (a -> b) -> Maybe b
+Prelude| mApply = (<*>)
+Prelude| :}
+Prelude> :t mApply
+mApply :: Maybe ((a -> b) -> b) -> Maybe (a -> b) -> Maybe b
+Prelude> :t (<*>)
+(<*>) :: Applicative f => f (a -> b) -> f a -> f b
+Prelude>
+--
+--    (Just (+ 2) <*> pure 2)
+-- == (pure ($ 2) <*> Just (+ 2))
+--
+Prelude> pure ($ 1) <*> [(+1), (*2)]
+[2,2]
+Prelude> [(+1), (*2)] <*> pure 1
+[2,2]
+Prelude> Just (+3) <*> pure 1
+Just 4
+Prelude> pure ($ 1) <*> Just (+3)
+Just 4
+```
+
+- You knew this was coming
