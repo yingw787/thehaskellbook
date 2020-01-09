@@ -700,3 +700,20 @@ eitherToValidation (Right a) = Success a
 See `EitherVariations.hs`.
 
 ********** END EXERCISES: VARIATIONS ON EITHER **********
+
+********** START CHAPTER EXERCISES **********
+
+Specialize the types of the methods.
+
+See `TypeSpecializations.hs`.
+
+Write instances for the following datatypes.
+
+See `Instances.hs`.
+
+Generate possible combinations of three input lists using `liftA3` from
+`Control.Applicative`.
+
+See `Combinations.hs`.
+
+********** END CHAPTER EXERCISES **********
