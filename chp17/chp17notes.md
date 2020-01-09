@@ -532,6 +532,7 @@ Prelude>
 
 ```haskell
 -- Homomorphism: structure-preserving map between two algebraic structures
+-- Applying the function doesn't change the structure around the values
 --
 -- `pure` provides arbitrary structure for statement of law, so it can be
 -- abstracted away with (<*>) and the same result should be generated.
@@ -544,5 +545,15 @@ Prelude> pure ((+1) 1)
 2
 Prelude> (+1) 1
 2
+-- In these cases, since `pure` lifts a value into an abstract functorial
+-- structure, casting provides the concrete structure
+Prelude> pure (+1) <*> pure 1 :: Maybe Int
+Just 2
+Prelude> pure ((+1) 1) :: Maybe Int
+Just 2
+Prelude> pure (+1) <*> pure 1 :: [Int]
+[2]
+Prelude> pure (+1) <*> pure 1 :: Either a Int
+Right 2
 Prelude>
 ```
