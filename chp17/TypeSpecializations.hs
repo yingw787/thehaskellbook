@@ -39,7 +39,7 @@ ioApply = (<*>)
 -- of 'Control.Applicative' was that the function would be applied to the
 -- arguments (monoidal)? Why is it present in the final result?)
 --
-tuplePure :: (Monoid a, Monoid c) => c -> (c, a)
+tuplePure :: (Monoid a, Monoid c) => c -> (a, c)
 tuplePure = pure
 
 -- (PERSONAL NOTE: Not sure how to reduce the kind-ness of (,).)
@@ -54,5 +54,23 @@ tuplePure = pure
 -- needs to be combinable.)
 --
 tupleApply :: (Monoid a, Monoid c) => (c, (a -> b)) -> (c, a) -> (c, b)
+tupleApply = (<*>)
 
 -- 4)
+--
+-- functionalPure :: a -> (-> a)
+--
+-- (PERSONAL NOTE: I checked ':t (+1)' as a partially applied function and this
+-- was the type signature)
+--
+-- functionalPure :: a -> (a -> a)
+--
+-- (FROM ANSWER KEY)
+functionalPure :: a -> (e -> a)
+functionalPure = pure
+
+-- functionalApply :: ((a -> b) -> (a -> b)) -> (a -> a) -> (b -> b)
+--
+-- (FROM ANSWER KEY)
+functionalApply :: (e -> (a -> b)) -> (e -> a) -> (e -> b)
+functionalApply = (<*>)
