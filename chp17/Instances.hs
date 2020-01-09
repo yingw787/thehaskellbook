@@ -160,3 +160,26 @@ main5 = do
     quickBatch $ applicative (Four test test test test)
 
 -- 6)
+data Four' a b = Four' a a a b deriving (Eq, Show)
+
+instance Functor (Four' a) where
+    fmap f (Four' a a' a'' b) = Four' a a' a'' (f b)
+
+instance (Monoid a) => Applicative (Four' a) where
+    pure a = Four' mempty mempty mempty a
+    (<*>) (Four' a a' a'' b) (Four' c c' c'' d) = Four' (a <> c) (a' <> c') (a'' <> c'') (b d)
+
+instance (Arbitrary a, Arbitrary b) => Arbitrary (Four' a b) where
+    arbitrary = do
+        a <- arbitrary
+        b <- arbitrary
+        return (Four' a a a b)
+
+instance (Eq a, Eq b) => EqProp (Four' a b) where
+    (=-=) = eq
+
+
+main6 :: IO ()
+main6 = do
+    let test = ("a", "b", "c")
+    quickBatch $ applicative (Four' test test test test)
