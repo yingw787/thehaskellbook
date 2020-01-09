@@ -642,3 +642,61 @@ See `ListApplicative.hs`.
 See `ZipListApplicative.hs`.
 
 ********** END EXERCISE: ZIPLIST APPLICATIVE **********
+
+- `Either` and `Validation` Applicative
+
+```haskell
+Prelude> type E = Either
+Prelude> :i E
+type E = Either :: * -> * -> *  -- Defined at <interactive>:102:1
+Prelude> pure 1 :: Either e Int
+Right 1
+Prelude> Right (+1) <*> Right 1
+Right 2
+Prelude> Right (+1) <*> Left ":("
+Left ":("
+Prelude> Left ":(" <*> Right 1
+Left ":("
+Prelude> Left ":(" <*> Left "sadface.png"
+Left ":("
+Prelude>
+```
+
+```haskell
+-- Validation is very much like 'Data.Either' (not sure about the typeclass
+-- derivation tho)
+--
+-- (PERSONAL NOTE: I'm not sure how to import 'Data.Validation', GHCi says it's
+-- not available and I don't see the package in hackage.haskell.org)
+--
+-- data Either a b = Left a | Right b
+--
+-- The difference between 'Data.Either' and 'Data.Validation' is that
+-- 'Data.Validation' monoidically combines errors while 'Data.Either' errors out
+-- early.
+--
+data Validation err a = Failure err | Success a deriving (Eq, Show)
+
+-- Methods 'validationToEither' and 'eitherToValidation' are natural
+-- transformations, in that they replace the outer functorial structure without
+-- affecting the values within. Note the generic type variables in the type
+-- signature and the lack of constraints on polymorphism.
+--
+-- Said another way:
+-- 'eitherToValidation . validationToEither == id'
+-- 'validationToEither . eitherToValidation == id'
+--
+validationToEither :: Validation e a -> Either e a
+validationToEither (Failure err) = Left err
+validationToEither (Success a) = Right a
+
+eitherToValidation :: Either e a -> Validation e a
+eitherToValidation (Left err) = Failure err
+eitherToValidation (Right a) = Success a
+```
+
+********** START EXERCISES: VARIATIONS ON EITHER **********
+
+See `EitherVariations.hs`.
+
+********** END EXERCISES: VARIATIONS ON EITHER **********
