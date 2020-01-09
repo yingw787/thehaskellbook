@@ -636,3 +636,9 @@ See `Apl1.hs`.
 See `ListApplicative.hs`.
 
 ********** END EXERCISE: LIST APPLICATIVE **********
+
+********** BEGIN EXERCISE: ZIPLIST APPLICATIVE **********
+
+See `ZipListApplicative.hs`.
+
+********** END EXERCISE: ZIPLIST APPLICATIVE **********
