@@ -131,5 +131,32 @@ main4 = do
     quickBatch $ applicative (Three' test test test)
 
 -- 5)
+--
+-- (CORRECT BY GHCI OUTPUT)
+data Four a b c d = Four a b c d deriving (Eq, Show)
+
+instance Functor (Four a b c) where
+    fmap f (Four a b c d) = Four a b c (f d)
+
+instance (Monoid a, Monoid b, Monoid c) => Applicative (Four a b c) where
+    pure a = Four mempty mempty mempty a
+    (<*>) (Four a b c d) (Four e f g h) = Four (a <> e) (b <> f) (c <> g) (d h)
+
+instance (Arbitrary a, Arbitrary b, Arbitrary c, Arbitrary d) => Arbitrary (Four a b c d) where
+    arbitrary = do
+        a <- arbitrary
+        b <- arbitrary
+        c <- arbitrary
+        d <- arbitrary
+        return (Four a b c d)
+
+instance (Eq a, Eq b, Eq c, Eq d) => EqProp (Four a b c d) where
+    (=-=) = eq
+
+
+main5 :: IO ()
+main5 = do
+    let test = ("a", "b", "c")
+    quickBatch $ applicative (Four test test test test)
 
 -- 6)
