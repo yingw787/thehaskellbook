@@ -27,11 +27,18 @@ instance Monoid Bull where
     mempty = Fools
     mappend = (<>)
 
--- `EqProp` is from library `checkers`
+-- `EqProp` is from library `checkers`; `checkers` exports method `eq`.
 instance EqProp Bull where
     (=-=) = eq
 
 
 main :: IO ()
 main = do
+    -- Monoid laws defined as part of test batch `monoid`.
+    --
+    -- Passing a value of type to `monoid` so it knows which arbitrary instance
+    -- to use. `monoid` doesn't actually use the value passed in here.
+    --
+    -- (PERSONAL NOTE: Seems rather odd to do it this way, why not pass in the
+    -- type directly again...?)
     quickBatch (monoid Twoo)
