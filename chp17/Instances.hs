@@ -103,6 +103,32 @@ main3 = do
     quickBatch $ applicative (Three test test test)
 
 -- 4)
+--
+-- (CORRECT BY GHCI OUTPUT)
+data Three' a b = Three' a b b deriving (Eq, Show)
+
+instance Functor (Three' a) where
+    fmap f (Three' a b b') = Three' a (f b) (f b')
+
+instance (Monoid a) => Applicative (Three' a) where
+    pure a = Three' mempty a a
+    (<*>) (Three' a b b') (Three' c d d') = Three' (mappend a c) (b d) (b' d')
+
+instance (Arbitrary a, Arbitrary b) => Arbitrary (Three' a b) where
+    arbitrary = do
+        a <- arbitrary
+        b <- arbitrary
+        b' <- arbitrary
+        return (Three' a b b')
+
+instance (Eq a, Eq b) => EqProp (Three' a b) where
+    (=-=) = eq
+
+
+main4 :: IO ()
+main4 = do
+    let test = ("a", "b", "c")
+    quickBatch $ applicative (Three' test test test)
 
 -- 5)
 
