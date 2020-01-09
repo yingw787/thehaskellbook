@@ -620,3 +620,5 @@ Just 4
 ```
 
 - You knew this was coming
+
+See `BadMonoid.hs`.
