@@ -622,3 +622,9 @@ Just 4
 - You knew this was coming
 
 See `BadMonoid.hs`.
+
+- `ZipList` Monoid
+    - Default monoid in `Prelude` is concatenation
+        - `[1, 2, 3] <> [4, 5, 6]` -> `[1, 2, 3] ++ [4, 5, 6]` -> `[1, 2, 3, 4, 5, 6]`
+    - Concatenation can be replaced with `ZipList`
+        - `[1, 2, 3] <> [4, 5, 6]` -> `[1 <> 4, 2 <> 5, 3 <> 6]`
