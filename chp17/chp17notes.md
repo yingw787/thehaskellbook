@@ -628,3 +628,11 @@ See `BadMonoid.hs`.
         - `[1, 2, 3] <> [4, 5, 6]` -> `[1, 2, 3] ++ [4, 5, 6]` -> `[1, 2, 3, 4, 5, 6]`
     - Concatenation can be replaced with `ZipList`
         - `[1, 2, 3] <> [4, 5, 6]` -> `[1 <> 4, 2 <> 5, 3 <> 6]`
+
+See `Apl1.hs`.
+
+********** BEGIN EXERCISE: LIST APPLICATIVE **********
+
+See `ListApplicative.hs`.
+
+********** END EXERCISE: LIST APPLICATIVE **********
