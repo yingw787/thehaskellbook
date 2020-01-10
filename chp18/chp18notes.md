@@ -428,3 +428,9 @@ doSomething' n = do
 
 - `Either`
   - See `EitherMonad.hs`.
+
+********** BEGIN EXERCISE: `Either` MONAD **********
+
+See `EitherMonad2.hs`.
+
+********** END EXERCISE: `Either` MONAD **********
