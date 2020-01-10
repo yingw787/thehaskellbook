@@ -423,3 +423,8 @@ doSomething' n = do
 ```
 
 - Exploding a spherical cow
+
+- Fail fast, like an overfunded startup
+
+- `Either`
+  - See `EitherMonad.hs`.
