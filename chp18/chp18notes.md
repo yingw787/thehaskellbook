@@ -125,3 +125,26 @@ bind f m = join $ fmap f m
 ********** BEGIN EXERCISE: THE ANSWER IS THE EXERCISE **********
 
 - What `Monad` is not
+  - Not impure: monadic functions are pure functions. `IO` allows for impure, or
+    effectful, actions, and `IO` is not `Monad`.
+  - Not embedded imperative programming: Monads can be used to sequence
+    operations, but there are commutative monads like `Reader` that don't order
+    actions.
+  - Not a value. `Monad` is a typeclass in general vernacular.
+  - Not always strict. Monadic operations `bind` and `return` are lazy, while
+    some operations can be made strict within a specific instance.
+
+- `Monad` also lifts!
+  - `liftM` method set exists for `Monad` because `Applicative` wasn't
+    discovered until much later
+    - (PERSONAL NOTE: Using the word "discover" here is pretty interesting)
+  - `liftM` is pretty much `liftA` with a different typeclass constraint
+
+```haskell
+Prelude> import Control.Monad (liftM)
+Prelude Control.Monad> import Control.Applicative (liftA)
+Prelude Control.Monad Control.Applicative> :t liftA
+liftA :: Applicative f => (a -> b) -> f a -> f b
+Prelude Control.Monad Control.Applicative> :t liftM
+liftM :: Monad m => (a1 -> r) -> m a1 -> m r
+```
