@@ -90,5 +90,38 @@ Prelude>
   `Foldable`)
 
 ```haskell
-
+Prelude> import Control.Monad (join)
+Prelude Control.Monad> :t join
+join :: Monad m => m (m a) -> m a
+Prelude Control.Monad> :t concat
+concat :: Foldable t => t [a] -> [a]
+Prelude Control.Monad>
 ```
+
+- Allowing the function to flatten structure is not something present in either
+  `Functor` or `Applicative`, but is allowed in `Monad`
+  - `fmap` can inject more structure, but can't merge structure
+  - `join` and `map` give `(>>=)` or `bind`.
+
+********** BEGIN EXERCISE: THE ANSWER IS THE EXERCISE **********
+
+```haskell
+bind :: Monad m => (a -> m b) -> m a -> m b
+-- (FROM ANSWER KEY)
+bind f m = join $ fmap f m
+
+-- Prelude Control.Monad> :t (fmap . join)
+-- (fmap . join) :: Functor f => (a -> a -> b) -> f a -> f b
+-- Prelude Control.Monad> :t (fmap $ join)
+-- (fmap $ join) :: (Monad m, Functor f) => f (m (m a)) -> f (m a)
+-- Prelude Control.Monad> :t (fmap join)
+-- (fmap join) :: (Monad m, Functor f) => f (m (m a)) -> f (m a)
+-- Prelude Control.Monad> :t (join $ fmap)
+-- (join $ fmap) :: (a -> a) -> a -> a
+-- Prelude Control.Monad> :t (join fmap)
+-- (join fmap) :: (a -> a) -> a -> a
+```
+
+********** BEGIN EXERCISE: THE ANSWER IS THE EXERCISE **********
+
+- What `Monad` is not
