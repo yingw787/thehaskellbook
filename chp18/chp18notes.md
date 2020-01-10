@@ -316,3 +316,29 @@ twoBinds' =
 ```
 
 - Examples of `Monad` use
+
+```haskell
+-- The `List` monad
+twiceWhenEven :: [Integer] -> [Integer]
+twiceWhenEven xs = do
+  -- (<-) binds individual values from list input.
+  x <- xs
+  if even x
+    then [x * x, x * x]
+    else [x * x]
+-- twiceWhenEven [1..3]
+-- > [1, 4, 4, 9]
+
+twiceWhenEven' :: [Integer] -> [Integer]
+twiceWhenEven' xs = do
+  x <- xs
+  if even x
+    then [x * x, x * x]
+    else []
+-- twiceWhenEven' [1..3]
+-- > [4, 4] (I think) (CORRECT BY GHCI OUTPUT)
+```
+
+```haskell
+-- The `Maybe` monad
+```
