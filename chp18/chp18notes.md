@@ -262,3 +262,31 @@ Prelude> snd twoActions
 Prelude> fst twoActions
 1
 ```
+
+```haskell
+-- 'join' merges effects of 'getLine' and 'putStrLn'
+Prelude Control.Monad> join $ fmap putStrLn getLine
+blah
+blah
+Prelude Control.Monad> :t join $ fmap putStrLn getLine
+-- 'IO ()', vs. 'IO (IO ())'.
+join $ fmap putStrLn getLine :: IO ()
+```
+
+- **The cleanest way to express ordering of lambdas is by nesting lambdas**
+  - That's what monadic sequencing allows us to do
+
+```haskell
+bindingAndSequencing :: IO ()
+bindingAndSequencing = do
+  putStrLn "name pls: "
+  name <- getLine
+  putStrLn ("y helo thar: " ++ name)
+
+bindingAndSequencing' :: IO ()
+bindingAndSequencing' =
+  putStrLn "name pls: " >>
+  getLine >>=
+  \name ->
+    putStrLn ("y helo thar: " ++ name)
+```
