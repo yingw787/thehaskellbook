@@ -43,6 +43,8 @@ validateCoders n
     | n > 5000 = Left $ TooManyCoders n
     | otherwise = Right n
 
+-- There is no `Monad` equivalent for `Validation` (where all errors are scraped
+-- and returned to the user, like that of `Data.Validation` as `Applicative`.)
 mkSoftware :: Int -> Int -> Either FoundedError SoftwareShop
 mkSoftware years coders = do
     founded <- validateFounded years
