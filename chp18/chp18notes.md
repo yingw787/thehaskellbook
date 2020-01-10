@@ -148,3 +148,73 @@ liftA :: Applicative f => (a -> b) -> f a -> f b
 Prelude Control.Monad Control.Applicative> :t liftM
 liftM :: Monad m => (a1 -> r) -> m a1 -> m r
 ```
+
+- `do` syntax and monads
+  - Mostly commonly seen with the `IO` monad
+
+```haskell
+-- '(*>)' is the sequencing operator constrained for 'Applicative'
+Prelude> :t (*>)
+(*>) :: Applicative f => f a -> f b -> f b
+-- '(>>)' is the sequencing operator constrained for 'Monad'
+Prelude> :t (>>)
+(>>) :: Monad m => m a -> m b -> m b
+Prelude> putStrLn "Hello, " >> putStrLn "World!"
+Hello,
+World!
+Prelude> putStrLn "Hello, " *> putStrLn "World!"
+Hello,
+World!
+```
+
+```haskell
+Prelude> :{
+Prelude| sequencing :: IO ()
+Prelude| sequencing = do
+Prelude|   putStrLn "blah"
+Prelude|   putStrLn "another thing"
+Prelude|
+Prelude| sequencing' :: IO ()
+Prelude| sequencing' =
+Prelude|   putStrLn "blah" >>
+Prelude|   putStrLn "another thing"
+Prelude|
+Prelude| sequencing'' :: IO ()
+Prelude| sequencing'' =
+Prelude|   putStrLn "blah" *>
+Prelude|   putStrLn "another thing"
+Prelude| :}
+Prelude> sequencing
+blah
+another thing
+Prelude> sequencing'
+blah
+another thing
+Prelude> sequencing''
+blah
+another thing
+Prelude>
+```
+
+```haskell
+Prelude> :{
+Prelude| binding :: IO ()
+Prelude| binding = do
+Prelude|   name <- getLine
+Prelude|   putStrLn name
+Prelude|
+Prelude| binding' :: IO ()
+Prelude| binding' =
+-- (>>=) passes it directly without binding to an intermediate variable
+Prelude|   getLine >>= putStrLn
+Prelude| :}
+Prelude> binding
+Ying
+Ying
+Prelude> binding'
+Ying
+Ying
+Prelude>
+```
+
+- When `fmap` alone isn't enough
