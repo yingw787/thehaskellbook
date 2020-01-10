@@ -218,3 +218,47 @@ Prelude>
 ```
 
 - When `fmap` alone isn't enough
+
+```haskell
+-- Note that `putStrLn` doesn't print the input line 'Ying' retrieved by
+-- 'getLine'.
+Prelude> fmap putStrLn getLine
+Ying
+-- We nested the two layers of IO together, which meant that the input was
+-- getting trapped within another layer of IO that wasn't evaluated.
+--
+-- (PERSONAL NOTE: I still don't quite understand this explanation from the
+-- book; maybe it's because putStrLn is not castable, and because it is not
+-- evaluated...?)
+--
+-- This is why monads are so powerful; we ultimately do need to flatten IO and
+-- allow the program to access elements, which is why flattening structure in a
+-- typeclass is so useful.
+Prelude> :t fmap putStrLn getLine
+fmap putStrLn getLine :: IO (IO ())
+Prelude>
+```
+
+```haskell
+Prelude> fmap putStrLn getLine
+Ying
+Prelude> :t fmap putStrLn getLine
+fmap putStrLn getLine :: IO (IO ())
+Prelude> :{
+Prelude| printOne = putStrLn "1"
+Prelude| printTwo = putStrLn "2"
+Prelude| twoActions = (printOne, printTwo)
+Prelude| :}
+Prelude> :t twoActions
+-- We can group IO types like any other types; '()' indicates type to be cast
+-- dynamically determined by stdin.
+twoActions :: (IO (), IO ())
+Prelude> fst twoActions
+1
+Prelude> snd twoActions
+2
+-- We're able to evaluate IO actions multiple times; to me this indicates
+-- 'putStrLn' is a declaration and not an evaluation.
+Prelude> fst twoActions
+1
+```
