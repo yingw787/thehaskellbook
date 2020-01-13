@@ -38,7 +38,13 @@ instance Monad CountMe where
     --
     -- (STILL NOT WORKING, DOES NOT SATISFY RIGHT IDENTITY)
     --
-    CountMe _ a >>= f = f a
+    -- CountMe _ a >>= f = f a
+    --
+    -- (WORKING)
+    --
+    CountMe n a >>= f =
+        let CountMe n' b = f a
+        in CountMe (n + n') b
 
 instance Arbitrary a => Arbitrary (CountMe a) where
     arbitrary = CountMe <$> arbitrary <*> arbitrary
