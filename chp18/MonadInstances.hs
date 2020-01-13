@@ -45,8 +45,29 @@ main1 = do
     quickBatch $ applicative (NopeDotJpg :: Nope III)
     quickBatch $ monad (NopeDotJpg :: Nope III)
 
--- -- 2)
--- data BahEither b a + PLeft a | PRight b
+-- 2)
+data BahEither b a = PLeft a | PRight b deriving (Eq, Show)
+
+-- (PERSONAL NOTE: It seems like "BahEither" type arguments determine whether
+-- Left or Right gets proper lifted.)
+instance Functor (BahEither b) where
+    fmap f (PLeft a) = PLeft (f a)
+    fmap _ (PRight b) = PRight b
+
+instance (Arbitrary a, Arbitrary b) => Arbitrary (BahEither a b) where
+    arbitrary = do
+        a' <- arbitrary
+        b' <- arbitrary
+        oneof [return (PLeft a'), return (PRight b')]
+
+instance (Eq a, Eq b) => EqProp (BahEither a b) where
+    (=-=) = eq
+
+main2 :: IO ()
+main2 = do
+    -- (PERSONAL NOTE: Did not know that you could pass "bottom" into
+    -- `quickBatch`.)
+    quickBatch $ functor (undefined :: BahEither III III)
 
 -- -- 3)
 -- newtype Identity a = Identity a deriving (Eq, Ord, Show)
