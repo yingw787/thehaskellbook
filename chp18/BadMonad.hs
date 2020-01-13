@@ -14,7 +14,13 @@ instance Functor CountMe where
 
 instance Applicative CountMe where
     pure = CountMe 0
-    CountMe n f <*> CountMe n' a = CountMe (n + n') (f a)
+    -- (WORKING)
+    --
+    -- CountMe n f <*> CountMe n' a = CountMe (n + n') (f a)
+    --
+    -- (NOT WORKING)
+    --
+    CountMe n f <*> CountMe _ a = CountMe (n + 1) (f a)
 
 instance Monad CountMe where
     return = pure
