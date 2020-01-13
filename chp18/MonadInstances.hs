@@ -1,0 +1,66 @@
+-- MonadInstances.hs
+--
+-- (PERSONAL NOTE: It's been two days since I touched Haskell and monads had
+-- been slippery, so I'm not sure how much of this I can do by myself..)
+module MonadInstances where
+
+import Control.Monad
+import Test.QuickCheck
+import Test.QuickCheck.Checkers
+import Test.QuickCheck.Classes
+
+
+type III = (Int, Int, Int)
+
+
+-- 1)
+data Nope a = NopeDotJpg deriving (Eq, Show)
+
+-- (CORRECT BY CHECKING ANSWER KEY)
+instance Functor Nope where
+    fmap _ NopeDotJpg = NopeDotJpg
+
+-- (PARTIALLY CORRECT BY CHECKING ANSWER KEY, `pure` should pattern match with
+-- empty argument.)
+instance Applicative Nope where
+    pure _ = NopeDotJpg
+    (<*>) _ _ = NopeDotJpg
+
+instance Monad Nope where
+    return = pure
+    -- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+    (>>=) _ _ = NopeDotJpg
+
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+instance Arbitrary a => Arbitrary (Nope a) where
+    arbitrary = return NopeDotJpg
+
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+instance Eq a => EqProp (Nope a) where
+    (=-=) = eq
+
+main1 :: IO ()
+main1 = do
+    quickBatch $ functor (NopeDotJpg :: Nope III)
+    quickBatch $ applicative (NopeDotJpg :: Nope III)
+    quickBatch $ monad (NopeDotJpg :: Nope III)
+
+-- -- 2)
+-- data BahEither b a + PLeft a | PRight b
+
+-- -- 3)
+-- newtype Identity a = Identity a deriving (Eq, Ord, Show)
+
+-- instance Functor Identity where
+--     fmap = undefined
+
+-- instance Applicative Identity where
+--     pure = undefined
+--     (<*>) = undefined
+
+-- instance Monad Identity where
+--     return = pure
+--     (>>=) = undefined
+
+-- -- 4)
+-- data List a = Nil | Cons a (List a)
