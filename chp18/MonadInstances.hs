@@ -90,19 +90,35 @@ main2 = do
     quickBatch $ applicative (undefined :: BahEither III III)
     quickBatch $ monad (undefined :: BahEither III III)
 
--- -- 3)
--- newtype Identity a = Identity a deriving (Eq, Ord, Show)
+-- 3)
+--
+-- (CORRECT BY GHCI OUTPUT)
+newtype Identity a = Identity a deriving (Eq, Ord, Show)
 
--- instance Functor Identity where
---     fmap = undefined
+instance Functor Identity where
+    fmap f (Identity a) = Identity (f a)
 
--- instance Applicative Identity where
---     pure = undefined
---     (<*>) = undefined
+instance Applicative Identity where
+    pure a = Identity a
+    (<*>) (Identity a) (Identity b) = Identity (a b)
 
--- instance Monad Identity where
---     return = pure
---     (>>=) = undefined
+instance Monad Identity where
+    return = pure
+    (>>=) (Identity a) f = f a
+
+instance Arbitrary a => Arbitrary (Identity a) where
+    arbitrary = do
+        a' <- arbitrary
+        return (Identity a')
+
+instance (Eq a) => EqProp (Identity a) where
+    (=-=) = eq
+
+main3 :: IO ()
+main3 = do
+    quickBatch $ functor (undefined :: Identity III)
+    quickBatch $ applicative (undefined :: Identity III)
+    quickBatch $ monad (undefined :: Identity III)
 
 -- -- 4)
 -- data List a = Nil | Cons a (List a)
