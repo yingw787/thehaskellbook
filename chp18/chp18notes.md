@@ -1,4 +1,4 @@
-# Chapter 18
+# Chapter 18 (NEED TO REVIEW LATER)
 
 - Monad
   - `Applicative`s are monoidal functors
@@ -468,3 +468,38 @@ monad laws:
   associativity:  +++ OK, passed 500 tests.
 Prelude Test.QuickCheck Test.QuickCheck.Checkers Test.QuickCheck.Classes>
 ```
+
+- Bad `Monad`s and their denizens
+  - Remember that a bad monad can still typecheck!
+
+See `BadMonad.hs`.
+
+- Application and composition
+  - For `Functor` and `Applicative`, function composition just worked, and was
+    intuitive:
+
+```haskell
+-- Functor
+fmap id = id
+
+-- Applicative
+fmap f . fmap g = fmap (f . g)
+```
+
+```haskell
+relude> import Control.Monad
+Prelude Control.Monad> :{
+Prelude Control.Monad| mcomp' :: Monad m => (b -> m c) -> (a -> m b) -> a -> m c
+Prelude Control.Monad| mcomp' f g a = join (f <$> (g a))
+Prelude Control.Monad| :}
+Prelude Control.Monad> :{
+Prelude Control.Monad| mcomp'' :: Monad m => (b -> m c) -> (a -> m b) -> a -> m c
+Prelude Control.Monad| mcomp'' f g a = g a >>= f
+Prelude Control.Monad| :}
+Prelude Control.Monad>
+```
+
+- Kleisli composition
+  - (PERSONAL NOTE: Marking chapter as need to review later)
+
+- See `Kleisli.hs`.
