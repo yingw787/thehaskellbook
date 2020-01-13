@@ -31,4 +31,32 @@ Prelude Data.Monoid>
 ```
 
 ```haskell
+Prelude> import qualified Data.Map as M
+Prelude M> :t M.fromList
+M.fromList :: Ord k => [(k, a)] -> M.Map k a
+Prelude M> let f = M.fromList [('a', 1)]
+Prelude M> let g = M.fromList [('b', 2)]
+Prelude M> :t f
+f :: Num a => M.Map Char a
+Prelude M> import Data.Monoid
+Prelude M Data.Monoid> f <> g
+fromList [('a',1),('b',2)]
+Prelude M Data.Monoid> :t (f <> g)
+(f <> g) :: Num a => M.Map Char a
+Prelude M Data.Monoid> mappend f g
+fromList [('a',1),('b',2)]
+Prelude M Data.Monoid> f <> g
+fromList [('a',1),('b',2)]
+```
+
+- `Functor`
+    - Lifting over `IO`
+
+```haskell
+import Data.Time.Clock
+
+offsetCurrentTime :: NominalDiffTime -> IO UTCTime
+offsetCurrentTime offset =
+    fmap (addUTCTime (offset * 24 * 3600)) $
+        getCurrentTime
 ```
