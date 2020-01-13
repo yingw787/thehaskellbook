@@ -434,3 +434,37 @@ doSomething' n = do
 See `EitherMonad2.hs`.
 
 ********** END EXERCISE: `Either` MONAD **********
+
+- `Monad` laws
+
+- Identity laws
+  - method `return` should not perform any computation.
+
+```haskell
+-- left identity
+m >>= return = m
+
+-- right identity
+return x >>= f = f x
+```
+
+- Associativity laws
+
+```haskell
+(m >>= f) >>= g = m >>= (\x -> f x >>= g)
+```
+
+- We're doing that thing again
+
+```haskell
+Prelude> import Test.QuickCheck
+Prelude Test.QuickCheck> import Test.QuickCheck.Checkers
+Prelude Test.QuickCheck Test.QuickCheck.Checkers> import Test.QuickCheck.Classes
+Prelude Test.QuickCheck Test.QuickCheck.Checkers Test.QuickCheck.Classes> quickBatch (monad [(1, 2, 3)])
+
+monad laws:
+  left  identity: +++ OK, passed 500 tests.
+  right identity: +++ OK, passed 500 tests.
+  associativity:  +++ OK, passed 500 tests.
+Prelude Test.QuickCheck Test.QuickCheck.Checkers Test.QuickCheck.Classes>
+```
