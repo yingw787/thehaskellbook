@@ -503,3 +503,16 @@ Prelude Control.Monad>
   - (PERSONAL NOTE: Marking chapter as need to review later)
 
 - See `Kleisli.hs`.
+
+********** BEGIN CHAPTER EXERCISES **********
+
+Write `Monad` instances for the following types.
+
+See `MonadInstances.hs`.
+
+Write the following functions using the methods provided by `Monad` and
+`Functor`.
+
+See `MonadFunctions.hs`.
+
+********** END CHAPTER EXERCISES **********
