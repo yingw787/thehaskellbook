@@ -141,6 +141,18 @@ instance Applicative List where
     -- (PERSONAL NOTE: Still not sure what this line means..)
     (<*>) (Cons f fs) as = (fmap f as) `append` ((<*>) fs as)
 
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+fold :: (a -> b -> b) -> b -> List a -> b
+fold _ b Nil = b
+fold f b (Cons h t) = f h (fold f b t)
+
+instance Monad List where
+    return = pure
+    -- (>>=) Nil f =
+    -- (>>=) (Cons x xs) f =
+    -- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+    (>>=) as f = fold append Nil $ fmap f as
+
 mkList :: [a] -> List a
 mkList xs = foldr Cons Nil xs
 
@@ -157,3 +169,4 @@ main4 = do
     let test = [(1, 2, 3), (4, 5, 6)] :: [(Int, Int, Int)]
     quickBatch $ functor (mkList test)
     quickBatch $ applicative (mkList test)
+    quickBatch $ monad (mkList test)
