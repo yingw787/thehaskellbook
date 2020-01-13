@@ -48,11 +48,29 @@ main1 = do
 -- 2)
 data BahEither b a = PLeft a | PRight b deriving (Eq, Show)
 
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
 -- (PERSONAL NOTE: It seems like "BahEither" type arguments determine whether
 -- Left or Right gets proper lifted.)
 instance Functor (BahEither b) where
     fmap f (PLeft a) = PLeft (f a)
     fmap _ (PRight b) = PRight b
+
+-- (MOSTLY CORRECT BY CHECKING ANSWER KEY)
+instance Applicative (BahEither b) where
+    pure a = PLeft a
+    (<*>) (PLeft a) (PLeft b) = PLeft (a b)
+    (<*>) (PRight a) _ = PRight a
+    (<*>) _ (PRight a) = PRight a
+    -- (PERSONAL NOTE: Don't actually need this line, and I'm not quite sure
+    -- what it does anyways.)
+    --
+    -- (<*>) (PRight a) (PRight b) = PRight (a `mappend` b)
+
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+instance Monad (BahEither a) where
+    return = pure
+    (>>=) (PLeft a) f = (f a)
+    (>>=) (PRight b) f = PRight b
 
 instance (Arbitrary a, Arbitrary b) => Arbitrary (BahEither a b) where
     arbitrary = do
@@ -65,9 +83,12 @@ instance (Eq a, Eq b) => EqProp (BahEither a b) where
 
 main2 :: IO ()
 main2 = do
+    -- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
     -- (PERSONAL NOTE: Did not know that you could pass "bottom" into
     -- `quickBatch`.)
     quickBatch $ functor (undefined :: BahEither III III)
+    quickBatch $ applicative (undefined :: BahEither III III)
+    quickBatch $ monad (undefined :: BahEither III III)
 
 -- -- 3)
 -- newtype Identity a = Identity a deriving (Eq, Ord, Show)
