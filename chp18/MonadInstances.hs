@@ -120,5 +120,40 @@ main3 = do
     quickBatch $ applicative (undefined :: Identity III)
     quickBatch $ monad (undefined :: Identity III)
 
--- -- 4)
--- data List a = Nil | Cons a (List a)
+-- 4)
+data List a = Nil | Cons a (List a) deriving (Eq, Show)
+
+instance Functor List where
+    -- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+    fmap f Nil = Nil
+    fmap f (Cons a as) = Cons (f a) (fmap f as)
+
+-- (FROM chp17/ListApplicative.hs)
+append :: List a -> List a -> List a
+append Nil ys = ys
+append (Cons x xs) ys = Cons x (append xs ys)
+
+-- (FROM chp17/ListApplicative.hs)
+instance Applicative List where
+    pure a = Cons a Nil
+    (<*>) _ Nil = Nil
+    (<*>) Nil _ = Nil
+    -- (PERSONAL NOTE: Still not sure what this line means..)
+    (<*>) (Cons f fs) as = (fmap f as) `append` ((<*>) fs as)
+
+mkList :: [a] -> List a
+mkList xs = foldr Cons Nil xs
+
+instance Arbitrary a => Arbitrary (List a) where
+    arbitrary = do
+        as <- arbitrary
+        return (mkList as)
+
+instance Eq a => EqProp (List a) where
+    (=-=) = eq
+
+main4 :: IO ()
+main4 = do
+    let test = [(1, 2, 3), (4, 5, 6)] :: [(Int, Int, Int)]
+    quickBatch $ functor (mkList test)
+    quickBatch $ applicative (mkList test)
