@@ -2,19 +2,29 @@ name:                url-shortener
 version:             0.1.0.0
 -- synopsis:
 -- description:
-homepage:            https://github.com/githubuser/url-shortener#readme
+homepage:            https://github.com/yingw787
 license:             BSD3
 license-file:        LICENSE
-author:              Author name here
-maintainer:          example@example.com
-copyright:           2020 Author name here
+author:              Ying Wang
+maintainer:          me@yingw787.com
+copyright:           2020 Ying Wang
 category:            Web
 build-type:          Simple
 cabal-version:       >=1.10
 extra-source-files:  README.md
 
 executable url-shortener
-  hs-source-dirs:      src
+  hs-source-dirs:      app
   main-is:             Main.hs
+  ghc-options:         -threaded
   default-language:    Haskell2010
   build-depends:       base >= 4.7 && < 5
+                     , bytestring
+                     , hedis
+                     , mtl
+                     , network-uri
+                     , random
+                     , scotty
+                     , semigroups
+                     , text
+                     , transformers
