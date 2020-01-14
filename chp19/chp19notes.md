@@ -155,3 +155,40 @@ import Control.Applicative (liftA2)
 (<||>) :: (a -> Bool) -> (a -> Bool) -> a -> Bool
 (<||>) = liftA2 (||)
 ```
+
+```haskell
+Prelude> True || False
+True
+Prelude> False || False
+False
+Prelude> (2 > 3) || (3 == 3)
+True
+Prelude> import Control.Applicative
+-- Define a helper infix operation to lift boolean disjunction into structure
+Prelude Control.Applicative> (<||>) = liftA2 (||)
+Prelude Control.Applicative> f 9001 = True; f _ = False
+Prelude Control.Applicative> g 42 = True; g _ = False
+Prelude Control.Applicative> :t f
+f :: (Eq a, Num a) => a -> Bool
+Prelude Control.Applicative> f 9001
+True
+Prelude Control.Applicative> f 42
+False
+Prelude Control.Applicative> g 9001
+False
+Prelude Control.Applicative> g 42
+True
+-- Compose the two functions and lift input arguments within structure
+Prelude Control.Applicative> (\n -> f n || g n) 0
+False
+Prelude Control.Applicative> (\n -> f n || g n) 9001
+True
+Prelude Control.Applicative> :t (\n -> f n || g n)
+(\n -> f n || g n) :: (Eq a, Num a) => a -> Bool
+-- Use the helper infix operator defined earlier to do the same thing
+Prelude Control.Applicative> (f <||> g) 0
+False
+Prelude Control.Applicative> (f <||> g) 9001
+True
+Prelude Control.Applicative>
+```
