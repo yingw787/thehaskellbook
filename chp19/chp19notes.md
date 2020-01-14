@@ -87,3 +87,71 @@ userAgent' req =
 ```
 
 - Applicative
+
+- `hgrev`
+
+```haskell
+jsonSwitch :: Parser (a -> a)
+jsonSwitch =
+    infoOption $(hgRevStateTH jsonFormat) $ long "json" <> short 'J' <> help "Display JSON version information"
+
+parserInfo :: ParserInfo (a -> a)
+parserInfo =
+    -- <* is applicative sequencing operator
+    info (helper <*> verSwitch <* jsonSwitch) fullDesc
+```
+
+- More parsing
+
+```haskell
+-- Parse JSON
+parseJSON :: Value -> Parser a
+
+(.:) :: FromJSON a => Object -> Text -> Parser a
+
+instance FromJSON Payload where
+    parseJSON (Object v) =
+        PayLoad <$> v .: "from"
+                <*> v .: "to"
+                <*> v .: "subject"
+                <*> v .: "body"
+                <*> v .: "offset_seconds"
+    parseJSON v = typeMismatch "Payload" v
+
+-- Parse CSV
+parseRecord :: Record -> Parser a
+
+instance FromRecord Release where
+    parseRecord v
+        | V.length v == 5 = Release <$> v .! 0
+                                    <*> v .! 1
+                                    <*> v .! 2
+                                    <*> v .! 3
+                                    <*> v .! 4
+        | otherwise = mzero
+
+instance Deserializable ShowInfoResp where
+    parser =
+        e2err =<< convertPairs . HM.fromList <$> parsePairs
+        where
+            parsePairs :: Parser [(Text, Text)]
+            parsePairs =
+                parsePair `sepBy` endOfLine
+            parsePair =
+                liftA2 (,) parseKey parseValue
+            parseKey =
+                takeTill (==':') <* kvSep
+            kvSep = string ": "
+            parseValue = takeTill isEndOfLine
+```
+
+- And now for something different
+
+```haskell
+module Web.Shipping.Utils ((<||>)) where
+
+import Control.Applicative (liftA2)
+
+(<||>) :: (a -> Bool) -> (a -> Bool) -> a -> Bool
+(<||>) = liftA2 (||)
+```
