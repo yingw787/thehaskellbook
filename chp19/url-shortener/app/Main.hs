@@ -39,6 +39,33 @@ import Web.Scotty
 alphaNum :: String
 alphaNum = ['A'.'Z'] ++ ['0'..'9']
 
+randomElement :: String -> IO Char
+randomElement xs = do
+  let maxIndex :: Int
+      maxIndex = length xs - 1
+  -- Right of arrow is IO Int,
+  -- so randomDigit is Int
+  randomDigit <- SR.randomRIO (0, maxIndex)
+  return (xs !! randomDigit)
+
+shortyGen :: IO [Char]
+shortyGen =
+  replicateM 7 (randomElement alphaNum)
+
+saveURI :: R.Connection
+            -> BC.ByteString
+            -> BC.ByteString
+            -> IO (Either R.Reply R.Status)
+saveURI conn shortURI uri =
+  R.runRedis conn $ R.set shortURI uri
+
+getURI :: R.Connection
+            -> BC.ByteString
+            -> IO (Either R.Reply (Maybe BC.ByteString))
+getURI conn shortURI =
+  R.runRedis conn $ R.get shortURI
+
+
 main :: IO ()
 main = do
   putStrLn "hello world"
