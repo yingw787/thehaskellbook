@@ -20,3 +20,19 @@
           collects applicative contexts
 
 - The `Traversable` type class definition
+
+```haskell
+-- `fmap` and `traverse` are oftentimes mistaken for each other
+fmap :: Functor f => (a -> b) -> f a -> f b
+
+traverse :: Applicative f => (a -> f b) -> t a -> f (t b)
+
+myData :: [String]
+myFunc :: String -> IO Record
+
+wrong :: [IO Record]
+wrong = fmap myFunc myData
+
+right :: IO [Record]
+right = traverse myFunc myData
+```
