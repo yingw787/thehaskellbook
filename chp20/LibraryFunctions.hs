@@ -31,6 +31,27 @@ elem'' :: (Foldable t, Eq a) => a -> t a -> Bool
 elem'' x xs = getAny $ foldMap (Any . (== x)) xs
 
 -- 4)
+-- minimum :: (Foldable t, Ord a) => t a -> Maybe a
+-- minimum xs = foldr ((||) . (< x)) Nothing xs
+--
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+--
+-- (PERSONAL NOTE: Answer key defines a monoid for helping implement minimum. I
+-- would not have thought to done that.)
+newtype Least a = Least { getLeast :: Maybe a } deriving (Eq, Ord, Show)
+
+-- (PERSONAL NOTE: Have to implement my own Semigroup because of GHC upgrade.)
+instance Ord a => Semigroup (Least a) where
+    (<>) (Least Nothing) a = a
+    (<>) a (Least Nothing) = a
+    (<>) (Least (Just a)) (Least (Just b)) = Least (Just (min a b))
+
+instance Ord a => Monoid (Least a) where
+    mempty = Least Nothing
+    mappend = (<>)
+
+minimum' :: (Foldable t, Ord a) => t a -> Maybe a
+minimum' xs = getLeast $ foldMap (Least . Just) xs
 
 -- 5)
 
@@ -55,3 +76,5 @@ main = do
 
     print $ elem' 3 [1..5]
     print $ elem'' 3 [1..5]
+
+    print $ minimum' [1..5]
