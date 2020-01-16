@@ -22,6 +22,13 @@ product'' :: (Foldable t, Num a) => t a -> a
 product'' = getProduct . foldMap Product
 
 -- 3)
+elem' :: (Foldable t, Eq a) => a -> t a -> Bool
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+elem' x xs = foldr ((||) . (== x)) False xs
+
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+elem'' :: (Foldable t, Eq a) => a -> t a -> Bool
+elem'' x xs = getAny $ foldMap (Any . (== x)) xs
 
 -- 4)
 
@@ -45,3 +52,6 @@ main = do
 
     print $ product' [1..5]
     print $ product'' [1..5]
+
+    print $ elem' 3 [1..5]
+    print $ elem'' 3 [1..5]
