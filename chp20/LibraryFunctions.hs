@@ -91,6 +91,27 @@ null' :: (Foldable t) => t a -> Bool
 null' xs = getNull $ foldMap (Null . (const False)) xs
 
 -- 7)
+-- length' :: (Foldable t) => t a -> Int
+-- (PERSONAL NOTE: Try and increment by one starting at zero for xs?)
+-- (INCORRECT, COMPILE TIME ERROR)
+--
+-- length' xs = foldr (+1) 0 xs
+--
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+--
+newtype Long a = Long { getLong :: Int } deriving (Eq, Show)
+
+instance Semigroup (Long a) where
+    -- (PERSONAL NOTE: I'm not sure why the values are added here as 'a + b'.)
+    (<>) (Long a) (Long b) = Long (a + b)
+
+instance Monoid (Long a) where
+    mempty = Long 0
+    mappend = (<>)
+
+length' :: (Foldable t) => t a -> Int
+-- (PERSONAL NOTE: Not sure why this is const 1 instead of const 0)
+length' xs = getLong $ foldMap (Long . (const 1)) xs
 
 -- 8)
 
@@ -115,3 +136,5 @@ main = do
     print $ maximum' [1..5]
 
     print $ null' []
+
+    print $ length' [1..5]
