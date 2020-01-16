@@ -141,6 +141,11 @@ toList' :: (Foldable t) => t a -> [a]
 toList' xs = foldMap (:[]) xs
 
 -- 9)
+--
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+--
+fold' :: (Foldable t, Monoid m) => t m -> m
+fold' xs = foldMap id xs
 
 -- 10)
 
@@ -165,3 +170,5 @@ main = do
     print $ length' [1..5]
 
     print $ toList' [1]
+
+    print $ fold' $ map Product [1..5]
