@@ -56,6 +56,16 @@ instance Foldable (Four' a) where
     foldMap f (Four' a b c d) = (f b) <> (f c) <> (f d)
 
 
+filterF ::  ( Applicative f
+            , Foldable t
+            , Monoid (f a))
+            => (a -> Bool) -> t a -> f a
+-- (PERSONAL NOTE: Aw hell no)
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+filterF f xs = foldMap (g f) xs where
+    g f a = if f a then pure a else mempty
+
+
 main :: IO ()
 main = do
     print $ foldr (*) 5 (Constant 5)
