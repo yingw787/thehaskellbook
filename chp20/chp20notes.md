@@ -204,3 +204,9 @@ product :: (Foldable t, Num a) => t a -> a
 See `LibraryFunctions.hs`.
 
 ********** END EXERCISES: LIBRARY FUNCTIONS **********
+
+********** BEGIN CHAPTER EXERCISES **********
+
+See `ChapterExercises.hs`.
+
+********** END CHAPTER EXERCISES **********
