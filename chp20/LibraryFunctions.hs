@@ -54,6 +54,8 @@ minimum' :: (Foldable t, Ord a) => t a -> Maybe a
 minimum' xs = getLeast $ foldMap (Least . Just) xs
 
 -- 5)
+--
+-- (CORRECT BY GHCI OUTPUT)
 newtype Most a = Most { getMost :: Maybe a } deriving (Eq, Ord, Show)
 
 instance Ord a => Semigroup (Most a) where
@@ -69,6 +71,24 @@ maximum' :: (Foldable t, Ord a) => t a -> Maybe a
 maximum' xs = getMost $ foldMap (Most . Just) xs
 
 -- 6)
+-- null' :: (Foldable t) => t a -> Bool
+-- (PERSONAL NOTE: I know I should probably check whether the value is 'mempty',
+-- but I'm not sure how to do that.)
+--
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+--
+newtype Null a = Null { getNull :: Bool } deriving (Eq, Show)
+
+instance Semigroup (Null a) where
+    (<>) (Null True) (Null True) = Null True
+    (<>) _ _ = Null Fale
+
+instance Monoid (Null a) where
+    mempty = Null True
+    mappend = (<>)
+
+null' :: (Foldable t) => t a -> Bool
+null xs = getNull $ foldMap (Null . (const False)) xs
 
 -- 7)
 
