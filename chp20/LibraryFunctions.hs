@@ -6,6 +6,9 @@ import Data.Monoid
 
 
 -- 1)
+sum' :: (Foldable t, Num a) => t a -> a
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+sum' xs = foldr (+) 0 xs
 
 -- 2)
 
@@ -24,3 +27,8 @@ import Data.Monoid
 -- 9)
 
 -- 10)
+
+
+main :: IO ()
+main = do
+    print $ sum' [1..5]
