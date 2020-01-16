@@ -81,14 +81,14 @@ newtype Null a = Null { getNull :: Bool } deriving (Eq, Show)
 
 instance Semigroup (Null a) where
     (<>) (Null True) (Null True) = Null True
-    (<>) _ _ = Null Fale
+    (<>) _ _ = Null False
 
 instance Monoid (Null a) where
     mempty = Null True
     mappend = (<>)
 
 null' :: (Foldable t) => t a -> Bool
-null xs = getNull $ foldMap (Null . (const False)) xs
+null' xs = getNull $ foldMap (Null . (const False)) xs
 
 -- 7)
 
@@ -113,3 +113,5 @@ main = do
     print $ minimum' [1..5]
 
     print $ maximum' [1..5]
+
+    print $ null' []
