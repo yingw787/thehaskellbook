@@ -15,3 +15,8 @@
         - Produce applicative effects
         - Maybe lift multiple instances of applicative structure outside
           traversable structure
+
+        - A way to traverse a data structure: maps function inside structure,
+          collects applicative contexts
+
+- The `Traversable` type class definition
