@@ -106,3 +106,76 @@ Product {getProduct = 1}
 ```
 
 - Demonstrating Foldable instances
+
+```haskell
+-- Implementing `Foldable` for Identity
+data Identity a = Identity a
+
+instance Foldable Identity where
+    foldr f z (Identity x) = f x z
+    foldl f z (Identity x) = f z x
+    foldMap f (Identity x) = f x
+
+-- Prelude Data.Foldable Data.Monoid> :{
+-- Prelude Data.Foldable Data.Monoid| -- Implementing `Foldable` for Identity
+-- Prelude Data.Foldable Data.Monoid| data Identity a = Identity a
+-- Prelude Data.Foldable Data.Monoid|
+-- Prelude Data.Foldable Data.Monoid| instance Foldable Identity where
+-- Prelude Data.Foldable Data.Monoid|     foldr f z (Identity x) = f x z
+-- Prelude Data.Foldable Data.Monoid|     foldl f z (Identity x) = f z x
+-- Prelude Data.Foldable Data.Monoid|     foldMap f (Identity x) = f x
+-- Prelude Data.Foldable Data.Monoid| :}
+-- Prelude Data.Foldable Data.Monoid> foldr (*) 1 (Identity 5)
+-- 5
+-- Prelude Data.Foldable Data.Monoid> foldr (*) 5 (Identity 5)
+-- 25
+-- Prelude Data.Foldable Data.Monoid> fm = foldMap (*5)
+-- Prelude Data.Foldable Data.Monoid> type PI = Product Integer
+-- Prelude Data.Foldable Data.Monoid> fm (Identity 100) :: PI
+-- Product {getProduct = 500}
+```
+
+```haskell
+-- Implementing `Foldable` for Maybe
+data Optional x = Nada | Yep x
+
+instance Foldable Optional where
+    foldr _ z Nada = z
+    foldr f z (Yep x) = f x z
+
+    foldl _ z Nada = z
+    foldl f z (Yep x) = f z x
+
+    foldMap _ Nada = mempty
+    foldMap f (Yep a) = f a
+```
+
+```haskell
+-- When the above is inputted into GHCi, you can get this output:
+Prelude Data.Foldable Data.Monoid> foldMap (+1) Nada
+
+-- Error because you're not implementing showable methods, doesn't matter if
+-- you're deriving (Eq, Show).
+<interactive>:130:1: error:
+    • Ambiguous type variable ‘a0’ arising from a use of ‘print’
+      prevents the constraint ‘(Show a0)’ from being solved.
+      Probable fix: use a type annotation to specify what ‘a0’ should be.
+      These potential instances exist:
+        instance (Show a, Show b) => Show (Either a b)
+          -- Defined in ‘Data.Either’
+        instance Show a => Show (First a) -- Defined in ‘Data.Monoid’
+        instance Show a => Show (Last a) -- Defined in ‘Data.Monoid’
+        ...plus 32 others
+        ...plus 40 instances involving out-of-scope types
+        (use -fprint-potential-instances to see them all)
+    • In a stmt of an interactive GHCi command: print it
+-- Solution is to cast it to a concrete type.
+Prelude Data.Foldable Data.Monoid> foldMap (+1) Nada :: Sum Int
+Sum {getSum = 0}
+Prelude Data.Foldable Data.Monoid> foldMap (+1) Nada :: Product Int
+Product {getProduct = 1}
+Prelude Data.Foldable Data.Monoid> foldMap (+1) (Yep 1) :: Sum Int
+Sum {getSum = 2}
+```
+
+- Some basic derived operations
