@@ -49,3 +49,60 @@ Prelude Data.Foldable Data.Monoid> fold ["hello", " julie"]
 ```
 
 - And now for something different
+
+```haskell
+-- `foldMap` first argument maps element of structure to `Monoid`.
+Prelude Data.Foldable Data.Monoid> :t foldMap
+foldMap :: (Foldable t, Monoid m) => (a -> m) -> t a -> m
+Prelude Data.Foldable Data.Monoid> foldMap Sum [1..4]
+Sum {getSum = 10}
+Prelude Data.Foldable Data.Monoid> foldMap Product [1..4]
+Product {getProduct = 24}
+Prelude Data.Foldable Data.Monoid> foldMap All [True, False, True]
+All {getAll = False}
+Prelude Data.Foldable Data.Monoid> foldMap Any [(3 == 4), (9 > 5)]
+Any {getAny = True}
+Prelude Data.Foldable Data.Monoid> xs = [Just 1, Nothing, Just 5]
+Prelude Data.Foldable Data.Monoid> foldMap First xs
+First {getFirst = Just 1}
+Prelude Data.Foldable Data.Monoid> foldMap Last xs
+Last {getLast = Just 5}
+
+-- `foldMap` function first argument can map a function to a value before using
+-- Monoid `mappend` to reduce.
+Prelude Data.Foldable Data.Monoid> foldMap Product [1..3]
+-- 1 * 2 * 3 = 6
+Product {getProduct = 6}
+Prelude Data.Foldable Data.Monoid> xs = map Product [1..3]
+Prelude Data.Foldable Data.Monoid> foldMap (*5) xs
+-- 1 * 5 * 2 * 5 * 3 * 5 = 750
+Product {getProduct = 750}
+-- By contrast, `foldr` does not do map the value to each element in structure
+Prelude Data.Foldable Data.Monoid> foldr (*) 5 [1..3]
+-- 1 * 2 * 3 * 5
+30
+
+-- If method and identity are available, `foldr` doesn't even use Monoid
+-- `mappend` and `mempty`.
+Prelude Data.Foldable Data.Monoid> sumXs = map Sum [2..4]
+Prelude Data.Foldable Data.Monoid> foldr (*) 3 sumXs
+Sum {getSum = 72}
+Prelude Data.Foldable Data.Monoid> productXs = map Product [2..4]
+Prelude Data.Foldable Data.Monoid> foldr (*) 3 productXs
+Product {getProduct = 72}
+
+-- If `foldMap` gets passed one value, it doesn't use Monoid `mappend`.
+Prelude Data.Foldable Data.Monoid> fm = foldMap (*5)
+Prelude Data.Foldable Data.Monoid> fm (Just 100) :: Product Integer
+Product {getProduct = 500}
+Prelude Data.Foldable Data.Monoid> fm (Just 5) :: Sum Integer
+Sum {getSum = 25}
+
+-- `foldMap` will cast an empty value to `mempty`
+Prelude Data.Foldable Data.Monoid> fm Nothing :: Sum Integer
+Sum {getSum = 0}
+Prelude Data.Foldable Data.Monoid> fm Nothing :: Product Integer
+Product {getProduct = 1}
+```
+
+- Demonstrating Foldable instances
