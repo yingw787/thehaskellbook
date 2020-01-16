@@ -148,6 +148,12 @@ fold' :: (Foldable t, Monoid m) => t m -> m
 fold' xs = foldMap id xs
 
 -- 10)
+foldMap' :: (Foldable t, Monoid m) => (a -> m) -> t a -> m
+-- foldMap' f xs = foldr f mempty xs
+-- (INCORRECT, COMPILE TIME ERROR)
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+--
+foldMap' f xs = foldr ((<>) . f) mempty xs
 
 
 main :: IO ()
@@ -172,3 +178,5 @@ main = do
     print $ toList' [1]
 
     print $ fold' $ map Product [1..5]
+
+    print $ foldMap' Sum [1..4]
