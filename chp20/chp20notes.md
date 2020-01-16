@@ -179,3 +179,28 @@ Sum {getSum = 2}
 ```
 
 - Some basic derived operations
+
+```haskell
+Prelude Data.Foldable Data.Monoid> :t toList
+toList :: Foldable t => t a -> [a]
+Prelude Data.Foldable Data.Monoid> :t null
+null :: Foldable t => t a -> Bool
+Prelude Data.Foldable Data.Monoid> :t length
+length :: Foldable t => t a -> Int
+Prelude Data.Foldable Data.Monoid> :t elem
+elem :: (Foldable t, Eq a) => a -> t a -> Bool
+Prelude Data.Foldable Data.Monoid> :t maximum
+maximum :: (Foldable t, Ord a) => t a -> a
+Prelude Data.Foldable Data.Monoid> :t minimum
+minimum :: (Foldable t, Ord a) => t a -> a
+Prelude Data.Foldable Data.Monoid> :t sum
+sum :: (Foldable t, Num a) => t a -> a
+Prelude Data.Foldable Data.Monoid> :t product
+product :: (Foldable t, Num a) => t a -> a
+```
+
+********** BEGIN EXERCISES: LIBRARY FUNCTIONS **********
+
+See `LibraryFunctions.hs`.
+
+********** END EXERCISES: LIBRARY FUNCTIONS **********
