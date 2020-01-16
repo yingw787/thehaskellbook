@@ -54,6 +54,19 @@ minimum' :: (Foldable t, Ord a) => t a -> Maybe a
 minimum' xs = getLeast $ foldMap (Least . Just) xs
 
 -- 5)
+newtype Most a = Most { getMost :: Maybe a } deriving (Eq, Ord, Show)
+
+instance Ord a => Semigroup (Most a) where
+    (<>) (Most Nothing) a = a
+    (<>) a (Most Nothing) = a
+    (<>) (Most (Just a)) (Most (Just b)) = Most (Just (max a b))
+
+instance Ord a => Monoid (Most a) where
+    mempty = Most Nothing
+    mappend = (<>)
+
+maximum' :: (Foldable t, Ord a) => t a -> Maybe a
+maximum' xs = getMost $ foldMap (Most . Just) xs
 
 -- 6)
 
@@ -78,3 +91,5 @@ main = do
     print $ elem'' 3 [1..5]
 
     print $ minimum' [1..5]
+
+    print $ maximum' [1..5]
