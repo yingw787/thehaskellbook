@@ -114,6 +114,31 @@ length' :: (Foldable t) => t a -> Int
 length' xs = getLong $ foldMap (Long . (const 1)) xs
 
 -- 8)
+--
+-- (PERSONAL NOTE: Going to try and replicate answer key thing of creating a
+-- type and defining my own mempty and mappend)
+--
+-- newtype Listy a = Listy { getListy :: [a] } deriving (Eq, Show)
+--
+-- instance Semigroup (Listy a) where
+--     (<>) (Listy a) (Listy b) = Listy (a, b)
+--
+-- instance Monoid (Listy a) where
+--     mempty = Listy []
+--     mappend = (<>)
+--
+-- toList' :: (Foldable t) => t a -> [a]
+-- toList' xs = getListy $ foldMap (Listy . (const [])) xs
+--
+-- (INCORRECT, COMPILE TIME ERROR)
+--
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+-- (PERSONAL NOTE: I think there's something wrong with this example; I was
+-- expecting [[1]], but instead I get [1]. I think that should only be something
+-- I get from `concatMap`. Not sure why answer key here uses the `cons`
+-- operator.)
+toList' :: (Foldable t) => t a -> [a]
+toList' xs = foldMap (:[]) xs
 
 -- 9)
 
@@ -138,3 +163,5 @@ main = do
     print $ null' []
 
     print $ length' [1..5]
+
+    print $ toList' [1]
