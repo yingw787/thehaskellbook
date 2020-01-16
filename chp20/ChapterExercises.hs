@@ -23,6 +23,11 @@ instance Foldable (Constant a) where
     foldMap _ _ = mempty
 
 -- 2)
+data Two a b = Two a b deriving Show
+
+-- (CORRECT BY CHECKING ANSWER KEY)
+instance Foldable (Two a) where
+    foldMap f (Two a b) = f b
 
 -- 3)
 
@@ -34,3 +39,5 @@ instance Foldable (Constant a) where
 main :: IO ()
 main = do
     print $ foldr (*) 5 (Constant 5)
+
+    print $ foldMap Sum (Two 5 5)
