@@ -9,8 +9,17 @@ import Data.Monoid
 sum' :: (Foldable t, Num a) => t a -> a
 -- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
 sum' xs = foldr (+) 0 xs
+-- Alternatively, with `foldMap`:
+sum'' :: (Foldable t, Num a) => t a -> a
+sum'' = getSum . foldMap Sum
 
 -- 2)
+-- (CORRECT BY GHCI OUTPUT)
+product' :: (Foldable t, Num a) => t a -> a
+product' xs = foldr (*) 1 xs
+
+product'' :: (Foldable t, Num a) => t a -> a
+product'' = getProduct . foldMap Product
 
 -- 3)
 
@@ -32,3 +41,7 @@ sum' xs = foldr (+) 0 xs
 main :: IO ()
 main = do
     print $ sum' [1..5]
+    print $ sum'' [1..5]
+
+    print $ product' [1..5]
+    print $ product'' [1..5]
