@@ -241,3 +241,13 @@ main = do
 - URL shortener
 
 See `url-shortener/`.
+
+- (PERSONAL NOTE: Not quite sure how `url-shortener` is meant to work. Went into
+  `url-shortener/`, ran `stack build && stack ghci`, ran `main`, and went to
+  `localhost:3000`. Tried `localhost:3000/something` and got URI not found.)
+
+********** BEGIN EXERCISE: PREVENT URI COLLISIONS **********
+
+(PERSONAL NOTE: Haven't done yet.)
+
+********** END EXERCISE: PREVENT URI COLLISIONS **********
