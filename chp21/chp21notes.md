@@ -244,5 +244,26 @@ instance Traversable ((,) a) where
 - Traversable Laws
 
 ```haskell
+-- Naturality: Function composition behaves normally w.r.t. traversed functions.
+--
+-- There should be no reason why a function can't be floated over structure
+-- into a traversal.
+t . traverse f = traverse (t . f)
+
+-- Identity: Traversing data constructor of Identity type over value is same
+-- as lifting value into Identity.
+--
+-- Identity is structural identity for traversing data.
+--
+-- Traversing cannot add/inject any structure or effects.
+traverse Identity = Identity
+
+-- Composition: Can collapse sequential traversals into single traversal
+traverse (Compose . fmap g . f) = Compose . fmap (traverse g) . traverse f
+```
+
+- In addition, `sequenceA` must satisfy the following laws:
+
+```haskell
 
 ```
