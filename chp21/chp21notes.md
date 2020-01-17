@@ -265,5 +265,31 @@ traverse (Compose . fmap g . f) = Compose . fmap (traverse g) . traverse f
 - In addition, `sequenceA` must satisfy the following laws:
 
 ```haskell
+-- Naturality
+t . sequenceA = sequenceA . fmap t
 
+-- Identity
+sequenceA . fmap Identity = Identity
+
+-- Composition
+sequenceA . fmap Compose = Compose . fmap sequenceA . sequenceA
 ```
+
+- Quality Control
+
+```haskell
+-- Test.QuickCheck.Checkers has properties to check Traversable instances.
+type TI = []
+
+main = do
+  let trigger :: TI (Int, Int, [Int])
+      trigger = undefined
+
+  quickBatch (traversable trigger)
+```
+
+********** BEGIN CHAPTER EXERCISES **********
+
+See `ChapterExercises.hs`.
+
+********** END CHAPTER EXERCISES **********
