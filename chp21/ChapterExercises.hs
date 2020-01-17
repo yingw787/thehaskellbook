@@ -1,7 +1,15 @@
 -- ChapterExercises.hs
 module ChapterExercises where
 
+import Test.QuickCheck
+import Test.QuickCheck.Checkers
+import Test.QuickCheck.Classes
+
+
 -- 1) Identity
+newtype Identity a = Identity a deriving (Eq, Ord, Show)
+
+
 
 -- 2) Constant
 
