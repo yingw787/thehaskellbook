@@ -64,3 +64,31 @@ Nothing
 ```
 
 - List of `Maybe` values to a `Maybe` of a list of values
+    - `Data.Maybe.catMaybe` has a different may of handling `Maybe` values
+        - Can allow you to sum list of `Maybe` values even if there are
+          `Nothing` values
+
+```haskell
+Prelude> import Data.Maybe
+Prelude Data.Maybe> :t catMaybes
+catMaybes :: [Maybe a] -> [a]
+Prelude Data.Maybe> :t sequenceA
+sequenceA :: (Traversable t, Applicative f) => t (f a) -> f (t a)
+Prelude Data.Maybe> xs = [Just 1, Just 2, Just 3]
+Prelude Data.Maybe> catMaybes xs
+[1,2,3]
+Prelude Data.Maybe>  sequenceA xs
+Just [1,2,3]
+Prelude Data.Maybe> xsn = [Just 1, Just 2, Nothing]
+Prelude Data.Maybe> catMaybes xsn
+[1,2]
+Prelude Data.Maybe> sequenceA xsn
+Nothing
+Prelude Data.Maybe> xsn' = xs ++ [Nothing]
+Prelude Data.Maybe> sum $ catMaybes xsn'
+6
+Prelude Data.Maybe> fmap sum $ sequenceA xsn'
+Nothing
+```
+
+- `traverse`
