@@ -92,3 +92,43 @@ Nothing
 ```
 
 - `traverse`
+    - Maps function over structure (like `fmap`), but also generates more
+      structure (like `(=<<)`).
+
+```haskell
+traverse :: (Applicative f, Traversable t) => (a -> f b) -> t a -> f (t b)
+traverse f = sequenceA . fmap f
+
+-- looks somewhat like `fmap` and `(=<<)` (flip bind)
+fmap :: Functor f => (a -> b) -> f a -> f b
+
+(=<<) :: Monad m => (a -> m b) -> m a -> m b
+```
+
+```haskell
+Prelude> fmap Just [1, 2, 3]
+[Just 1,Just 2,Just 3]
+Prelude> sequenceA $ fmap Just [1, 2, 3]
+Just [1,2,3]
+Prelude> sequenceA . fmap Just $ [1, 2, 3]
+Just [1,2,3]
+Prelude> traverse Just [1, 2, 3]
+Just [1,2,3]
+```
+
+- So, what's `Traversable` for?
+    - Anytime you flip to type constructors around, or map something and then
+      flip them around
+
+```haskell
+Prelude> f = undefined :: a -> Maybe b
+Prelude> xs = undefined :: [a]
+Prelude> :t map f xs
+map f xs :: [Maybe b]
+Prelude> :t sequenceA $ map f xs
+sequenceA $ map f xs :: Maybe [a]
+Prelude> :t traverse f xs
+traverse f xs :: Maybe [b]
+```
+
+- Morse code revisited
