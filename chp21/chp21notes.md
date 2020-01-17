@@ -132,3 +132,51 @@ traverse f xs :: Maybe [b]
 ```
 
 - Morse code revisited
+
+```haskell
+-- What we did
+stringToMorse :: String -> Maybe [Morse]
+stringToMorse s = sequence $ fmap charToMorse s
+
+-- What we want
+stringToMorse :: String -> Maybe [Morse]
+stringToMorse = traverse charToMorse
+```
+
+- Axing tedious code
+
+```haskell
+-- Original code
+decodeFn :: String -> Either Err SomeObj
+decodeFn = undefined
+
+fetchFn :: Query -> IO [String]
+fetchFn = undefined
+
+makeIoOnlyObj :: [SomeObj] -> IO [(SomeObj, IoOnlyObj)]
+makeIoOnlyObj = undefined
+
+pipelineFn :: Query -> IO (Either Err [(SomeObj, IoOnlyObj)])
+pipelineFn query = do
+    a <- fetchFn query
+    case sequence (map decodeFn a) of
+        (Left err) -> return $ Left err
+        (Right res) -> do
+            a <- makeIoOnlyObj res
+            return $ Right a
+
+-- Refactored pipelineFn
+pipelineFn' :: Query -> IO (Either Err [(SomeObj, IoOnlyObj)])
+pipelineFn' query = do
+    traverse makeIoOnlyObj (mapM decodeFn a)
+
+-- Refactored pipelineFn
+pipelineFn'' :: Query -> IO (Either Err (SomeObj, IoOnlyObj))
+pipelineFn'' = ((traverse makeIoOnlyObj . mapM decodeFn) =<<) . fetchFn
+
+-- Refactored again, preferred
+pipelineFn2 :: Query -> IO (Either Err [(SomeObj, IoOnlyObj)])
+pipelineFn2 = ((traverse makeIoOnlyObj . traverse decodeFn) =<<) . fetchFn
+```
+
+- Do all the things
