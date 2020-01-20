@@ -161,4 +161,32 @@ frooty r = bar (foo r) r
 -- Make it more Readery
 frooty' :: Num a => [a] -> ([a], Int)
 frooty' = \r -> bar (foo r) r
+
+-- Abstract to avoid dependency on 'foo' and 'bar' specific functions
+-- 'm' = 'foo'
+-- 'k' = 'bar'
+--
+-- Type signature may look like:
+--
+-- fooBind :: (t2 _> t1) -> (t1 -> t2 -> t) -> t2 -> t
+fooBind m k = \r -> k (m r) r
 ```
+
+- The `Monad` instance
+
+- Example uses of the `Reader` type
+
+```haskell
+-- with Reader monad
+getDogRM :: Person -> Dog
+getDogRM = do
+    name <- dogName
+    addy <- address
+    return $ Dog name addy
+```
+
+********** BEGIN EXERCISE: READER MONAD **********
+
+See `ReaderMonad.hs`.
+
+********** END EXERCISE: READER MONAD **********
