@@ -24,7 +24,9 @@ instance Functor (Reader r) where
 
 instance Applicative (Reader r) where
     pure :: a -> Reader r a
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
     pure a = Reader $ const a
 
     (<*>) :: Reader r (a -> b) -> Reader r a -> Reader r b
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
     (<*>) (Reader rab) (Reader ra) = Reader $ \r -> rab r (ra r)
