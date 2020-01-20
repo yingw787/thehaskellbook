@@ -61,6 +61,30 @@ main2 = do
     quickBatch (traversable (undefined :: Constant IIL IIL))
 
 -- 3) Maybe
+data Optional a = Nada | Yep a deriving (Eq, Ord, Show)
+
+-- (CORRECT BY CHECKING ANSWER KEY)
+instance Functor Optional where
+    fmap _ Nada = Nada
+    fmap f (Yep a) = Yep (f a)
+
+instance Foldable Optional where
+    foldMap f Nada = mempty
+    foldMap f (Yep a) = (f a)
+
+instance Traversable Optional where
+    traverse f Nada = pure Nada
+    traverse f (Yep a) = fmap Yep (f a)
+
+instance Arbitrary a => Arbitrary (Optional a) where
+    arbitrary = oneof [Yep <$> arbitrary, return Nada]
+
+instance Eq a => EqProp (Optional a) where
+    (=-=) = eq
+
+main3 :: IO ()
+main3 = do
+    quickBatch (traversable (undefined :: Optional IIL))
 
 -- 4) List
 
