@@ -176,6 +176,32 @@ main6 = do
     quickBatch (traversable (undefined :: Pair IIL IIL))
 
 -- 7) Big
+data Big a b = Big a b b deriving (Eq, Ord, Show)
+
+instance Functor (Big a) where
+    fmap f (Big a b c) = Big a (f b) (f c)
+
+-- (PERSONAL NOTE: When the book suggests to use the Monoid and Applicative for
+-- the Foldable and Traversable instances, I'm not quite sure what it means...)
+instance Foldable (Big a) where
+    foldMap f (Big a b c) = (f b) <> (f c)
+
+instance Traversable (Big a) where
+    traverse f (Big a b c) = (Big a) <$> (f b) <*> (f c)
+
+instance (Arbitrary a, Arbitrary b) => Arbitrary (Big a b) where
+    -- arbitrary = do
+    --     a' <- arbitrary
+    --     b' <- arbitrary
+    --     return Big a' b' b'
+    arbitrary = Big <$> arbitrary <*> arbitrary <*> arbitrary
+
+instance (Eq a, Eq b) => EqProp (Big a b) where
+    (=-=) = eq
+
+main7 :: IO ()
+main7 = do
+    quickBatch (traversable (undefined :: Big IIL IIL))
 
 -- 8) Bigger
 
