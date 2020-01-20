@@ -53,3 +53,28 @@ instance Functor (Reader r) where
 See `Ask.hs`.
 
 ********** END EXERCISE: ASK **********
+
+- Functions have `Applicative` too
+
+```haskell
+-- r of Reader is the f structure in Functor instance.
+
+-- Applicative f =>
+-- f ~ (->) r
+pure :: a -> f a
+pure :: a -> (r -> a)
+
+(<*>) :: f (a -> b) -> f a -> f b
+
+(<*>) :: (r -> a -> b) -> (r -> a) -> (r -> b)
+```
+
+- Demonstrating the function `Applicative`
+
+```haskell
+newtype HumanName = HumanName String deriving (Eq, Show)
+
+newtype DogName = DogName String deriving (Eq, Show)
+
+newtype Address = Address String deriving (Eq, Show)
+```
