@@ -151,6 +151,29 @@ main5 = do
     quickBatch (traversable (undefined :: Three IIL IIL IIL))
 
 -- 6) Pair
+--
+-- (CORRECT BY GHCI OUTPUT AND CHECKING ANSWER KEY)
+-- (PERSONAL NOTE: Still kind of script kittying off of Three a b c)
+data Pair a b = Pair a b deriving (Eq, Ord, Show)
+
+instance Functor (Pair a) where
+    fmap f (Pair a b) = Pair a (f b)
+
+instance Foldable (Pair a) where
+    foldMap f (Pair a b) = f b
+
+instance Traversable (Pair a) where
+    traverse f (Pair a b) = fmap (Pair a) (f b)
+
+instance (Arbitrary a, Arbitrary b) => Arbitrary (Pair a b) where
+    arbitrary = Pair <$> arbitrary <*> arbitrary
+
+instance (Eq a, Eq b) => EqProp (Pair a b) where
+    (=-=) = eq
+
+main6 :: IO ()
+main6 = do
+    quickBatch (traversable (undefined :: Pair IIL IIL))
 
 -- 7) Big
 
