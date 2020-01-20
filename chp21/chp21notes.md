@@ -292,4 +292,8 @@ main = do
 
 See `ChapterExercises.hs`.
 
+See `SkiFree.hs`.
+
+See `Tree.hs`.
+
 ********** END CHAPTER EXERCISES **********
