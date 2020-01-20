@@ -21,3 +21,35 @@
 See `WarmingUp.hs`.
 
 ********** END EXERCISE: WARMING UP **********
+
+- This is `Reader`
+    - Usually refers to monadic contexts of functions, as opposed to functorial
+      or applicative contexts
+    - `Reader`: Reading an argument from environment into functions.
+
+- Breaking down the `Functor` of functions
+
+- But uh, `Reader`?
+
+```haskell
+newtype Reader r a = Reader { runReader :: r -> a }
+
+instance Functor (Reader r) where
+    fmap :: (a -> b) -> Reader r a -> Reader r b
+    fmap f (Reader ra) = Reader $ \r -> f (ra r)
+
+-- Same as (.)
+compose :: (b -> c) -> (a -> b) -> (a -> c)
+compose f g = \x -> f (g x)
+
+-- Slightly different instance for `Reader`
+instance Functor (Reader r) where
+    fmap :: (a -> b) -> Reader r a -> Reader r b
+    fmap f (Reader ra) = Reader $ (f . ra)
+```
+
+********** BEGIN EXERCISE: ASK **********
+
+See `Ask.hs`.
+
+********** END EXERCISE: ASK **********
