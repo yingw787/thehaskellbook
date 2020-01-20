@@ -31,10 +31,10 @@ instance Traversable Tree where
         Node <$> (traverse f left) <*> (f a) <*> (traverse f right)
 
 instance Arbitrary a => Arbitrary (Tree a) where
-    arbitrary = oneof [ return Empty, Leaf <$> arbitrary, Leaf <$> arbitrary <*> arbitrary <*> arbitrary]
+    arbitrary = oneof [ return Empty, Leaf <$> arbitrary, Node <$> arbitrary <*> arbitrary <*> arbitrary]
 
 instance Eq a => EqProp (Tree a) where
-    (=.=) = eq
+    (=-=) = eq
 
 type IIL = (Int, Int, [Int])
 
