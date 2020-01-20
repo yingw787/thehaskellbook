@@ -1,4 +1,9 @@
 -- ChapterExercises.hs
+--
+-- (PERSONAL NOTE: Paused for a few days and I'm a bit lost, assume copied from
+-- answer key unless otherwise noted)
+--
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
 module ChapterExercises where
 
 import Test.QuickCheck
@@ -10,9 +15,6 @@ import Test.QuickCheck.Classes
 type IIL = (Int, Int, [Int])
 
 -- 1) Identity
---
--- (PERSONAL NOTE: Looking at answer key to figure out how to get started)
--- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
 newtype Identity a = Identity a deriving (Eq, Ord, Show)
 
 instance Functor Identity where
@@ -36,6 +38,27 @@ main1 = do
     quickBatch (traversable (undefined :: Identity IIL))
 
 -- 2) Constant
+newtype Constant a b = Constant { getConstant :: a } deriving (Eq, Ord, Show)
+
+instance Functor (Constant a) where
+    fmap _ (Constant a) = Constant a
+
+instance Foldable (Constant a) where
+    foldMap _ _ = mempty
+
+instance Traversable (Constant a) where
+    -- traverse _ _ = fmap C
+    traverse f (Constant a) = pure $ Constant a
+
+instance Arbitrary a => Arbitrary (Constant a b) where
+    arbitrary = Constant <$> arbitrary
+
+instance Eq a => EqProp (Constant a b) where
+    (=-=) = eq
+
+main2 :: IO ()
+main2 = do
+    quickBatch (traversable (undefined :: Constant IIL IIL))
 
 -- 3) Maybe
 
