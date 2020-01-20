@@ -1,4 +1,7 @@
 -- ReadingComprehension.hs
+--
+-- (PERSONAL NOTE: Falling behind roadmap schedule, this isn't immediately
+-- obvious to me, leaning answer key)
 {-# LANGUAGE InstanceSigs #-}
 module ReadingComprehension where
 
@@ -7,16 +10,21 @@ newtype Reader r a = Reader { getReader :: r -> a }
 
 -- 1)
 myLiftA2 :: Applicative f => (a -> b -> c) -> f a -> f b -> f c
-myLiftA2 = undefined
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+myLiftA2 f x y = f <$> x <*> y
 
 -- 2)
 asks :: (r -> a) -> Reader r a
-asks f = undefined
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+asks f = Reader f
 
 -- 3)
+instance Functor (Reader r) where
+    fmap f (Reader g)= Reader $ f . g
+
 instance Applicative (Reader r) where
     pure :: a -> Reader r a
-    pure a = undefined
+    pure a = Reader $ const a
 
     (<*>) :: Reader r (a -> b) -> Reader r a -> Reader r b
-    (<*>) (Reader rab) (Reader ra) = undefined
+    (<*>) (Reader rab) (Reader ra) = Reader $ \r -> rab r (ra r)
