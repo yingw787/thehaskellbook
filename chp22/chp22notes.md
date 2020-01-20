@@ -72,9 +72,33 @@ pure :: a -> (r -> a)
 - Demonstrating the function `Applicative`
 
 ```haskell
+-- Differentiate between different "types"
 newtype HumanName = HumanName String deriving (Eq, Show)
-
 newtype DogName = DogName String deriving (Eq, Show)
-
 newtype Address = Address String deriving (Eq, Show)
+
+-- Two record types
+data Person =
+    Person {
+        humanName :: HumanName
+      , dogName :: DogName
+      , address :: Address
+    } deriving (Eq, Show)
+
+data Dog =
+    Dog {
+        dogsName :: DogName
+      , dogsAddress :: Address
+    } deriving (Eq, Show)
+
+-- Instances of record types
+pers :: Person
+pers =
+    Person (HumanName "Big Bird") (DogName "Barkley") (Address "Sesame Street")
+
+chris :: Person
+chris =
+    Person (HumanName "Chris Allen") (DogName "Papu") (Address "Austin")
+
+-- Write methods without Reader
 ```
