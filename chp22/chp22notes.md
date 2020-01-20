@@ -101,4 +101,34 @@ chris =
     Person (HumanName "Chris Allen") (DogName "Papu") (Address "Austin")
 
 -- Write methods without Reader
+getDog :: Person -> Dog
+getDog p = Dog (dogName p) (address p)
+
+-- With Reader
+getDogR :: Person -> Dog
+getDogR = Dog <$> dogName <*> address
+
+-- With concrete Reader, instead of ambient Applicative / Monad
+(<$->>) :: (a -> b) -> (r -> a) -> (r -> b)
+(<$->>) = (<$>)
+
+(<*->>) :: (r -> a -> b) -> (r -> a) -> (r -> b)
+(<*->>) = (<*>)
+
+getDogR' :: Person -> Dog
+getDogR' = Dog <$->> dogName <*->> address
 ```
+
+```haskell
+import Control.Applicative (liftA2)
+
+-- With Reader
+getDogR' :: Person -> Dog
+getDogR' = liftA2 Dog dogName address
+```
+
+********** BEGIN EXERCISE: READING COMPREHENSION **********
+
+See `ReadingComprehension.hs`.
+
+********** END EXERCISE: READING COMPREHENSION **********
