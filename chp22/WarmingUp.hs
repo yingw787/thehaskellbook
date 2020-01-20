@@ -39,6 +39,7 @@ tupled'' = do
 tupleBind :: [Char] -> ([Char], [Char])
 tupleBind str = cap <$> rev >>= (,) $ str
 
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
 tupleBind' :: [Char] -> ([Char], [Char])
 tupleBind' = rev >>= (\x -> cap >>= \y -> return (x, y))
 
