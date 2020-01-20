@@ -226,7 +226,3 @@ instance (Eq a, Eq b) => EqProp (Bigger a b) where
 main8 :: IO ()
 main8 = do
     quickBatch (traversable (undefined :: Bigger IIL IIL))
-
--- 9) S
-
--- 10) Tree
