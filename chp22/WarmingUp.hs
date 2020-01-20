@@ -12,7 +12,16 @@ rev xs = reverse xs
 
 
 composed :: [Char] -> [Char]
-composed = undefined
+composed = cap . rev
 
 fmapped :: [Char] -> [Char]
-fmapped = undefined
+fmapped = fmap cap rev
+
+
+main :: IO ()
+main = do
+    print $ composed "Julie"
+    print $ composed "Chris"
+
+    print $ fmapped "Julie"
+    print $ fmapped "Chris"
