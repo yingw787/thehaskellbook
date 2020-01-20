@@ -19,8 +19,20 @@ bip = boop . doop
 bloop :: Integer -> Integer
 bloop = fmap boop doop
 
+-- Added Applicative contexts. Argument gets passed to both `boop` and `doop` in
+-- paralel, and results will be added together.
+--
+-- Mapping a function awaiting two arguments over a function awaiting one
+-- produces a two argument function.
 bbop :: Integer -> Integer
 bbop = (+) <$> boop <*> doop
 
 duwop :: Integer -> Integer
 duwop = liftA2 (+) boop doop
+
+-- Using a monadic context instead of an applicative context.
+boopDoop :: Integer -> Integer
+boopDoop = do
+    a <- boop
+    b <- doop
+    return (a + b)
