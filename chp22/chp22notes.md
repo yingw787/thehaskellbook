@@ -132,3 +132,33 @@ getDogR' = liftA2 Dog dogName address
 See `ReadingComprehension.hs`.
 
 ********** END EXERCISE: READING COMPREHENSION **********
+
+- The `Monad` of functions
+
+```haskell
+foo :: (Functor f, Num a) => f a -> f a
+foo r = fmap (+1) r
+
+bar :: Foldable f => t -> f a -> (t, Int)
+bar r t = (r, length t)
+
+-- If we wanted to combine both methods, we could do this
+froot :: Num a => [a] -> ([a], Int)
+froot r = (map (+1) r, length r)
+
+-- Or we could combine the two methods. Rewrite 'bar' to accept one argument
+-- instead of two:
+barOne :: Foldable t => t a -> (t a, Int)
+barOne r = (r, length r)
+
+-- We could increment values in list as:
+barPlus r = (foo r, length r)
+
+-- But we could make it more compact by making (foo r) first argument to bar
+frooty :: Num a => [a] -> ([a], Int)
+frooty r = bar (foo r) r
+
+-- Make it more Readery
+frooty' :: Num a => [a] -> ([a], Int)
+frooty' = \r -> bar (foo r) r
+```
