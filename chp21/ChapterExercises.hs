@@ -87,6 +87,45 @@ main3 = do
     quickBatch (traversable (undefined :: Optional IIL))
 
 -- 4) List
+data List a = Nil | Cons a (List a) deriving (Eq, Ord, Show)
+
+-- From chp17/ListApplicative.hs
+instance Functor List where
+    fmap _ Nil = Nil
+    fmap f (Cons a as) = Cons (f a) (fmap f as)
+
+-- (PERSONAL NOTE: Need extra help here)
+instance Foldable List where
+    foldMap f Nil = mempty
+    foldMap f (Cons x xs) = (f x) <> (foldMap f xs)
+
+instance Traversable List where
+    traverse f Nil = pure Nil
+    traverse f (Cons x xs) = Cons <$> (f x) <*> (traverse f xs)
+
+-- mkList :: [a] -> List a
+-- mkList xs = foldr Cons Nil xs
+
+-- instance Arbitrary a => Arbitrary (List a) where
+--     arbitrary = do
+--         as <- arbitrary
+--         return (mkList as)
+
+instance Arbitrary a => Arbitrary (List a) where
+    arbitrary = do
+        x <- arbitrary
+        xs <- arbitrary
+        oneof [return Nil, return (Cons x xs)]
+
+instance Eq a => EqProp (List a) where
+    (=-=) = eq
+
+main4 :: IO ()
+main4 = do
+    -- let test = [(1, 2, [3]), (4, 5, [6])] :: [(Int, Int, [Int])]
+    -- quickBatch $ traversable (mkList test)
+    quickBatch (traversable (undefined :: List IIL))
+
 
 -- 5) Three
 
