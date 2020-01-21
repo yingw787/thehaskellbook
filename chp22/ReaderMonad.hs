@@ -18,8 +18,17 @@ instance Applicative (Reader r) where
 -- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
     (<*>) (Reader rab) (Reader ra) = Reader $ \r -> rab r (ra r)
 
+-- 1)
 instance Monad (Reader r) where
     return = pure
     (>>=) :: Reader r a -> (a -> Reader r b) -> Reader r b
     -- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
     (>>=) (Reader ra) (aRb) = Reader $ \r -> getReader (aRb (ra r)) r
+
+
+-- 2)
+--
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+--
+-- getDogRM' :: Reader Person Dog
+-- getDogRM' = Reader $ Dog <$> dogName <*> address
