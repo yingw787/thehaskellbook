@@ -219,4 +219,6 @@ Warm-up
 
 See `ReaderPractice.hs`.
 
+SKIPPED THE SHAWTY EXERCISE
+
 ********** END CHAPTER EXERCISES **********
