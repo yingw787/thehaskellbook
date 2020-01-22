@@ -22,6 +22,9 @@ fizzbuzzList' list =
     let dlist = execState (mapM_ addResult' list) DL.empty
     in DL.apply dlist []
 
+fizzbuzzList'' :: [Integer] -> DL.DList String
+fizzbuzzList'' list = execState (mapM_ addResult'' list) DL.empty
+
 addResult :: Integer -> State [String] ()
 addResult n = do
     xs <- get
@@ -34,6 +37,12 @@ addResult' n = do
     let result = fizzBuzz n
     put (DL.snoc xs result)
 
+addResult'' :: Integer -> State (DL.DList String) ()
+addResult'' n = do
+    xs <- get
+    let result = fizzBuzz n
+    put (DL.snoc xs result)
+
 
 main :: IO ()
 main = do
@@ -42,3 +51,4 @@ main = do
     mapM_ (putStrLn . fizzBuzz) [1..100]
     mapM_ putStrLn $ reverse $ fizzbuzzList [1..100]
     mapM_ putStrLn $ fizzbuzzList' [1..100]
+    mapM_ putStrLn $ fizzbuzzList'' [1..100]
