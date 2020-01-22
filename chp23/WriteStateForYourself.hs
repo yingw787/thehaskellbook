@@ -17,14 +17,19 @@ instance Functor (Moi s) where
 -- Implement the 'Applicative' instance for 'State'.
 instance Applicative (Moi s) where
     pure :: a -> Moi s a
-    pure a = undefined
+    -- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+    pure a = Moi (\s0 -> (a, s0))
 
     (<*>) :: Moi s (a -> b) -> Moi s a -> Moi s b
-    (<*>) (Moi f) (Moi g) = undefined
+    -- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+    (<*>) (Moi f) (Moi g) =
+        Moi $ \s0 -> let (a, s1) = (g s0); (f', s2) = (f s1) in (f' a, s2)
 
 -- Implement the 'Monad' instance for 'State'.
 instance Monad (Moi s) where
     return = pure
 
     (>>=) :: Moi s a -> (a -> Moi s b) -> Moi s b
-    (>>=) (Moi f) g = undefined
+    -- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+    (>>=) (Moi f) g =
+        Moi $ \s0 -> let (a, s1) = (f s0) in (runMoi (g a)) s1
