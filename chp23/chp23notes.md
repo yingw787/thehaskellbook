@@ -61,3 +61,15 @@ newtype Reader r a = Reader { runReader :: r -> a }
     - See `RandomExample.hs`.
         - This produces a random but deterministic sequence of die rolls.
     - See `RandomExample2.hs`.
+
+********** BEGIN EXERCISE: ROLL YOUR OWN **********
+
+See `RollYourOwn.hs`.
+
+********** END EXERCISE: ROLL YOUR OWN **********
+
+- Write `State` for yourself
+    - `WriteStateForYourself.hs`.
+
+- Get a coding job with one weird trick
+    - Get `FizzBuzz.hs`.
