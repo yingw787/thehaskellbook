@@ -47,3 +47,15 @@ Prelude System.Random> random newSg :: (Int, StdGen)
 Prelude System.Random> random newSg :: (Double, StdGen)
 (0.41992072972993366,439883729 1872071452)
 ```
+
+- The `State` newtype
+
+```haskell
+newtype State s a = State { runState :: s -> (a, s) }
+
+-- Similar to Reader newtype
+newtype Reader r a = Reader { runReader :: r -> a }
+```
+
+- Throw down
+    - See `RandomExample.hs`.
