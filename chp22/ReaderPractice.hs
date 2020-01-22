@@ -48,3 +48,25 @@ x2 = (,) <$> ys <*> zs
 x3 :: Integer -> (Maybe Integer, Maybe Integer)
 x3 n = (,) zn zn where
     zn = z' n
+
+-- uncurry :: (a -> b -> c) -> (a, b) -> c
+
+summed :: Num c => (c, c) -> c
+summed (x, y) = x + y
+
+bolt :: Integer -> Bool
+bolt = (&&) <$> (>3) <*> (<8)
+
+-- fromMaybe :: a -> Maybe a -> a
+
+main :: IO ()
+main = do
+    print $ sequenceA [Just 3, Just 2, Just 1]
+
+    print $ sequenceA [x, y]
+    print $ sequenceA [xs, ys]
+
+    print $ summed <$> ((,) <$> xs <*> ys)
+    print $ fmap summed ((,) <$> xs <*> ys)
+    print $ bolt 7
+    print $ fmap bolt z
