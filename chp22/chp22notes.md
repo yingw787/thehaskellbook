@@ -190,3 +190,33 @@ getDogRM = do
 See `ReaderMonad.hs`.
 
 ********** END EXERCISE: READER MONAD **********
+
+- Reader Monad by itself is boring
+    - See `PrettyReader.hs`.
+
+- You can only change what comes below
+    - You can swap different type/value for `r` for functions you call, but not
+      for functions that call you.
+    - `State` monad allows this.
+
+```haskell
+-- (r' -> r): The function to modify the environment.
+--
+-- (ReaderT r m a): Computation to run in the modified environment.
+withReaderT :: (r' -> r) -> ReaderT r m a -> ReaderT r' m a
+
+withReaderT f m = ReaderT $ runReaderT m . f
+```
+
+- You tend to see `ReaderT`, not `Reader`
+    - `Reader` is one monad in a stack of multiple types providing monads
+    - In context of multiple monadic contexts, you generally want/see monad
+      transformers, which for `Reader` is `ReaderT`.
+
+********** BEGIN CHAPTER EXERCISES **********
+
+Warm-up
+
+See `ReaderPractice.hs`.
+
+********** END CHAPTER EXERCISES **********
