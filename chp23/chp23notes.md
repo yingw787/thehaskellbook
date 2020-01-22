@@ -59,3 +59,5 @@ newtype Reader r a = Reader { runReader :: r -> a }
 
 - Throw down
     - See `RandomExample.hs`.
+        - This produces a random but deterministic sequence of die rolls.
+    - See `RandomExample2.hs`.
