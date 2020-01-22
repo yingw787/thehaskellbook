@@ -35,3 +35,16 @@ zs = lookup 4 $ zip x y
 z' :: Integer -> Maybe Integer
 -- (CORRECT BY CHECKING ANSWER KEY)
 z' n = lookup n $ zip x z
+
+-- Makes a tuple of xs and ys
+x1 :: Maybe (Integer, Integer)
+x1 = (,) <$> xs <*> ys
+
+-- Makes a tuple of ys and zs
+x2 :: Maybe (Integer, Integer)
+x2 = (,) <$> ys <*> zs
+
+-- Takes one input, makes a tuple of results of two applications of z'
+x3 :: Integer -> (Maybe Integer, Maybe Integer)
+x3 n = (,) zn zn where
+    zn = z' n
