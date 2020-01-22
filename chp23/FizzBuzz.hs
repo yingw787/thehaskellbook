@@ -43,6 +43,11 @@ addResult'' n = do
     let result = fizzBuzz n
     put (DL.snoc xs result)
 
+-- FizzBuzz differently
+fizzBuzzFromTo :: Integer -> Integer -> [String]
+-- (ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+fizzBuzzFromTo a b = fizzbuzzList [b, (b - 1)..a]
+
 
 main :: IO ()
 main = do
