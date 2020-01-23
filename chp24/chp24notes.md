@@ -61,3 +61,56 @@ See `ParsingPractice.hs`.
 ********** END EXERCISES: PARSING PRACTICE **********
 
 - Intermission: parsing free jazz
+    - Not sure how method 'parseByteString' is meant to be parsed in GHC v8.4.3
+
+- Parsing fractions
+    - See `Fractions.hs`.
+
+********** BEGIN EXERCISE: UNIT OF SUCCESS **********
+
+```haskell
+-- FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp
+unitSuccess :: String -> Parser String
+unitSuccess str = do
+    a <- string str
+    eof
+    return a
+```
+
+********** END EXERCISE: UNIT OF SUCCESS **********
+
+- Haskell's parsing ecosystem
+    - Check out `attoparsec` for performance, `cassava` for CSV parsing
+
+- Type classes of parsers
+
+- Alternative
+    - See `AltParsing.hs`.
+
+- QuasiQuotes
+    - See `Quasimodo.hs`.
+
+```haskell
+Prelude> :set -ddump-splices
+Prelude> :l Quasimodo.hs
+[1 of 1] Compiling Quasimodo        ( Quasimodo.hs, interpreted )
+Quasimodo.hs:(10,15)-(15,2): Splicing expression
+    Language.Haskell.TH.Quote.quoteExp
+      r
+      "\n\
+      \123\n\
+      \abc\n\
+      \456\n\
+      \def\n"
+  ======>
+    "
+123
+abc
+456
+def
+"
+Ok, one module loaded.
+*Quasimodo>
+```
+
+- Return to Alternative
