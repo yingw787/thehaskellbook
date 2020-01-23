@@ -25,7 +25,11 @@ c = "123blah789"
 
 parseNos :: Parser NumberOrString
 -- (<|>) is a disjunction (or)
-parseNos =  skipMany (oneOf "\n") >> (Left <$> integer) <|> (Right <$> some letter)
+parseNos =  do
+    skipMany (oneOf "\n")
+    v <- (Left <$> integer) <|> (Right <$> some letter)
+    skipMany (oneOf "\n")
+    return v
 
 main :: IO ()
 main = do
