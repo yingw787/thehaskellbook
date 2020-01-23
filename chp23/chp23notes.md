@@ -73,3 +73,9 @@ See `RollYourOwn.hs`.
 
 - Get a coding job with one weird trick
     - Get `FizzBuzz.hs`.
+
+********** BEGIN CHAPTER EXERCISES **********
+
+See `ChapterExercises.hs`.
+
+********** END CHAPTER EXERCISES **********
