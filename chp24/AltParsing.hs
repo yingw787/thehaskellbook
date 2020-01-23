@@ -13,7 +13,8 @@ type NumberOrString = Either Integer String
 
 eitherOr :: String
 -- Requires GHC language extension
-eitherOr = [r|123
+eitherOr = [r|
+123
 abc
 456
 def
@@ -25,7 +26,7 @@ c = "123blah789"
 
 parseNos :: Parser NumberOrString
 -- (<|>) is a disjunction (or)
-parseNos =  (Left <$> integer) <|> (Right <$> some letter)
+parseNos =  skipMany (oneOf "\n") >> (Left <$> integer) <|> (Right <$> some letter)
 
 main :: IO ()
 main = do
