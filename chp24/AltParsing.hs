@@ -1,11 +1,24 @@
 -- AltParsing.hs
+{-# LANGUAGE QuasiQuotes #-}
 module AltParsing where
 
 import Control.Applicative
+-- https://hackage.haskell.org/package/raw-strings-qq-1.1 (stack install
+-- raw-strings-qq)
+import Text.RawString.QQ
 import Text.Trifecta
 
 
 type NumberOrString = Either Integer String
+
+eitherOr :: String
+eitherOr = [r|
+-- Requires GHC language extension
+123
+abc
+456
+def
+|]
 
 a = "blah"
 b = "123"
