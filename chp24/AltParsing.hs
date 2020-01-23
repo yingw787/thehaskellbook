@@ -12,9 +12,8 @@ import Text.Trifecta
 type NumberOrString = Either Integer String
 
 eitherOr :: String
-eitherOr = [r|
 -- Requires GHC language extension
-123
+eitherOr = [r|123
 abc
 456
 def
@@ -40,3 +39,5 @@ main = do
 
     print $ p (many parseNos) c
     print $ p (some parseNos) c
+
+    print $ p parseNos eitherOr
