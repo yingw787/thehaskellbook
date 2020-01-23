@@ -17,8 +17,7 @@ eitherOr = [r|
 123
 abc
 456
-def
-|]
+def|]
 
 a = "blah"
 b = "123"
@@ -41,4 +40,4 @@ main = do
     print $ p (many parseNos) c
     print $ p (some parseNos) c
 
-    print $ p parseNos eitherOr
+    print $ p (some parseNos) eitherOr
