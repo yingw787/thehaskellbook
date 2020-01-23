@@ -114,3 +114,25 @@ Ok, one module loaded.
 ```
 
 - Return to Alternative
+    - See `AltParsing.hs`.
+
+********** BEGIN EXERCISE: TRY TRY **********
+
+```haskell
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+parseDecimal :: Parser Rational
+parseDecimal = do
+    while <- decimal
+    char '.'
+    part <- decimal
+    case part of
+        0 -> return (toRational whole)
+        _ -> return (makeDecimal whole part)
+
+-- Additional answers elided
+```
+
+********** END EXERCISE: TRY TRY **********
+
+- Parsing configuration files
+    - See `Ini.hs`.
