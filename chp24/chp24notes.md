@@ -53,3 +53,11 @@ Prelude Control.Monad.Trans.State>
 
 - Back to our regularly scheduled coding
     - See `LearnParsers.hs`.
+
+********** BEGIN EXERCISES: PARSING PRACTICE **********
+
+See `ParsingPractice.hs`.
+
+********** END EXERCISES: PARSING PRACTICE **********
+
+- Intermission: parsing free jazz
