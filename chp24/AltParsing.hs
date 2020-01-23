@@ -28,7 +28,6 @@ parseNos :: Parser NumberOrString
 parseNos =  do
     skipMany (oneOf "\n")
     v <- (Left <$> integer) <|> (Right <$> some letter)
-    skipMany (oneOf "\n")
     return v
 
 main :: IO ()
@@ -44,4 +43,4 @@ main = do
     print $ p (many parseNos) c
     print $ p (some parseNos) c
 
-    print $ p (some parseNos) eitherOr
+    print $ p (some (token parseNos)) eitherOr
