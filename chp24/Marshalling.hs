@@ -63,17 +63,31 @@ data NumberOrString =
 
 -- Need to convert from IEEE-754 to Integral; use Data.Scientific
 instance FromJSON NumberOrString where
-    parseJSON (Number i) = return $ Numba i
+    parseJSON (Number i) =
+        case floatingOrInteger i of
+            (Left _) ->
+                fail "Must be integral number"
+            (Right integer) ->
+                return $ Numba integer
+
     parseJSON (String s) = return $ Stringy s
     parseJSON _ =
         fail "NumberOrString must\
              \ be number or string"
+
+dec :: ByteString -> Maybe NumberOrString
+dec = decode
+
+eitherDec :: ByteString -> Either String NumberOrString
+eitherDec = eitherDecode
 
 
 main = do
     let d :: Maybe TestData
         d = decode sectionJson
     print d
+
+    print $ dec "blah"
 
 -- Error due to mixing Data.ByteString (ByteString) and Data.ByteString.Lazy
 -- (ByteString)
