@@ -29,6 +29,9 @@ nobackParse = (char '1' >> char '2' <|> char '3')
 tryParse :: (Monad f, CharParsing f) => f Char
 tryParse = try (char '1' >> char '2' <|> char '3')
 
+tryAnnot :: (Monad f, CharParsing f) => f Char
+tryAnnot = (try (char '1' >> char '2') <?> "Tried 12") <|> (char '3' <?> "Tried 3")
+
 
 -- (PERSONAL NOTE: I'm not getting the errors shown in the book.)
 main :: IO ()
