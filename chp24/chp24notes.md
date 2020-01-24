@@ -143,3 +143,8 @@ parseDecimal = do
 
 - Polymorphic parsers
     - See `Polymorphic.hs`.
+
+- It's not perfect and could bite you
+
+- Failure and backtracking
+    - See `BT.hs`.
