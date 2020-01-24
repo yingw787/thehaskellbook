@@ -116,26 +116,52 @@ class BiFunctor p where
     second :: (b -> c) -> p a b -> p a c
     second = bimap id
 
+-- (FROM ANSWER KEY UNLESS OTHERWISE SPECIFIED)
+
 -- 1)
 data Deux a b = Deux a b
+
+instance Bifunctor Deux where
+    bimap f g (Deux a b) = Deux (f a) (g b)
 
 -- 2)
 data Const a b = Const a
 
+instance Bifunctor Const where
+    bimap f g (Const a) = Const (f a)
+
 -- 3)
 data Drei a b c = Drei a b c
+
+instance Bifunctor (Drei a) where
+    bimap f g (Drei a b c) = Drei a (f b) (g c)
 
 -- 4)
 data SuperDrei a b c = SuperDrei a b
 
+instance Bifunctor SuperDrei where
+    bimap f g (SuperDrei a b) = SuperDrei a (f b)
+
 -- 5)
 data SemiDrei a b c = SemiDrei a
+
+instance Bifunctor SemiDrei where
+    bimap f g (SemiDrei a) = SemiDrei a
 
 -- 6)
 data Quadriceps a b c d = Quadzzz a b c d
 
+-- (CORRECT BY CHECKING ANSWER KEY)
+instance Bifunctor (Quadriceps a b) where
+    bimap f g (Quadriceps a b c d) = Quadriceps a b (f c) (f d)
+
 -- 7)
 data Either a b = Left a | Right b
+
+-- (CORRECT BY CHECKING ANSWER KEY)
+instance Bifunctor (Either a) where
+    bimap f g (Left a) = Left (f a)
+    bimap f g (Right b) = Right (g b)
 ```
 
 - Monad transformers
