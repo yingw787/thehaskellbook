@@ -203,3 +203,15 @@ instance Monad m => Monad (IdentityT m) where
     return = pure
     (>>=) (IdentityT ma) f = IdentityT $ ma >>= runIdentityT . f
 ```
+
+- The bind breakdown
+
+- Implementing the bind, step by step
+
+```haskell
+instance Monad m => Monad (IdentityT m) where
+    return = pure
+
+    (>>=) :: IdentityT m a -> (a -> IdentityT m b) -> IdentityT m b
+    (>>=) (Identity ma) f = undefined
+```
