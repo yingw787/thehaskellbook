@@ -10,6 +10,7 @@ import Data.ByteString.Lazy (ByteString)
 import qualified Data.Text as T
 import Data.Text (Text)
 import Text.RawString.QQ
+import Data.Scientific (floatingOrInteger)
 
 
 sectionJson :: ByteString
@@ -53,6 +54,20 @@ instance FromJSON Color where
         (Yellow <$> v .: "yellow")
     parseJSON _ =
         fail "Expected an object for Color"
+
+
+data NumberOrString =
+        Numba Integer |
+        Stringy Text
+        deriving (Eq, Show)
+
+-- Need to convert from IEEE-754 to Integral; use Data.Scientific
+instance FromJSON NumberOrString where
+    parseJSON (Number i) = return $ Numba i
+    parseJSON (String s) = return $ Stringy s
+    parseJSON _ =
+        fail "NumberOrString must\
+             \ be number or string"
 
 
 main = do
