@@ -87,7 +87,13 @@ main = do
         d = decode sectionJson
     print d
 
+    -- Not valid JSON values
     print $ dec "blah"
+    -- Use eitherDec to get better error messages
+    print $ eitherDec "blah"
+
+    print $ dec "123"
+    print $ dec "\"blah\""
 
 -- Error due to mixing Data.ByteString (ByteString) and Data.ByteString.Lazy
 -- (ByteString)
