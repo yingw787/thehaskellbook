@@ -4,8 +4,11 @@
 
 module Marshalling where
 
+import Control.Applicative
 import Data.Aeson
 import Data.ByteString.Lazy (ByteString)
+import qualified Data.Text as T
+import Data.Text (Text)
 import Text.RawString.QQ
 
 
@@ -15,6 +18,21 @@ sectionJson = [r|
     "whatisit": {"red": "intoothandclaw"}
 }
 |]
+
+data TestData = TestData {
+                    section :: Host,
+                    what :: Color }
+                deriving (Eq, Show)
+
+newtype Host = Host String deriving (Eq, Show)
+
+type Annotation = String
+
+data Color =
+    Red Annotation |
+    Blue Annotation |
+    Yellow Annotation
+    deriving (Eq, Show)
 
 
 -- Error due to mixing Data.ByteString (ByteString) and Data.ByteString.Lazy
