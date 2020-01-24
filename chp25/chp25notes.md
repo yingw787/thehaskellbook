@@ -73,3 +73,32 @@ instance (Applicative f, Applicative g) => Applicative (Compose f g) where
     -- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
     (<*>) (Compose f) (Compose a) = liftA2 (<*>) f a
 ```
+
+- Twonad?
+
+```haskell
+{-# LANGUAGE InstanceSigs #-}
+
+-- impossible.
+instance (Monad f, Monad g) => Monad (Compose f g) where
+    return = pure
+
+    (>>=) :: Compose f g a -> (a -> Compose f g b) -> Compose f g b
+    (>>=) = ??? -- Not possible to do that last bind.
+```
+
+********** BEGIN EXERCISES: COMPOSE INSTANCES **********
+
+```haskell
+-- 1)
+instance (Foldable f, Foldbale g) => Foldable (Compose f g) where
+    -- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+    foldMap h (Compose fga) = foldMap (foldMap h) fga
+
+-- 2)
+instance (Traversable f, Traversable g) => Traversable (Compose f g) where
+    -- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+    traverse h (Compose fga) = Compose <$> traverse (traverse h) fga
+```
+
+********** END EXERCISES: COMPOSE INSTANCES **********
