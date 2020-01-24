@@ -102,3 +102,40 @@ instance (Traversable f, Traversable g) => Traversable (Compose f g) where
 ```
 
 ********** END EXERCISES: COMPOSE INSTANCES **********
+
+- And now for something completely different
+
+```haskell
+class BiFunctor p where
+    bimap :: (a -> b) -> (c -> d) -> p a c -> p b d
+    bimap f g = first f . second g
+
+    first :: (a -> b) -> p a c -> p b c
+    first f = bimap f id
+
+    second :: (b -> c) -> p a b -> p a c
+    second = bimap id
+
+-- 1)
+data Deux a b = Deux a b
+
+-- 2)
+data Const a b = Const a
+
+-- 3)
+data Drei a b c = Drei a b c
+
+-- 4)
+data SuperDrei a b c = SuperDrei a b
+
+-- 5)
+data SemiDrei a b c = SemiDrei a
+
+-- 6)
+data Quadriceps a b c d = Quadzzz a b c d
+
+-- 7)
+data Either a b = Left a | Right b
+```
+
+- Monad transformers
