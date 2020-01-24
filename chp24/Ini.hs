@@ -105,3 +105,37 @@ parseSection = do
 
     assignments <- some parseAssignment
     return $ Section h (M.fromList assignments)
+
+rollup :: Section -> Map Header Assignments -> Map Header Assignments
+rollup (Section h a) m = M.insert h a m
+
+parseIni :: Parser Config
+parseIni = do
+    sections <- some parseSection
+    let mapOfSections = foldr rollup M.empty sections
+    return (Config mapOfSections)
+
+
+maybeSuccess :: Result a -> Maybe a
+maybeSuccess (Success a) = Just a
+maybeSuccess _ = Nothing
+
+main :: IO ()
+main = hspec $ do
+    describe "Assignment Parsing" $
+        it "can parse a simple assignment" $ do
+            let m = parseByteString
+                    parseAssignment
+                    mempty assignmentEx
+                r' = maybeSuccess m
+
+            print m
+            shouldBe r' (Just ("woot", "1"))
+
+    describe "Header Parsing" $
+        it "can parse a simple header" $ do
+            let m = parseByteString parseHeader mempty headerEx
+                r' = maybeSuccess m
+
+            print m
+            shouldBe r' (Just (Header "blah"))
