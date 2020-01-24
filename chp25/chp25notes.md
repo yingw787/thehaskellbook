@@ -214,6 +214,7 @@ instance Monad m => Monad (IdentityT m) where
 
     (>>=) :: IdentityT m a -> (a -> IdentityT m b) -> IdentityT m b
     (>>=) (Identity ma) f =
-        let aimb = (>>=) ma f
+        let aimb :: a
+            aimb = fmap f ma
         in undefined
 ```
