@@ -15,4 +15,17 @@ instance Applicative m => Applicative (MaybeT m) where
     pure x = MaybeT (pure (pure x))
 
     (<*>) (MaybeT fab) (MaybeT mma) = MaybeT $ (<*>) <$> fab <*> mma
+
+instance Monad m => Monad (MaybeT m) where
+    return = pure
+
+    (>>=) :: MaybeT m a -> (a -> MaybeT m b) -> MaybeT m b
+    (>>=) (MaybeT ma) f = MaybeT $ do
+        v <- ma
+        case v of
+            Nothing -> return Nothing
+            Just y = runMaybeT (f y)
 ```
+
+- `EitherT`
+    - See `EitherT.hs`.
