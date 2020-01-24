@@ -136,3 +136,10 @@ parseDecimal = do
 
 - Parsing configuration files
     - See `Ini.hs`.
+
+- Character and token parsers
+    - Tokenizers translate bytestreams into an AST
+    - Don't get too tokenizer-happy; tokenizers are about ignoring "noise"
+
+- Polymorphic parsers
+    - See `Polymorphic.hs`.
