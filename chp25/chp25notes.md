@@ -216,15 +216,5 @@ fmap runIdentityT :: Functor f => f (IdentityT f1 a) -> f (f1 a)
 (>>=) :: IdentityT m a -> (a -> IdentityT m b) -> IdentityT m b
 (>>=) (IdentityT ma) f =
     let aimb :: a
-        aimb = fmap runIdentityT (fmap f ma)
-    in undefined
-
-instance Monad m => Monad (IdentityT m) where
-    return = pure
-
-    (>>=) :: IdentityT m a -> (a -> IdentityT m b) -> IdentityT m b
-    (>>=) (IdentityT ma) f =
-        let aimb :: a
-            aimb = fmap f ma
-        in undefined
+        aimb = join (fmap runIdentityT (fmap f ma)) in IdentityT aimb
 ```
