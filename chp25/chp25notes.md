@@ -63,8 +63,13 @@ v = Compose [Just (Compose $ Just [1])]
 ```haskell
 instance (Applicative f, Applicative g) => Applicative (Compose f g) where
     pure :: a -> Compose f g a
-    pure = undefined
+    -- (PERSONAL NOTE: I feel pretty bad about skipping this, but I need to get
+    -- this done, so, yeah.)
+    --
+    -- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+    pure = Compose $ pure (pure a)
 
     (<*>) :: Compose f g (a -> b) -> Compose f g a -> Compose f g b
-    (<*>) (Compose f) (Compose a) = undefined
+    -- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+    (<*>) (Compose f) (Compose a) = liftA2 (<*>) f a
 ```
