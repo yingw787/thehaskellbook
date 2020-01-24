@@ -15,3 +15,13 @@ sectionJson = [r|
     "whatisit": {"red": "intoothandclaw"}
 }
 |]
+
+
+-- Error due to mixing Data.ByteString (ByteString) and Data.ByteString.Lazy
+-- (ByteString)
+main :: IO ()
+main = do
+    let blah :: Maybe Value
+        blah = decodeStrict sectionJson
+
+    print blah
