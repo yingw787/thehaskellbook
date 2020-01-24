@@ -148,3 +148,18 @@ parseDecimal = do
 
 - Failure and backtracking
     - See `BT.hs`.
+
+- Marshalling from an AST to a datatype
+    - Unmarshalling: preparing AST to take a different form
+    - Marshalling: preparing data for serialization
+
+```haskell
+Text -> Struture -> Meaning
+-- parse -> unmarshall
+
+Meaning -> Structure -> Text
+-- marshall -> serialize
+```
+
+- Marshalling and unmarshalling JSON data
+    - See `Marshalling.hs`.
