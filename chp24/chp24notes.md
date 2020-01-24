@@ -1,4 +1,4 @@
-# Chapter 24
+# Chapter 24 (NEED TO REVIEW)
 
 - Parser combinators
     - Parsing: accept serialized input (characters or bytes), and turn it into a
@@ -163,3 +163,30 @@ Meaning -> Structure -> Text
 
 - Marshalling and unmarshalling JSON data
     - See `Marshalling.hs`.
+
+********** BEGIN CHAPTER EXERCISES **********
+
+(PERSONAL NOTE: Skipping as I need to come back to this chapter anyways if I
+wanted to learn more about CSV parsing, marking chapter as need to review)
+
+1.
+
+2.
+
+3.
+
+4.
+
+5.
+
+6.
+
+7.
+
+8.
+
+9.
+
+10.
+
+********** END CHAPTER EXERCISES **********
