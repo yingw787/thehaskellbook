@@ -218,3 +218,23 @@ fmap runIdentityT :: Functor f => f (IdentityT f1 a) -> f (f1 a)
     let aimb :: a
         aimb = join (fmap runIdentityT (fmap f ma)) in IdentityT aimb
 ```
+
+- Refactoring
+
+```haskell
+IdentityT $ join (fmap runIdentityT (fmap f ma))
+
+-- Functor law
+fmap (f . g) == fmap f . fmap g
+
+-- Refactoring 1
+IdentityT $ join (fmap (runIdentity . f) ma)
+
+-- 'fmap' + 'join' should remind of 'bind'
+(>>=) x f = join (fmap f x)
+
+-- Refactoring 2
+IdentityT $ ma >>= runIdentity . f
+```
+
+- The essential extra of monad transformers
