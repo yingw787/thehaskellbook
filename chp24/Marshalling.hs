@@ -19,9 +19,10 @@ sectionJson = [r|
 
 -- Error due to mixing Data.ByteString (ByteString) and Data.ByteString.Lazy
 -- (ByteString)
-main :: IO ()
-main = do
-    let blah :: Maybe Value
-        blah = decodeStrict sectionJson
+--
+-- main :: IO ()
+-- main = do
+--     let blah :: Maybe Value
+--         blah = decodeStrict sectionJson
 
-    print blah
+--     print blah
