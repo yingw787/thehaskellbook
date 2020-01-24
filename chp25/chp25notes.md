@@ -192,7 +192,7 @@ instance Applicative Identity where
 
 instance Applicative m => Applicative (IdentityT m) where
     pure x = IdentityT (pure x)
-    (<*>) (IdentityT fab) (Identity fa) = IdentityT (fab <*> fa)
+    (<*>) (IdentityT fab) (IdentityT fa) = IdentityT (fab <*> fa)
 
 
 instance Monad Identity where
@@ -209,11 +209,21 @@ instance Monad m => Monad (IdentityT m) where
 - Implementing the bind, step by step
 
 ```haskell
+-- Note:
+runIdentityT :: IdentityT f a -> f a
+fmap runIdentityT :: Functor f => f (IdentityT f1 a) -> f (f1 a)
+
+(>>=) :: IdentityT m a -> (a -> IdentityT m b) -> IdentityT m b
+(>>=) (IdentityT ma) f =
+    let aimb :: a
+        aimb = fmap runIdentityT (fmap f ma)
+    in undefined
+
 instance Monad m => Monad (IdentityT m) where
     return = pure
 
     (>>=) :: IdentityT m a -> (a -> IdentityT m b) -> IdentityT m b
-    (>>=) (Identity ma) f =
+    (>>=) (IdentityT ma) f =
         let aimb :: a
             aimb = fmap f ma
         in undefined
