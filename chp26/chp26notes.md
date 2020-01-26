@@ -29,3 +29,34 @@ instance Monad m => Monad (MaybeT m) where
 
 - `EitherT`
     - See `EitherT.hs`.
+
+- `ReaderT`
+    - See `ReaderT.hs`.
+
+- `StateT`
+    - `See `StateT.hs`.
+
+- `ReaderT`, `WriterT`, `StateT`
+
+```haskell
+newtype Reader r a = Reader { runReader :: r -> a }
+
+-- writers combine values monoidally
+newtype Writer w a = Writer { runWriter :: (a, w) }
+
+-- You don't need Writer or Reader (unless you want the restrictions), since
+-- State can both read and write values
+newtype State s a = State { runState :: s -> (a, s) }
+
+newtype ReaderT r m a = ReaderT { runReaderT :: r -> m a }
+
+newtype WriterT w m a = WriterT { runWriterT :: m (a, w) }
+
+newtype StateT s m a = StateT { runStateT :: s -> m (a, s) }
+```
+
+```haskell
+newtype RWST r w s m a = RWST { runRWST :: r -> s -> m (a, s, w)}
+```
+
+- Correspondence between `StateT` and `Parser`
