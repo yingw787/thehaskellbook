@@ -27,3 +27,17 @@ hypo' = do
     case x `seq` s of
         "hi" -> print x
         _ -> putStrLn "hello"
+
+
+-- Moved `seq` to earliest point in IO action
+-- This will result in an evaluation to bottom before evaluating getLine, which
+-- will raise an exception.
+hypo'' :: IO ()
+hypo'' = do
+    let x :: Integer
+        x = undefined
+    s <- seq x getLine
+
+    case s of
+        "hi" -> print x
+        _ -> putStrLn "hello"
