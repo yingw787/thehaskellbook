@@ -186,3 +186,16 @@ $trModule = Module $trModule2_r1vJ $trModule4_r1vL
 
 Ok, one module loaded.
 ```
+
+- Use `:set -ddump-simpl` and `:set -dsuppress-all` in order to view GHC Core
+  and see what the GHC Core language representation of a Haskell compiled file
+  resolves to in order to better understand performance.
+
+- A little stricter now
+    - See `OutsideIn.hs`.
+
+********** BEGIN EXERCISES: EVALUATE **********
+
+See `Evaluate.hs`.
+
+********** END EXERCISES: EVALUATE **********
