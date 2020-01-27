@@ -293,5 +293,23 @@ main = do
         Just _ -> print "well done"
 ```
 
-```haskell
-```
+- Monads do not commute
+    - You aren't guaranteed something sensible for every possible combination of
+      types
+
+- Transform if you want to
+    - You can get by with `liftIO`
+
+********** BEGIN CHAPTER EXERCISES **********
+
+(SKIPPING FOR NOW IN ORDER TO PROCEED TO NEXT CHAPTER)
+
+Write the code
+
+Fix the code
+
+Hit counter
+
+Morra
+
+********** END CHAPTER EXERCISES **********
