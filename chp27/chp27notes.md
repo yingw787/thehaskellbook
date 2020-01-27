@@ -58,3 +58,35 @@ possiblyKaboom' b =
 
 - Outside-in evaluation is how you can touch the structure without touching the
   structure's contents (e.g. measuring size of list of bottoms)
+
+- What does the other way look like?
+    - See `OutsideIn.hs`.
+
+- Can we make Haskell strict?
+    - See `OutsideIn.hs`.
+
+    - Case expressions in general force evaluation, since they discriminate on
+      cases
+
+- `seq` and ye shall find
+
+```haskell
+seq :: a -> b -> b
+
+-- `seq` isn't `flip const`, it evaluates to weak head normal form; it is elided
+-- to avoid churning your type signatures
+
+-- Defined as
+seq bottom b = bottom
+seq literallyAnythingNotBottom b = b
+```
+
+- Since Haskell evaluation is demand-driven, can't guarantee that something will
+  ever be evaluated
+    - `seq` evaluates expressions up to weak head normla form
+    - Simon Marlow: Parallel and Concurrent Programming in Haskell
+
+- Case matching also chains evaluation
+
+- Core dump
+    - See `CoreDump.hs`.
