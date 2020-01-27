@@ -101,3 +101,38 @@ newtype ReaderT r m a = ReaderT { runReaderT :: r -> m a }
 ```
 
 - See `OuterInner.hs`.
+    - Base monad: Structurally outermost monad
+
+********** BEGIN EXERCISE: WRAP IT UP **********
+
+See `OuterInner.hs`.
+
+********** END EXERCISE: WRAP IT UP **********
+
+- `MonadTrans`
+
+```haskell
+fmap :: Functor f => (a -> b) -> f a -> f b
+
+liftA :: Applicative f => (a -> b) -> f a -> f b
+
+liftM :: Monad m => (a -> r) -> m a -> m r
+
+-- `MonadTrans` is a typeclass that lifts.
+class MonadTrans  twhere
+    -- Lift a computation from the argument monad to the constructed monad
+    lift :: Monad m => m a -> t m a
+```
+
+```haskell
+newtype ScottyT e m a =
+    ScottyT { runS :: State (ScottyState e m) a }
+    deriving (Functor, Applicative, Monad)
+
+newtype ActionT e m a =
+    ActionT { runAM :: ExceptT (ActionError e) (ReaderT ActionEnv (StateT ScottyResponse m )) a }
+    deriving (Functor, Applicative)
+
+type ScottyM = ScottyM Text IO
+type ActionM = ActionT Text IO
+```
