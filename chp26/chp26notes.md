@@ -91,3 +91,13 @@ type Either e a = EitherT e Identity a
 type Reader r a = ReaderT e Identity a
 type State s a = StateT s Identity a
 ```
+
+```haskell
+newtype ExceptT e m a = ExceptT { runExceptT :: m (Either e a) }
+
+newtype MaybeT m a = MaybeT { runMaybeT :: m (Maybe a) }
+
+newtype ReaderT r m a = ReaderT { runReaderT :: r -> m a }
+```
+
+- See `OuterInner.hs`.
