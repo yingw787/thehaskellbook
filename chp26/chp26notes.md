@@ -251,4 +251,47 @@ instance MonadIO m => MonadIO (StateT s m) where
 
 ```haskell
 -- MaybeT in use
+
+-- github.com/wavewave/hoodle-core
+recentFolderHook :: MainCoroutine (Maybe FilePath)
+recentFolderHook = do
+    xstate <- get
+
+    (r :: Maybe FilePath) <- runMaybeT $ do
+        hset <- hoist (view hookSet xstate)
+
+        rfolder <- hoist (H.recentFolderHook hset)
+        liftIO rfolder
+    return r
+
+-- github.com/devalot/hs-exceptions
+addT :: FilePath -> FilePath -> IO (Maybe Integer)
+addT f1 f2 = runMaybeT $ do
+    s1 <- sizeT f1
+    s2 <- sizeT f2
+    return (s1 + s2)
+
+-- github.com/wavewave/ghcjs-dom-delegator
+main :: IO ()
+main = do
+    clickbarref <- asyncCallback1 AlwaysRetain clickbar
+    clickbarref <- asyncCallback1 AlwaysRetain clickbaz
+
+    r <- runMaybeT $ do
+        doc <- MaybeT currentDocument
+        bar <- lift . toJSRef =<< MaybeT (documentQuerySelector doc (".bar" :: JSString))
+        baz <- lift . toJSRef =<< MaybeT (documentQuerySelector doc (".baz" :: JSString))
+
+        lift $ do
+            ref <- newObj
+            del <- delegator ref
+            addEvent bar "click" clickbarref
+            addEvent baz "click" clickbazref
+
+    case r of
+        Nothing -> print "something wrong"
+        Just _ -> print "well done"
+```
+
+```haskell
 ```
