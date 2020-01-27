@@ -15,3 +15,15 @@ hypo = do
     case s of
         "hi" -> print x
         _ -> putStrLn "hello"
+
+
+-- Strict version of 'hypo'; `seq` forces evaluation of first argument if and
+-- when second argument is evaluated.
+hypo' :: IO ()
+hypo' = do
+    let x :: Integer
+        x = undefined
+    s <- getLine
+    case x `seq` s of
+        "hi" -> print x
+        _ -> putStrLn "hello"
