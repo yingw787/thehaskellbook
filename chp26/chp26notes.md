@@ -136,3 +136,43 @@ newtype ActionT e m a =
 type ScottyM = ScottyM Text IO
 type ActionM = ActionT Text IO
 ```
+
+- See `scotty.hs`.
+
+- MonadTrans instances
+
+```haskell
+-- IdentityT
+instance MonadTrans IdentityT where
+    lift = IdentityT
+
+-- MaybeT
+instance MonadTrans MaybeT where
+    lift = MaybeT . liftM Just
+
+lift :: Monad m => m a -> t m a
+
+(MaybeT . liftM Just) :: Monad m => m a -> MaybeT m a
+
+MaybeT :: m (Maybe a) -> MaybeT m a
+
+(liftM Just) :: Monad m => m a -> m (Maybe a)
+
+-- ReaderT
+instance MonadTrans (ReaderT r) where
+    lift = ReaderT . const
+```
+
+********** BEGIN EXERCISES: LIFT MORE **********
+
+```haskell
+-- 1)
+instance MonadTrans (EitherT e) where
+    lift = undefined
+
+-- 2)
+instance MonadTrans (StateT s) where
+    lift = undefined
+```
+
+********** END EXERCISES: LIFT MORE **********
