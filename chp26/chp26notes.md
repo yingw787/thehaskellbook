@@ -230,7 +230,25 @@ instance MonadIO m => MonadIO (EitherT e m) where
 ********** BEGIN EXERCISES: SOME EXERCISES **********
 
 ```haskell
+-- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
 
+-- MaybeT
+instance MonadIO m => MonadIO (MaybeT m) where
+    liftIO = lift . liftIO
+
+-- ReaderT
+instance MonadIO m => MonadIO (ReaderT r m) where
+    liftIO = lift . liftIO
+
+-- StateT
+instance MonadIO m => MonadIO (StateT s m) where
+    liftIO = lift . liftIO
 ```
 
 ********** END EXERCISES: SOME EXERCISES **********
+
+- Monad transformers in use
+
+```haskell
+-- MaybeT in use
+```
