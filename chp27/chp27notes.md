@@ -90,3 +90,99 @@ seq literallyAnythingNotBottom b = b
 
 - Core dump
     - See `CoreDump.hs`.
+
+```haskell
+Prelude> :set -ddump-simpl
+Prelude> :l CoreDump.hs
+[1 of 1] Compiling CoreDump         ( CoreDump.hs, interpreted )
+
+==================== Tidy Core ====================
+Result size of Tidy Core
+  = {terms: 24, types: 9, coercions: 0, joins: 0/0}
+
+-- RHS size: {terms: 9, types: 2, coercions: 0, joins: 0/0}
+discriminatory :: Bool -> Int
+[GblId, Arity=1, Caf=NoCafRefs]
+discriminatory
+  = \ (b_a1up :: Bool) ->
+      break<2>(b_a1up)
+      case b_a1up of {
+        False -> break<0>() GHC.Types.I# 0#;
+        True -> break<1>() GHC.Types.I# 1#
+      }
+
+-- RHS size: {terms: 1, types: 0, coercions: 0, joins: 0/0}
+$trModule1_r1vr :: GHC.Prim.Addr#
+[GblId, Caf=NoCafRefs]
+$trModule1_r1vr = "main"#
+
+-- RHS size: {terms: 2, types: 0, coercions: 0, joins: 0/0}
+$trModule2_r1vJ :: GHC.Types.TrName
+[GblId, Caf=NoCafRefs]
+$trModule2_r1vJ = GHC.Types.TrNameS $trModule1_r1vr
+
+-- RHS size: {terms: 1, types: 0, coercions: 0, joins: 0/0}
+$trModule3_r1vK :: GHC.Prim.Addr#
+[GblId, Caf=NoCafRefs]
+$trModule3_r1vK = "CoreDump"#
+
+-- RHS size: {terms: 2, types: 0, coercions: 0, joins: 0/0}
+$trModule4_r1vL :: GHC.Types.TrName
+[GblId, Caf=NoCafRefs]
+$trModule4_r1vL = GHC.Types.TrNameS $trModule3_r1vK
+
+-- RHS size: {terms: 3, types: 0, coercions: 0, joins: 0/0}
+CoreDump.$trModule :: GHC.Types.Module
+[GblId, Caf=NoCafRefs]
+CoreDump.$trModule
+  = GHC.Types.Module $trModule2_r1vJ $trModule4_r1vL
+
+
+
+Ok, one module loaded.
+```
+
+```haskell
+-- Same thing as above, but tidier
+Prelude> :set -ddump-simpl
+Prelude> :set -dsuppress-all
+Prelude> :l CoreDump.hs
+[1 of 1] Compiling CoreDump         ( CoreDump.hs, interpreted )
+
+==================== Tidy Core ====================
+Result size of Tidy Core
+  = {terms: 24, types: 9, coercions: 0, joins: 0/0}
+
+-- RHS size: {terms: 9, types: 2, coercions: 0, joins: 0/0}
+discriminatory
+discriminatory
+  = \ b_a1up ->
+      case b_a1up of {
+        False -> I# 0#;
+        True -> I# 1#
+      }
+
+-- RHS size: {terms: 1, types: 0, coercions: 0, joins: 0/0}
+$trModule1_r1vr
+$trModule1_r1vr = "main"#
+
+-- RHS size: {terms: 2, types: 0, coercions: 0, joins: 0/0}
+$trModule2_r1vJ
+$trModule2_r1vJ = TrNameS $trModule1_r1vr
+
+-- RHS size: {terms: 1, types: 0, coercions: 0, joins: 0/0}
+$trModule3_r1vK
+$trModule3_r1vK = "CoreDump"#
+
+-- RHS size: {terms: 2, types: 0, coercions: 0, joins: 0/0}
+$trModule4_r1vL
+$trModule4_r1vL = TrNameS $trModule3_r1vK
+
+-- RHS size: {terms: 3, types: 0, coercions: 0, joins: 0/0}
+$trModule
+$trModule = Module $trModule2_r1vJ $trModule4_r1vL
+
+
+
+Ok, one module loaded.
+```
