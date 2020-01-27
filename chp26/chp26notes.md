@@ -60,3 +60,34 @@ newtype RWST r w s m a = RWST { runRWST :: r -> s -> m (a, s, w)}
 ```
 
 - Correspondence between `StateT` and `Parser`
+
+```haskell
+type Parser a = String -> Maybe (a, String)
+
+newtype StateT s m a = StateT { runStateT :: s -> m (a, s) }
+
+type Parser = StateT String Maybe
+```
+
+- Types you probably don't want to use
+    - ListT and Writer/WriterT shouldn't be used
+
+- Why not `Writer`/`WriterT`?
+    - Could be too lazy or too strict
+    - Memory usage issues
+    - Can't retrieve intermediate state (e.g. log output during daemon process)
+
+- The `ListT` you want isn't made from the `List` type
+    - Use `pipes` or `conduit`
+    - Look at `AmbT` by Conal Elliot (look at `ContT` and `Amb`)
+
+- An ordinary type from a transformer
+    - A transformer can be turned into a non-transformer by using `Identity`
+
+```haskell
+type MyIdentity a = IdentityT Identity a
+type Maybe a = MaybeT Identity a
+type Either e a = EitherT e Identity a
+type Reader r a = ReaderT e Identity a
+type State s a = StateT s Identity a
+```
