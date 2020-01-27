@@ -165,14 +165,72 @@ instance MonadTrans (ReaderT r) where
 
 ********** BEGIN EXERCISES: LIFT MORE **********
 
+(FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+
 ```haskell
 -- 1)
 instance MonadTrans (EitherT e) where
-    lift = undefined
+    lift = EitherT . fmap Right
 
 -- 2)
 instance MonadTrans (StateT s) where
-    lift = undefined
+    lift m = StateT $ \s -> m >>= \a -> return (a, s)
 ```
 
 ********** END EXERCISES: LIFT MORE **********
+
+- Prolific lifting is the failure mode
+
+```haskell
+-- Some not-great code from Yesod
+
+addSubWidget :: (YesodSubRoute sub master) => sub -> WidgetT sub master -> WidgetT sub' master a
+addSubWidget sub w = do
+    master <- liftHandler getYesod
+    let sr = fromSubRoute sub master
+    i <- WidgetT $ lift $ lift $ lift $ lift $ lift $ lift $ lift get
+    w' <- liftHandler $ toMasterHandlerMaybe sr (const sub) Nothing $ flip runStateT i $ runWriterT $ runWriterT $ runWriterT $ runWriterT $ runWriterT $ runWriterT $ unWidgetT w
+
+-- elided, pg no. 1542
+```
+
+- Wrap it, smack it, pre-lift it
+
+- `MonadIO` aka zoom-zoom
+    - More than one way to lift an action over additional structure
+    - `MonadIO` keeps lifting actions over structure until it is lifted over all
+      structure
+
+```haskell
+-- liftIO should satisfy the following constraints:
+--
+-- liftIO . return = return
+-- liftIO (m >>= f) = liftIO m >>= (liftIO . f)
+
+liftIO :: IO a -> ExceptT e IO a
+liftIO :: IO a -> ReaderT r IO a
+liftIO :: IO a -> StateT s IO a
+
+liftIO :: IO a -> StateT s (ReaderT r IO) a
+liftIO :: IO a -> ExceptT e (StateT s (ReaderT r IO)) a
+
+
+class Monad m => MonadIO m where
+    liftIO :: IO a -> m a
+```
+
+```haskell
+instance MonadIO m => MonadIO (IdentityT m) where
+    liftIO = IdentityT . liftIO
+
+instance MonadIO m => MonadIO (EitherT e m) where
+    liftIO = lift . liftIO
+```
+
+********** BEGIN EXERCISES: SOME EXERCISES **********
+
+```haskell
+
+```
+
+********** END EXERCISES: SOME EXERCISES **********
