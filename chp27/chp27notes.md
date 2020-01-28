@@ -329,3 +329,15 @@ willForce ~x = 1
 ```
 
 - Adding strictness
+    - See `StrictTest1.hs`.
+    - See `StrictTest2.hs`.
+    - See `StrictTest3.hs`.
+    - See `StrictTest4.hs`.
+
+********** BEGIN CHAPTER EXERCISES **********
+
+See `StrictList.hs`.
+
+See `ChapterExercises.hs`.
+
+********** END CHAPTER EXERCISES **********
