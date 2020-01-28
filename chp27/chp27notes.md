@@ -246,3 +246,50 @@ Prelude>
 ```
 
 - Sharing is caring
+    - Sharing reduces memory usage
+    - GHC turns sharing on and off based on necessity and what it thinks will
+      produce faster code
+    - Compiler knows when code does or doesn't perform I/O
+
+- Using trace to observe sharing
+    - `Debug.Trace`: a way to put a `putStrLn` without having to reference `IO`
+
+```haskell
+Prelude> import Debug.Trace
+Prelude Debug.Trace> a = trace "a" 1
+Prelude Debug.Trace> b = trace "b" 2
+-- `Debug.Trace` allows you to see how arguments are forced at evaluation.
+-- For operations like addition, forcing order amongst pairs is not guaranteed.
+Prelude Debug.Trace> a + b
+b
+a
+3
+```
+
+- See `Trace.hs`.
+
+- What promotes sharing
+    - Names: name variables in order to share results
+    - Kind-ness
+
+- What subverts sharing
+    - Inlining expressions using `:{\n:}`
+
+- Why polymorphic values never seem to get forced
+    - When typeclass constraints get simplified to GHC Core, they're just
+      function arguments
+
+- Prevent sharing on purpose
+    - To prevent computations that have large memory footprints from persisting,
+      especially when they reduce to a smaller value or when they're not needed
+      anymore
+
+- Forced sharing
+    - Give expression a name (e.g. using `let`)
+
+- Refutable and irrefutable patterns
+    - Irrefutable pattern: one that will never fail to match
+    - Refutable pattern: one that might fail to match
+    - Pattern != function
+
+- Lazy patterns
