@@ -293,3 +293,39 @@ a
     - Pattern != function
 
 - Lazy patterns
+    - Are irrefutable
+    - Use `~` to make pattern match lazy
+
+- Bang patterns
+    - See `ManualBang.hs`.
+
+- Good rule to follow: lazy in the spine, strict in the leaves
+
+- Strict and StrictData
+    - For GHC 8.0 and newer
+
+```haskell
+-- StrictTest.hs
+{-# LANGUAGE Strict #-}
+
+module StrictTest where
+
+
+blah x = 1
+
+-- Will fail, because GHC language extension 'Strict' forces 'seq' operation
+main = print (blah undefined)
+```
+
+```haskell
+{-# LANGUAGE Strict #-}
+
+module LazyInHostileTerritory where
+
+
+-- Can use `~` to recover laziness
+willForce x = 1
+willForce ~x = 1
+```
+
+- Adding strictness
