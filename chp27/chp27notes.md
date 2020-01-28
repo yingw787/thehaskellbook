@@ -199,3 +199,50 @@ Ok, one module loaded.
 See `Evaluate.hs`.
 
 ********** END EXERCISES: EVALUATE **********
+
+- Call by name, call by need
+    - Call by value: argument expressions evaluated before entering a function
+    - Call by name: argument expressions not evaluated before entering a
+      function
+    - Call by need: Expressions are evaluated once and shared
+
+- Non-strict evaluation changes what we can do
+
+```haskell
+-- Works for strict and non-strict languages
+Prelude> myList = [1, 2, 3]
+Prelude> tail myList
+[2,3]
+-- Would crash on a strict language
+Prelude> myList' = [undefined, 2, 3]
+Prelude> tail myList'
+[2,3]
+```
+
+- Thunk life
+    - Thunk: reference to suspended computations
+        - https://gitlab.haskell.org/ghc/ghc/wikis/commentary/rts/storage/heap-objects
+
+- Not all values get thunked
+    - GHCi `:sprint` command shows what's been evaluated already
+
+```haskell
+-- In the book's version of GHCi, myList is strictly evaluated and
+-- `:sprint myList` is `[1, 2]`. My version of GHCi lazily evaluates myList
+-- even though it is cast as a polymorphic type.
+Prelude> myList = [1, 2] :: [Integer]
+Prelude> :sprint myList
+myList = _
+Prelude> myList2 = [1, 2, 3]
+Prelude> :sprint myList2
+myList2 = _
+Prelude> xs = [1, 2, id 1] :: [Integer]
+Prelude> xs' = xs ++ undefined
+-- xs' isn't evaluated because the function (++) is the outermost operator, and
+-- not a data constructor. Therefore, it is not in WHNF.
+Prelude> :sprint xs'
+xs' = _
+Prelude>
+```
+
+- Sharing is caring
