@@ -108,4 +108,5 @@ const undefined 1
 x = undefined
 y = "blah"
 main = do
-    print (snd (x, y))
+    -- (FROM ANSWER KEY: https://github.com/johnchandlerburnham/hpfp)
+    print $ snd (x, seq x y)
