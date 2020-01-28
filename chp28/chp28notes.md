@@ -33,3 +33,22 @@ mean                 5.796 ms   (5.745 ms .. 5.873 ms)
 std dev              192.4 μs   (131.0 μs .. 286.3 μs)
 variance introduced by outliers: 15% (moderately inflated)
 ```
+
+- Making the case for nf
+    - See `NF.hs`.
+
+- Profiling your programs
+    - https://downloads.haskell.org/~ghc/latest/docs/html/users_guide/profiling.html
+
+- Profiling time usage
+    - See `ProfilingTime.hs`.
+
+- Profiling heap usage
+    - See `Loci.hs`.
+
+- (PERSONAL NOTE: Somehow getting incorrect binaries with ProfilingTime.hs and
+  Loci.hs; `Unable to run executable: exec format error` or similar. Skipping
+  for now but cannot generate .prof reports.)
+
+- Constant applicative forms
+    - See `ApplicativeForms.hs`.
