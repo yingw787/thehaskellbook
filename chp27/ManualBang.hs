@@ -13,3 +13,14 @@ manualSeq b = seq b 1
 -- (!) forces case expression and WHNF
 banging :: Bool -> Int
 banging !b = 1
+
+
+data DoesntForce = TisLazy Int String
+
+gibString :: DoesntForce -> String
+gibString (TisLazy _ s) = s
+
+data BangBang = SheShotMeDown !Int !String
+
+gimmeString :: BangBang -> String
+gimmeString (SheShotMeDown _ s) = s
