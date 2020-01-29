@@ -130,3 +130,33 @@ data Vector a =
     - Write once, read many
 
 - What about slicing?
+    - See `SlicingBench.hs`.
+    - Slicing vectors is a lot faster than slicing lists, because vectors reuse
+      the underlying snapshot of data
+    - (PERSONAL NOTE: This reminds me of Clojure's atoms and CRDTs)
+
+- Updating vectors
+    - Fusion: See Stream Fusion by Duncan Coutts
+        - As an optimization, compiler can fuse several loops into one large
+          loop and do it in one pass.
+    - See `Fusion.hs`.
+    - Fusion isn't a catch-all benefit
+        - See `UpdateVector.hs`.
+    - Could go faster by lazily constructing updates and flushing all at once
+
+- Mutable Vectors
+    - See `MutableVectors.hs`.
+
+- A sidebar on the ST Monad
+    - ST can be thought of as a mutable State monad
+    - It's "morally effect-free"
+        - Lazy Functional State Threads, by John Launchbury and Simon
+          Peyton-Jones
+
+********* BEGIN EXERCISES: VECTOR *********
+
+(SKIPPING FOR NOW)
+
+********* END EXERCISES: VECTOR *********
+
+- String types
