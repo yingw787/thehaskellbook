@@ -23,3 +23,42 @@
     - A way to disable sharing that takes place in non-strictness
 
 - Order and chaos
+
+```haskell
+-- IO can guarantee that this will print "123", because it nests actions and
+-- provides sequencing and ordering.
+main = do
+    putStr "1"
+    putStr "2"
+    putStrLn "3"
+```
+
+- Sharing
+    - Usually, we can assume evaluating a function will return a value
+    - With IO, you're not guaranteed anything
+        - `IO a` is a description for how you *might* `a`.
+
+- The time has come
+
+```haskell
+-- from Data.Time.Clock
+--
+-- Without IO, getCurrentTime would share the time from the first time it was
+-- forced
+--
+-- Instead, IO describes how you could get the current time when you need it
+getCurrentTime :: IO UtcTime
+```
+
+- Another example
+    - `criterion` and `whnf` / `nf` had to be applied to arguments to disable
+      sharing; otherwise benchmarks would only tell us the performance of one
+      run instead of multiple runs
+
+    - However, `whnfIO` and `nfIO` don't have this problem; sharing is prevented
+      through `IO` action.
+
+- The code! It doesn't work!
+    - See "Parallel & Concurrent Programming in Haskell", by Simon Marlow
+
+    - See `WhatHappens.hs`.
