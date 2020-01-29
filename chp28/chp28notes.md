@@ -52,3 +52,28 @@ variance introduced by outliers: 15% (moderately inflated)
 
 - Constant applicative forms
     - See `ApplicativeForms.hs`.
+    - CAFs trade memory usage for time, and aren't relevant beyond toy projects
+
+- Map
+    - [`containers`](http://hackage.haskell.org/package/containers) is where
+      most of these data structures are hosted
+
+- See `MapBench.hs`.
+
+- Set
+    - `Ord` typeclass constraint
+    - Unique, ordered set of values
+        - (PERSONAL NOTE: This is different from Python, where sets are
+          unordered)
+
+```haskell
+data Set a
+    = Bin
+        {-# UNPACK #-}
+        !Size !a !(Set a) !(Set a)
+    | Tip
+
+type Size = Int
+```
+
+- See `SetBench.hs`.
