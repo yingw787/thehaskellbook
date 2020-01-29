@@ -22,3 +22,22 @@ multiError n =
         0 -> Left (MyException DivideByZero)
         1 -> Left (MyException StackOverflow)
         _ -> Right n
+
+data SomeError =
+    Arith ArithException |
+    Async AsyncException |
+    SomethingElse
+    deriving Show
+
+discriminateError :: MyException -> SomeError
+discriminateError (MyException e) =
+    case cast e of
+        Just arith -> Arith arith
+        Nothing ->
+            case cast e of
+                Just async -> Async async
+                Nothing -> SomethingElse
+
+runDisc n =
+    either discriminateError
+    (const SomethingElse) (multiError n)
