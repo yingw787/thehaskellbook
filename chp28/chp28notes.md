@@ -160,3 +160,24 @@ data Vector a =
 ********* END EXERCISES: VECTOR *********
 
 - String types
+    - String: type alias for [Char]
+    - Text: Plain text you need to store efficiently
+        - hackage.haskell.org/package/text
+        - UTF-16 encoded, not UTF-8
+
+- Don't trust your gut, measure
+    - See `MemoryProfiling.hs`.
+
+- ByteString
+    - Sequence of bytes represented as `Word8` values
+    - Doesn't have encoding
+    - You can use GHC extension OverloadedStrings
+    - Might not be comprehensible
+
+    - See `BS.hs`.
+
+- ByteString traps
+    - Don't use `Char8` to cast String to ByteString; will destroy Unicode data
+    - See `Char8ProllyNotWhatYouWant.hs`.
+
+- When would I use ByteString instead of Text for textual data?
