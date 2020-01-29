@@ -181,3 +181,11 @@ data Vector a =
     - See `Char8ProllyNotWhatYouWant.hs`.
 
 - When would I use ByteString instead of Text for textual data?
+    - If you read UTF-8 data from file/network and you don't want to cast to
+      different byte encodings
+
+********** BEGIN CHAPTER EXERCISES **********
+
+(SKIPPING FOR NOW)
+
+********** END CHAPTER EXERCISES **********
