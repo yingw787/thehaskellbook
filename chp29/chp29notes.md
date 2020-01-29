@@ -62,3 +62,27 @@ getCurrentTime :: IO UtcTime
     - See "Parallel & Concurrent Programming in Haskell", by Simon Marlow
 
     - See `WhatHappens.hs`.
+
+- IO doesn't disable sharing for everything
+    - See `TraceSharing.hs`.
+
+- Purity is losing meaning
+    - purity not always equal to "without effects"
+
+- Semantically, pedantically accurate
+    - Originally, "purely functional" -> lambda calculus semantics for the
+      entire language
+
+- Referential transparency
+    - Purity as referential transparency vs. purity as a lambda calculus is that
+      lambda calculus is a stronger guarantee than referential transparency
+    - IO is still referentially transparent, because it will *generate the same
+      IO action every time*
+        - (PERSONAL NOTE: Hmm, haven't thought about IO in that regards; I
+          thought effects impacted whether it was referentially transparent, but
+          I guess that is true, if you have the same environment and the same IO
+          actions, you get the same effect)
+
+    - See `IORefTrans.hs`.
+
+- IO's Functor, Applicative, and Monad
