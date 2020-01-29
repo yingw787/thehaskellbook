@@ -48,3 +48,41 @@ data SomeException =
 
 - So, wait, what?
     - See `WhySomeException.hs`
+
+- Data.Typeable
+    - Typeclass permits types to be known at runtime, like dynamic typechecking
+    - Useful for when you need to have various types to be passed but needs to
+      enforce or trigger on specific types
+        - (PERSONAL NOTE: I'm curious as to why you don't just have additional
+          type signatures and break out the method)
+
+    - Makes sense for exceptions, because you need to match against the correct
+      Exception type, and you only know the correct type at runtime
+        - (PERSONAL NOTE: I guess)
+
+- This machine kills programs
+    - Running code is an I/O operation, so exceptions (runtime events) usually
+      happen during I/O.
+    - I/O's implicit contract is "you cannot expect this computation to succeed
+      unconditionally"
+    - Anything can fail, even `putStrLn`; depending on UNIX file permissions
+
+- Want either? Try!
+    - You may want to lift an exception into an explicit `Either` value
+
+```haskell
+try :: Exception e => IO a -> IO (either e a)
+```
+
+```haskell
+module TryExcept where
+
+import Control.Exception
+
+
+willIFail :: Integer -> IO (Either ArithException ())
+willIFail denom = try $ print $ div 5 denom
+```
+
+- Exceptions are imprecise
+    - They will reverberate up the stack and kill the program or get caught
