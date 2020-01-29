@@ -86,3 +86,22 @@ getCurrentTime :: IO UtcTime
     - See `IORefTrans.hs`.
 
 - IO's Functor, Applicative, and Monad
+    - IO also has Functor and Applicative instances
+        - You can lift over `IO` using `fmap`
+
+- The `IO` Functor
+    - Lifting over `IO` doesn't produce any effects, because effects are part of
+      the structure
+
+- Applicative and `IO`
+
+- Monad and `IO`
+
+- Well, then, how do we `MVar`?
+    - Possibly with `unsafePerformIO`
+
+********** BEGIN CHAPTER EXERCISES **********
+
+(SKIPPING FOR NOW)
+
+********** END CHAPTER EXERCISES **********
