@@ -104,3 +104,29 @@ data FingerTree a
 - See `SeqBench.hs`.
 
 - What's slower with Sequence?
+
+- Vector
+    - https://hackage.haskell.org/package/vector
+    - Use instead of `array`
+
+```haskell
+data Vector a =
+    Vector  {-# UNPACK #-} !Int
+            {-# UNPACK #-} !Int
+            {-# UNPACK #-} !(Array a)
+    deriving Typeable
+```
+
+- Vectors can come in many variants: boxed, unboxed, immutable, mutable,
+  storable, plain, etc.
+    - Boxed: reference any datatype
+    - Unboxed: raw values without pointer indirection
+    - Saves memory at the cost of having more restricted types
+
+- When does one want a Vector in Haskell?
+    - Want memory efficiency close to theoretical max
+    - Data access is through indexing
+    - Uniform access times
+    - Write once, read many
+
+- What about slicing?
