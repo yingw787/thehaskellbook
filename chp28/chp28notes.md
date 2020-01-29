@@ -77,3 +77,30 @@ type Size = Int
 ```
 
 - See `SetBench.hs`.
+
+********** BEGIN EXERCISE: BENCHMARK PRACTICE **********
+
+(SKIPPING FOR NOW)
+
+********** END EXERCISE: BENCHMARK PRACTICE **********
+
+- Sequence
+    - Finger trees: http://www.staff.city.ac.uk/~ross/papers/FingerTree.html
+    - Sequence builds on finger trees: cheap appends to front and back (unlike
+      list, which is only cheap appends to the front)
+
+```haskell
+newtype Seq a = Seq (FingerTree (Elem a))
+
+newtype Elem a = Elem { getElem :: a }
+
+data FingerTree a
+    = Empty
+    | Single a
+    | Deep  {-# UNPACK #-} !Int !(Digit a)
+            (FingerTree (Node a)) !(Digit a)
+```
+
+- See `SeqBench.hs`.
+
+- What's slower with Sequence?
