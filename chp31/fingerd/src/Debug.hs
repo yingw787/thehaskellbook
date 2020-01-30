@@ -1,4 +1,8 @@
 -- Debug.hs
+--
+-- 'sudo `stack exec which debug`' to run debug server
+--
+-- connect via `telnet localhost 79`, or with `finger username@hostname`
 module Main where
 
 import Control.Monad (forever)
