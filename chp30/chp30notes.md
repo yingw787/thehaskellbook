@@ -114,3 +114,27 @@ main = do
 
 - Making our own exception types
     - See `OurExceptions.hs`.
+
+- Surprising interaction with `bottom`
+    - Due to non-strictness, your bottom could've been forced before or after
+      your exception handler
+
+```haskell
+import Control.Exception
+
+
+-- These give two different results
+noWhammies :: IO (Either SomeException ())
+noWhammies = try undefined
+
+megaButtums :: IO (Either SomeException ())
+megaButtums = try $ return undefined
+```
+
+- Asynchronous Exceptions
+    - Most languages don't have anything like this because they can't hope to
+      make it safe within their implementation runtimes
+        - (PERSONAL NOTE: This is really interesting...need to come back to
+          this; yea what happens when Python 3.x async runs into an exception?)
+
+    - See `AsyncExceptions.hs`.
