@@ -9,7 +9,7 @@ import System.IO
 
 openAndWrite :: IO ()
 openAndWrite = do
-    h <- openFile "test.dat" WriteMode
+    h <- openFile "test.dat" AppendMode
     threadDelay 1500
 
     hPutStr h (replicate 100000000 '0' ++ "abc")
@@ -21,6 +21,6 @@ instance Exception PleaseDie
 
 main :: IO ()
 main = do
-    threadId <- forkIO openAndWrite
+    threadId <- forkIO (mask_ openAndWrite)
     threadDelay 1000
     throwTo threadId PleaseDie
