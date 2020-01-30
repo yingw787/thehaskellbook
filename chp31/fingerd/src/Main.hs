@@ -68,3 +68,34 @@ allUsers = "SELECT * from users"
 
 getUserQuery :: Query
 getUserQuery = "SELECT * from users where username = ?"
+
+data DuplicateData = DuplicateData deriving (Eq, Show, Typeable)
+instance Exception DuplicateData
+
+type UserRow = (Null, Text, Text, Text, Text, Text)
+
+getUser :: Connection -> Text -> IO (Maybe User)
+getUser conn username = do
+  results <- query conn getUserQuery (Only username)
+
+  case results of
+    [] -> return $ Nothing
+    [user] -> return $ Just user
+    _ -> throwIO DuplicateData
+
+createDatabase :: IO ()
+createDatabase = do
+  conn <- open "finger.db"
+  execute_ conn createUsers
+  execute conn insertUser meRow
+
+  rows <- query_ conn allUsers
+  mapM_ print (rows :: [User])
+  SQLite.close conn
+
+  where meRow :: UserRow
+        meRow = (Null, "yingw787", "/bin/bash", "/home/yingw787", "Ying Wang", "123-456-6789")
+
+
+main :: IO ()
+main = createDatabase
