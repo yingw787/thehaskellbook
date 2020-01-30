@@ -86,3 +86,31 @@ willIFail denom = try $ print $ div 5 denom
 
 - Exceptions are imprecise
     - They will reverberate up the stack and kill the program or get caught
+
+- The unbearable imprecision of trying
+
+```haskell
+import Control.Exception
+
+-- `throwIO` raises a number of different types of exceptions
+canICatch :: Exception e => e -> IO (Either ArithException ())
+canICatch e = try $ throwIO e
+```
+
+- See `StoppingTheParty.hs`.
+
+- Why `throwIO`?
+    - Sometimes, we do want to stop a program when a certain condition occurs
+
+```haskell
+import Control.Exception
+
+
+main :: IO ()
+main = do
+    throwIO DivideByZero
+    putStrLn "lol"
+```
+
+- Making our own exception types
+    - See `OurExceptions.hs`.
