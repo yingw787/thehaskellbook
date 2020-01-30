@@ -10,11 +10,11 @@ logAndEcho :: Socket -> IO ()
 logAndEcho sock = forever $ do
     (soc, _) <- accept sock
     printAndKickback soc
-    sClose soc
+    close soc
     where printAndKickback conn = do
-        msg <- recv conn 1024
-        print msg
-        sendAll conn msg
+            msg <- recv conn 1024
+            print msg
+            sendAll conn msg
 
 
 main :: IO ()
@@ -25,7 +25,7 @@ main = withSocketsDo $ do
 
     let serveraddr = head addrinfos
     sock <- socket (addrFamily serveraddr) Stream defaultProtocol
-    bindSocket sock (addrAddress serveraddr)
+    bind sock (addrAddress serveraddr)
     listen sock 1
     logAndEcho sock
-    sClose sock
+    close sock
