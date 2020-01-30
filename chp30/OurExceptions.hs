@@ -4,6 +4,9 @@ module OurExceptions where
 import Control.Exception
 
 
+data EATD = NotEven Int | NotDivThree Int deriving (Eq, Show)
+instance Exception EATD
+
 data NotDivThree = NotDivThree Int deriving (Eq, Show)
 instance Exception NotDivThree
 
